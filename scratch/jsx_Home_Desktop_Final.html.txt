@@ -1,11 +1,4 @@
 
-import Link from "next/link";
-
-
-export default async function Page() {
-  return (
-    <>
-      
 
 <nav className="docked full-width top-0 sticky z-50 glass-nav shadow-sm h-20 transition-all">
 <div className="flex justify-between items-center w-full px-base md:px-margin-desktop max-w-container-max mx-auto h-full">
@@ -35,7 +28,7 @@ export default async function Page() {
 
 <section className="relative h-[800px] w-full overflow-hidden">
 <div className="absolute inset-0 z-0">
-<div className="w-full h-full bg-cover bg-center" style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuB27uemsGCY_z5UGSrAt7VWt9PMFNvh3gxrnWWE4TLwz5giYDILjvcgotfL2VCXfdZ1LCKbV-xCNlAXI9IQhVDHgsX-GDeUQaoL3OKxmBfG08gVp0doMOtBkbZkKnz7OlacSU3Hv9ZK0xrzZq7NL88YG0wWpWz1GMAJR3a62eVXMtaMCKdw2a_rmYo_io4OGzhNw-F7jl5Lai-4JUUS5RjhKYOHpDTpUkmGvb84iLYpvUw8Sf2iRALKeY_4uFfRjUse0oZK4KbdPoc\")"}}></div>
+<div className="w-full h-full bg-cover bg-center" style={{"backgroundImage":"url(\"https"}}></div>
 <div className="absolute inset-0 hero-gradient"></div>
 </div>
 <div className="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop h-full flex flex-col justify-center items-start text-white">
@@ -422,9 +415,18 @@ export default async function Page() {
 <p className="text-on-primary/60 font-label-md text-[12px]">© 2024 Ivonne Marin Asesora Inmobiliaria. Todos los derechos reservados. Diseñado para la excelencia en el Eje Cafetero.</p>
 </div>
 </footer>
-
-
-    </>
-  );
-}
-    
+<script>
+    // Navbar visual feedback on scroll
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+            nav.classList.add('shadow-lg', 'py-1');
+            nav.classList.remove('h-20');
+            nav.classList.add('h-16');
+        } else {
+            nav.classList.remove('shadow-lg', 'py-1');
+            nav.classList.add('h-20');
+            nav.classList.remove('h-16');
+        }
+    });
+</script>

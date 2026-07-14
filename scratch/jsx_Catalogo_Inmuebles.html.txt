@@ -1,11 +1,4 @@
 
-import Link from "next/link";
-
-
-export default async function Page() {
-  return (
-    <>
-      
 
 <header className="bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-md shadow-sm fixed top-0 w-full z-50">
 <div className="flex justify-between items-center w-full px-base md:px-margin-desktop max-w-container-max mx-auto h-20">
@@ -135,7 +128,7 @@ export default async function Page() {
 <button className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/40 transition-all">
 <span className="material-symbols-outlined">favorite</span>
 </button>
-<div className="w-full h-full bg-cover bg-center" data-alt="A luxury modern apartment building exterior in the coffee region of Colombia, specifically Pereira. The building features sleek architectural lines, large glass windows reflecting a warm golden sunset, and lush tropical greenery in the surrounding landscape. The lighting is soft and empathetic, highlighting the warm beige and vinotinto color palette of the brand." style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuDSCpy0N1m9xCM7xXEs7ZSo_LfE-YJD0gb3btvJeNQJsj8LjCai1IogutNN4rQ8hYvieyOm5Aj-FyldAgk-tp8M-jboSa2u01c8YSOrf6pbNb84c10Tt0YS0z18_9RoSoiT1EpLbIvmiCudqGasr2z4rH2gAAxVhVkmVnFPF7hY-ph_3wvWQdGZKFhOPTKmbCjzD5aehrBHNjvGTj8MHzI9qWJ90wpBa4ylYRm8rXa7x6cxdTEh6wtFUl_TqaeUtawlFFLo7PdlsL8\")"}}></div>
+<div className="w-full h-full bg-cover bg-center" data-alt="A luxury modern apartment building exterior in the coffee region of Colombia, specifically Pereira. The building features sleek architectural lines, large glass windows reflecting a warm golden sunset, and lush tropical greenery in the surrounding landscape. The lighting is soft and empathetic, highlighting the warm beige and vinotinto color palette of the brand." style={{"backgroundImage":"url(\"https"}}></div>
 </div>
 <div className="p-6">
 <div className="flex justify-between items-start mb-2">
@@ -172,7 +165,7 @@ export default async function Page() {
 <button className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/40 transition-all">
 <span className="material-symbols-outlined">favorite</span>
 </button>
-<div className="w-full h-full bg-cover bg-center" data-alt="A spacious villa with a red-tiled roof and white walls, typical of high-end real estate in the Eje Cafetero region. The villa is surrounded by vibrant coffee plantations and features a modern pool with turquoise water. The sky is a warm dusk hue, casting long shadows and creating a peaceful, luxurious atmosphere that aligns with the brand's professional and empathetic identity." style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuCIcGFFQi4uMDYv8SG2LCNXsXfyAayqdwGsISRWjJhvVb7NdYj1Twnc8-JviZalpZ17Zz8Z-Wd851PsZVrAbLsMqo9M7oVebQLM-PqJDSHflOKUIndEN65pD6_8_TGtOnnhexy93r243nPx6UULyiOOAKoZ3cKGu2Z2k8w18dV5l-TAkRk-TPIrmzcsOms85tLniC-QkqLOI5mJv6nsL7rXWS0BYm5Ig4vkkWdWyaB0HhGw8MwZXcmqrUsqrtkrAHLADamJsH6Lwj8\")"}}></div>
+<div className="w-full h-full bg-cover bg-center" data-alt="A spacious villa with a red-tiled roof and white walls, typical of high-end real estate in the Eje Cafetero region. The villa is surrounded by vibrant coffee plantations and features a modern pool with turquoise water. The sky is a warm dusk hue, casting long shadows and creating a peaceful, luxurious atmosphere that aligns with the brand's professional and empathetic identity." style={{"backgroundImage":"url(\"https"}}></div>
 </div>
 <div className="p-6">
 <div className="flex justify-between items-start mb-2">
@@ -208,7 +201,7 @@ export default async function Page() {
 <button className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/40 transition-all">
 <span className="material-symbols-outlined">favorite</span>
 </button>
-<div className="w-full h-full bg-cover bg-center" data-alt="Interior of a modern executive apartment in Armenia, Colombia. The space is filled with natural light, featuring high ceilings and minimalist furniture in warm neutral tones. Large glass doors open to a balcony with a view of the Andes mountains. The scene is styled to evoke trust and sophistication, using the warm gallery aesthetic of the Ivonne Marin brand." style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuDQttMg9ndLtKtnv_HiH3wyr9DI5gLwlaf_EzAnFiixZwZxinJX-XVq_ChK5YJ4OYbhqf3WZC63YVxbJTHZDGqpdT6TJ6EMUzQUXMb2ckFKAkjyxnxZA6xhRqcoZHtzhvpnUkIUO65bjDpJNtOuDNA9mbw3dJzAUkh4lK4qZ7zBhJDM29X4IrFqF075nBsslSy17XX75h-BseJOU-G5R0nHmmmgJuFR8l4jYWXJ6lVnyBIWcInnHSWGReaqpqGSrxgaicsXlyklaSs\")"}}></div>
+<div className="w-full h-full bg-cover bg-center" data-alt="Interior of a modern executive apartment in Armenia, Colombia. The space is filled with natural light, featuring high ceilings and minimalist furniture in warm neutral tones. Large glass doors open to a balcony with a view of the Andes mountains. The scene is styled to evoke trust and sophistication, using the warm gallery aesthetic of the Ivonne Marin brand." style={{"backgroundImage":"url(\"https"}}></div>
 </div>
 <div className="p-6">
 <div className="flex justify-between items-start mb-2">
@@ -244,7 +237,7 @@ export default async function Page() {
 <button className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/40 transition-all">
 <span className="material-symbols-outlined">favorite</span>
 </button>
-<div className="w-full h-full bg-cover bg-center" data-alt="A luxurious duplex apartment in Manizales, showcasing mountain views through floor-to-ceiling windows. The interior is elegant with polished wooden floors and a warm lighting scheme. The environment is designed to appeal to high-net-worth clients, emphasizing professional service and residential comfort through a soft color palette and refined details." style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuBHDmKZptTErASp2yrKBPwlb3DfYpdsD-eFrH_7yStzJmYVFkQHjv2uZzcCr0shE3RLc4tXU_-R710oIQj8lvESOk3whJk3nEBGtB9TuzaP1GmLFQQZsDWKXxuVmJA_Fy4XZUk6xjF6brLrtV26pPm2F5yf-W3NzMxjhaL_rkGkvw16_oIDVC1F1VacLIk1cmhmCI6Qk2WZ8hgQmFIr4e0Wr0Naq6p40t_P_y9tll12aL4m-wagz9Bvw1AiG3j9T4OfoMXV0mCYg5A\")"}}></div>
+<div className="w-full h-full bg-cover bg-center" data-alt="A luxurious duplex apartment in Manizales, showcasing mountain views through floor-to-ceiling windows. The interior is elegant with polished wooden floors and a warm lighting scheme. The environment is designed to appeal to high-net-worth clients, emphasizing professional service and residential comfort through a soft color palette and refined details." style={{"backgroundImage":"url(\"https"}}></div>
 </div>
 <div className="p-6">
 <div className="flex justify-between items-start mb-2">
@@ -337,9 +330,21 @@ export default async function Page() {
             © 2024 Ivonne Marin Asesora Inmobiliaria. Todos los derechos reservados.
         </div>
 </footer>
+<script>
+        // Micro-interactions and Lightweight atmospheric effects
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.querySelector('button.absolute').classList.remove('opacity-0');
+            });
+        });
 
-
-    </>
-  );
-}
-    
+        // Sticky filter scroll behavior
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('header');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
