@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reportes Analíticos - Ivonne Marin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#eae7e7",
+                    "surface-dim": "#dcd9d9",
+                    "on-secondary-container": "#7a5d3f",
+                    "on-primary-container": "#e17770",
+                    "on-tertiary-container": "#bc8e3f",
+                    "tertiary": "#251700",
+                    "tertiary-fixed": "#ffdead",
+                    "secondary-container": "#ffd9b3",
+                    "primary-container": "#5c1212",
+                    "on-primary-fixed": "#410004",
+                    "surface-variant": "#e5e2e1",
+                    "surface-container": "#f0eded",
+                    "on-primary-fixed-variant": "#7d2b28",
+                    "inverse-on-surface": "#f3f0ef",
+                    "on-surface-variant": "#554240",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#fcf9f8",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#f1be6a",
+                    "primary-fixed-dim": "#ffb3ad",
+                    "on-secondary-fixed-variant": "#5b4226",
+                    "inverse-surface": "#303030",
+                    "on-tertiary": "#ffffff",
+                    "on-surface": "#1b1b1c",
+                    "tertiary-container": "#402a00",
+                    "surface-bright": "#fcf9f8",
+                    "on-tertiary-fixed-variant": "#604100",
+                    "primary": "#3d0003",
+                    "secondary": "#75593b",
+                    "outline-variant": "#dbc0be",
+                    "on-primary": "#ffffff",
+                    "background": "#fcf9f8",
+                    "on-tertiary-fixed": "#281900",
+                    "on-background": "#1b1b1c",
+                    "surface-container-highest": "#e5e2e1",
+                    "surface-container-low": "#f6f3f2",
+                    "primary-fixed": "#ffdad7",
+                    "on-error-container": "#93000a",
+                    "inverse-primary": "#ffb3ad",
+                    "surface-tint": "#9c423d",
+                    "on-secondary-fixed": "#2a1702",
+                    "secondary-fixed-dim": "#e5c09b",
+                    "outline": "#887270",
+                    "secondary-fixed": "#ffddbb",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "base": "8px",
+                    "section-gap": "80px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "display-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "label-md": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "headline-lg-mobile": [
+                            "Plus Jakarta Sans"
+                    ],
+                    "body-md": [
+                            "Plus Jakarta Sans"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "32px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "56px",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "28px",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "headline-lg": [
+                            "32px",
+                            {
+                                    "lineHeight": "40px",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "20px",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "28px",
+                            {
+                                    "lineHeight": "36px",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "24px",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #f7f3ef; }
+        .glass-card { background: rgba(239, 246, 237, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(232, 195, 158, 0.3); }
+        .ambient-shadow { box-shadow: 0 4px 16px rgba(92, 18, 18, 0.08); }
+        .chart-bar { background-color: #5c1212; border-radius: 4px 4px 0 0; }
+        .chart-bar-secondary { background-color: #e5c09b; border-radius: 4px 4px 0 0; }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="font-body-md text-on-surface antialiased flex h-screen overflow-hidden">
+<!-- SideNav Desktop -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container shadow-md z-40">
+<div class="flex-col h-full p-4 flex justify-between">
+<div>
+<div class="flex items-center gap-4 mb-8 p-2">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A professional headshot of a female real estate agent with a warm smile, wearing a tailored navy blazer. Soft, natural lighting highlights her approachability. The background is slightly out of focus, suggesting an elegant office or luxury property setting. 100 words." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk9CAN7Fqc1roB-_7VpI52I-SJdCdNxmhizEMFRMveyAnTxmpx2LYOuLUdKtXICLDVpXu-LtN_QsrD8Q8d6r6UbnCXB8ZVVnE3jlzh-PUgZWFZ0PU0JKUHiVHESTZKLZi1FHukNnXnBvH3m4swFOxbsLHB9pR76uq5FROFLDfC2AcEj1tlXGsCRqV8COaE_7Sk5GBDzvMZO4GvGY9YU4PpgQZCvZUlu0ImCJXhkTeW8Ugy-m8tmDQovvXIgNE08mNuBe807LKMNnY"/>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary tracking-tight">Ivonne Marin</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Administrador</p>
+</div>
+</div>
+<button class="w-full mb-6 bg-primary text-on-primary py-3 px-4 rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 hover:bg-surface-tint transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                    Crear Inmueble
+                </button>
+<nav class="space-y-2 flex flex-col">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="font-label-md text-label-md">Inmuebles</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="font-label-md text-label-md">Leads</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-md text-label-md">Visitas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-container text-on-primary-container font-bold shadow-sm translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Reportes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Configuración</span>
+</a>
+</nav>
+</div>
+<nav class="space-y-2 mt-auto border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Ayuda</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 rounded-lg text-error hover:bg-error-container transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Cerrar Sesión</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 h-full overflow-y-auto w-full p-margin-mobile md:p-margin-desktop bg-background">
+<!-- Header -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg md:text-headline-lg text-primary">Reportes Analíticos</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Resumen de rendimiento y métricas clave.</p>
+</div>
+<div class="flex gap-4 w-full md:w-auto">
+<div class="relative w-full md:w-48">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">calendar_today</span>
+<select class="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded-lg text-on-surface font-body-md text-sm focus:border-primary focus:ring-1 focus:ring-primary appearance-none">
+<option>Últimos 30 días</option>
+<option>Este mes</option>
+<option>Trimestre actual</option>
+<option>Año hasta la fecha</option>
+</select>
+</div>
+<div class="relative w-full md:w-48">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">location_on</span>
+<select class="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant rounded-lg text-on-surface font-body-md text-sm focus:border-primary focus:ring-1 focus:ring-primary appearance-none">
+<option>Todas las Zonas</option>
+<option>Norte</option>
+<option>Sur</option>
+<option>Centro</option>
+</select>
+</div>
+</div>
+</header>
+<!-- KPI Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
+<!-- KPI 1 -->
+<div class="glass-card rounded-xl p-6 ambient-shadow transition-transform hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">person_add</span>
+</div>
+<span class="flex items-center text-sm font-semibold text-[#2e7d32] bg-[#e8f5e9] px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span> 12%
+                    </span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-1">Leads Totales</h3>
+<p class="font-headline-lg text-headline-lg text-on-surface font-bold">1,245</p>
+</div>
+<!-- KPI 2 -->
+<div class="glass-card rounded-xl p-6 ambient-shadow transition-transform hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">sell</span>
+</div>
+<span class="flex items-center text-sm font-semibold text-[#2e7d32] bg-[#e8f5e9] px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm mr-1">trending_up</span> 8%
+                    </span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-1">Ventas Cerradas</h3>
+<p class="font-headline-lg text-headline-lg text-on-surface font-bold">42</p>
+</div>
+<!-- KPI 3 -->
+<div class="glass-card rounded-xl p-6 ambient-shadow transition-transform hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">visibility</span>
+</div>
+<span class="flex items-center text-sm font-semibold text-[#d32f2f] bg-[#ffebee] px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm mr-1">trending_down</span> 3%
+                    </span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-1">Visitas Agendadas</h3>
+<p class="font-headline-lg text-headline-lg text-on-surface font-bold">318</p>
+</div>
+<!-- KPI 4 -->
+<div class="glass-card rounded-xl p-6 ambient-shadow transition-transform hover:-translate-y-1">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-primary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">real_estate_agent</span>
+</div>
+<span class="flex items-center text-sm font-semibold text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm mr-1">remove</span> 0%
+                    </span>
+</div>
+<h3 class="font-label-md text-label-md text-on-surface-variant mb-1">Inmuebles Activos</h3>
+<p class="font-headline-lg text-headline-lg text-on-surface font-bold">156</p>
+</div>
+</div>
+<!-- Bento Grid Charts -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Rendimiento Mensual (Bar Chart Placeholder via CSS) -->
+<div class="glass-card rounded-xl p-6 ambient-shadow lg:col-span-2 flex flex-col min-h-[400px]">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Rendimiento Mensual</h2>
+<button class="text-primary hover:text-surface-tint p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<!-- Custom CSS Chart for layout purity -->
+<div class="flex-1 flex items-end justify-between gap-2 md:gap-4 mt-auto h-64 border-b border-outline-variant relative">
+<!-- Y Axis Labels -->
+<div class="absolute left-0 top-0 bottom-0 flex flex-col justify-between text-xs text-outline pr-2 w-8">
+<span>100</span>
+<span>75</span>
+<span>50</span>
+<span>25</span>
+<span>0</span>
+</div>
+<div class="ml-10 flex flex-1 items-end justify-between h-full pt-4">
+<div class="flex flex-col items-center w-full group">
+<div class="flex items-end justify-center w-full gap-1 h-full px-1">
+<div class="w-1/2 chart-bar h-[60%] group-hover:opacity-80 transition-opacity"></div>
+<div class="w-1/2 chart-bar-secondary h-[40%] group-hover:opacity-80 transition-opacity"></div>
+</div>
+<span class="text-xs text-outline mt-2 font-label-md">Ene</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="flex items-end justify-center w-full gap-1 h-full px-1">
+<div class="w-1/2 chart-bar h-[45%] group-hover:opacity-80 transition-opacity"></div>
+<div class="w-1/2 chart-bar-secondary h-[70%] group-hover:opacity-80 transition-opacity"></div>
+</div>
+<span class="text-xs text-outline mt-2 font-label-md">Feb</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="flex items-end justify-center w-full gap-1 h-full px-1">
+<div class="w-1/2 chart-bar h-[80%] group-hover:opacity-80 transition-opacity"></div>
+<div class="w-1/2 chart-bar-secondary h-[50%] group-hover:opacity-80 transition-opacity"></div>
+</div>
+<span class="text-xs text-outline mt-2 font-label-md">Mar</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="flex items-end justify-center w-full gap-1 h-full px-1">
+<div class="w-1/2 chart-bar h-[55%] group-hover:opacity-80 transition-opacity"></div>
+<div class="w-1/2 chart-bar-secondary h-[85%] group-hover:opacity-80 transition-opacity"></div>
+</div>
+<span class="text-xs text-outline mt-2 font-label-md">Abr</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="flex items-end justify-center w-full gap-1 h-full px-1">
+<div class="w-1/2 chart-bar h-[90%] group-hover:opacity-80 transition-opacity"></div>
+<div class="w-1/2 chart-bar-secondary h-[65%] group-hover:opacity-80 transition-opacity"></div>
+</div>
+<span class="text-xs text-outline mt-2 font-label-md">May</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="flex items-end justify-center w-full gap-1 h-full px-1">
+<div class="w-1/2 chart-bar h-[75%] group-hover:opacity-80 transition-opacity"></div>
+<div class="w-1/2 chart-bar-secondary h-[45%] group-hover:opacity-80 transition-opacity"></div>
+</div>
+<span class="text-xs text-outline mt-2 font-label-md">Jun</span>
+</div>
+</div>
+</div>
+<div class="flex justify-center gap-6 mt-6">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+<span class="text-sm font-label-md text-on-surface-variant">Ventas</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary-fixed-dim"></div>
+<span class="text-sm font-label-md text-on-surface-variant">Nuevos Leads</span>
+</div>
+</div>
+</div>
+<!-- Leads por fuente (Donut Placeholder via CSS) -->
+<div class="glass-card rounded-xl p-6 ambient-shadow flex flex-col min-h-[400px]">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6">Origen de Leads</h2>
+<div class="flex-1 flex flex-col items-center justify-center">
+<!-- Simple CSS Donut representation for purely visual mock without external JS dependencies bloating HTML -->
+<div class="relative w-48 h-48 rounded-full flex items-center justify-center" style="background: conic-gradient(#5c1212 0% 45%, #e5c09b 45% 75%, #7a5d3f 75% 90%, #dcd9d9 90% 100%);">
+<div class="w-32 h-32 bg-[#eff6ed] rounded-full flex flex-col items-center justify-center absolute shadow-inner">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">1.2k</span>
+<span class="text-xs text-on-surface-variant">Total</span>
+</div>
+</div>
+</div>
+<div class="mt-6 space-y-3">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+<span class="text-sm font-body-md text-on-surface">Portal Inmobiliario</span>
+</div>
+<span class="text-sm font-bold">45%</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-secondary-fixed-dim"></div>
+<span class="text-sm font-body-md text-on-surface">Redes Sociales</span>
+</div>
+<span class="text-sm font-bold">30%</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-on-secondary-container"></div>
+<span class="text-sm font-body-md text-on-surface">Referidos</span>
+</div>
+<span class="text-sm font-bold">15%</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-surface-dim"></div>
+<span class="text-sm font-body-md text-on-surface">Otros</span>
+</div>
+<span class="text-sm font-bold">10%</span>
+</div>
+</div>
+</div>
+<!-- Inmuebles más vistos -->
+<div class="glass-card rounded-xl p-6 ambient-shadow lg:col-span-3">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">Inmuebles Top por Visualizaciones</h2>
+<a class="text-primary font-label-md text-sm hover:underline flex items-center" href="#">
+                        Ver todos <span class="material-symbols-outlined text-sm ml-1">arrow_forward</span>
+</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="pb-3 font-label-md text-outline font-semibold">Propiedad</th>
+<th class="pb-3 font-label-md text-outline font-semibold">Ubicación</th>
+<th class="pb-3 font-label-md text-outline font-semibold">Vistas</th>
+<th class="pb-3 font-label-md text-outline font-semibold">Interés</th>
+<th class="pb-3 font-label-md text-outline font-semibold text-right">Acción</th>
+</tr>
+</thead>
+<tbody class="font-body-md">
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-low transition-colors group">
+<td class="py-4 flex items-center gap-4 min-w-[250px]">
+<img class="w-16 h-12 object-cover rounded-md" data-alt="A modern luxury apartment interior featuring floor-to-ceiling windows with panoramic city views. The decor is minimalist with warm wood accents, a plush beige sofa, and soft, diffused natural lighting creating a serene, high-end residential atmosphere. 100 words." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB68fQUN5tb5LK13syeIISff9YFmIEd8rjZvpKiw-UKY-pa_lDtn09hz2YEIdcedpTrwxoXBVCYlKaEEv88wynwiwr86LvWY3-4SSPusA05y9yuXdwyOp5wlnf8fC2YX4PnHSaVr2p_uSbCZrnVVXKQCbwi96x45D65UcisQCVaI7Ml7v3JzT2HtPOu9LHwHGh72DgfFiTmygbbjAwRHSeEdgrlD6FtzknSHJSChX3e68VTQPekz4qNul1TSyUHkQ63z-1z9F4XUsc"/>
+<div>
+<p class="font-semibold text-on-surface">Penthouse Norte Alto</p>
+<p class="text-xs text-on-surface-variant">$1,200,000,000 COP</p>
+</div>
+</td>
+<td class="py-4 text-on-surface-variant">Zona Norte</td>
+<td class="py-4 font-semibold">2,450</td>
+<td class="py-4">
+<div class="w-24 h-8 flex items-end gap-1">
+<div class="w-full bg-primary-container/20 h-full rounded-sm relative overflow-hidden">
+<div class="absolute bottom-0 left-0 bg-primary-container w-[80%] h-full"></div>
+</div>
+</div>
+</td>
+<td class="py-4 text-right">
+<button class="p-2 text-outline hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/50 hover:bg-surface-container-low transition-colors group">
+<td class="py-4 flex items-center gap-4 min-w-[250px]">
+<img class="w-16 h-12 object-cover rounded-md" data-alt="A beautiful modern country house exterior set against lush green rolling hills. The architecture blends contemporary clean lines with natural stone materials. Soft afternoon sunlight casts warm glows across the expansive manicured lawn and wooden deck. 100 words." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbiepiGPAern8RzOosgX4nnsIXiB-CJwObiemCcJlyZ-oRJ2K3mCOMIg_GyBeHN0XEUWtgwmoX-S5oX1fYSrYLqaPEL2gKq0syKpp9QJKN5HsiJYuI83q9jKqChMRkIo6ZQpw09vgoNtJPMRQ8F2YTD6WkihOZ5gdK3ULVEoZTVR0Zw3ukyqUmU_XH5ez6kUhFMLVu769FmvOnZSA760X91cehH6-DK2R8EGqbaazAhWzcjM32uCkSZ06dQ0NRhGoqUPHf60pcCbE"/>
+<div>
+<p class="font-semibold text-on-surface">Casa Campestre El Retiro</p>
+<p class="text-xs text-on-surface-variant">$850,000,000 COP</p>
+</div>
+</td>
+<td class="py-4 text-on-surface-variant">Afueras Sur</td>
+<td class="py-4 font-semibold">1,890</td>
+<td class="py-4">
+<div class="w-24 h-8 flex items-end gap-1">
+<div class="w-full bg-primary-container/20 h-full rounded-sm relative overflow-hidden">
+<div class="absolute bottom-0 left-0 bg-primary-container w-[65%] h-full"></div>
+</div>
+</div>
+</td>
+<td class="py-4 text-right">
+<button class="p-2 text-outline hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="py-4 flex items-center gap-4 min-w-[250px]">
+<img class="w-16 h-12 object-cover rounded-md" data-alt="A stylish urban loft living space with exposed brick walls, industrial chic lighting fixtures, and large factory-style windows. The color palette features deep greys, warm woods, and subtle leather accents, illuminated by bright daylight. 100 words." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB91WGDI1cs0lj8sHNC-tdPniw3PDKFUS8jFvniQTLC4DS9NYoo0GkTJO7joyMJ1DAe1yQb1DEsZa7Iy9qAkx_yLZmWI4cDwhGsaVagGnHot6f_HSNxinGg14xh7qUHTymG14VHrutB-3PeKucTd7QsCV509ugSzgdTHacmVdn3SJqvhwTDTGGYsRRzXUimQm7c5K3huwy2IUtr0ZmxFLrd2nMCtFbmPKOVeEunxJAOIkOVQ8XjP3gRzs3H_s59d3PofOlZHnJf-cg"/>
+<div>
+<p class="font-semibold text-on-surface">Loft Centro Histórico</p>
+<p class="text-xs text-on-surface-variant">$450,000,000 COP</p>
+</div>
+</td>
+<td class="py-4 text-on-surface-variant">Centro Histórico</td>
+<td class="py-4 font-semibold">1,240</td>
+<td class="py-4">
+<div class="w-24 h-8 flex items-end gap-1">
+<div class="w-full bg-primary-container/20 h-full rounded-sm relative overflow-hidden">
+<div class="absolute bottom-0 left-0 bg-primary-container w-[40%] h-full"></div>
+</div>
+</div>
+</td>
+<td class="py-4 text-right">
+<button class="p-2 text-outline hover:text-primary transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 rounded-full hover:bg-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Nav -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface/90 backdrop-blur-md border-t border-outline-variant flex justify-around py-3 z-50">
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label-md mt-1">Inicio</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="text-[10px] font-label-md mt-1">Propiedades</span>
+</a>
+<a class="flex flex-col items-center text-primary font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="text-[10px] font-label-md mt-1">Reportes</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="text-[10px] font-label-md mt-1">Menú</span>
+</a>
+</nav>
+</body></html>

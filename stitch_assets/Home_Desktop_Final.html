@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ivonne Marin - Asesora Inmobiliaria</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#ffdad7",
+                        "tertiary-fixed-dim": "#f1be6a",
+                        "surface-container-low": "#f6f3f2",
+                        "on-primary-fixed": "#410004",
+                        "secondary": "#75593b",
+                        "outline-variant": "#dbc0be",
+                        "outline": "#887270",
+                        "on-primary-container": "#e17770",
+                        "surface-tint": "#9c423d",
+                        "tertiary-container": "#402a00",
+                        "tertiary-fixed": "#ffdead",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#2a1702",
+                        "surface": "#fcf9f8",
+                        "surface-bright": "#fcf9f8",
+                        "on-secondary-container": "#7a5d3f",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#1b1b1c",
+                        "surface-variant": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb3ad",
+                        "surface-container-high": "#eae7e7",
+                        "on-tertiary-container": "#bc8e3f",
+                        "on-tertiary": "#ffffff",
+                        "surface-container": "#f0eded",
+                        "on-background": "#1b1b1c",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#604100",
+                        "on-tertiary-fixed": "#281900",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#7d2b28",
+                        "primary-container": "#5c1212",
+                        "tertiary": "#251700",
+                        "secondary-fixed-dim": "#e5c09b",
+                        "primary": "#3d0003",
+                        "secondary-container": "#ffd9b3",
+                        "background": "#fcf9f8",
+                        "surface-dim": "#dcd9d9",
+                        "inverse-surface": "#303030",
+                        "secondary-fixed": "#ffddbb",
+                        "on-surface-variant": "#554240",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#ffb3ad",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#5b4226"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-mobile": "16px",
+                        "section-gap": "80px",
+                        "margin-desktop": "40px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .luxury-shadow {
+            box-shadow: 0 10px 30px -10px rgba(92, 18, 18, 0.08);
+        }
+        .glass-nav {
+            background: rgba(252, 249, 248, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .hero-gradient {
+            background: linear-gradient(to right, rgba(27, 27, 28, 0.65), transparent);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="docked full-width top-0 sticky z-50 glass-nav shadow-sm h-20 transition-all">
+<div class="flex justify-between items-center w-full px-base md:px-margin-desktop max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-2">
+<span class="text-headline-md font-headline-lg text-primary tracking-tight">Ivonne Marin</span>
+</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="font-bold text-primary border-b-2 border-primary font-label-md text-label-md" href="#">Inicio</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#">Inmuebles</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#">Vender</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#">Arrendar</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#">Proyectos</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#">Nosotros</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#">Blog</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:flex items-center gap-2 text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-md text-label-md">Contacto</span>
+</button>
+<button class="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all">
+                Publicar
+            </button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative h-[800px] w-full overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB27uemsGCY_z5UGSrAt7VWt9PMFNvh3gxrnWWE4TLwz5giYDILjvcgotfL2VCXfdZ1LCKbV-xCNlAXI9IQhVDHgsX-GDeUQaoL3OKxmBfG08gVp0doMOtBkbZkKnz7OlacSU3Hv9ZK0xrzZq7NL88YG0wWpWz1GMAJR3a62eVXMtaMCKdw2a_rmYo_io4OGzhNw-F7jl5Lai-4JUUS5RjhKYOHpDTpUkmGvb84iLYpvUw8Sf2iRALKeY_4uFfRjUse0oZK4KbdPoc')"></div>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop h-full flex flex-col justify-center items-start text-white">
+<h1 class="font-display-lg text-display-lg max-w-3xl mb-6">
+            Descubre el lujo en el Eje Cafetero
+        </h1>
+<p class="font-body-lg text-body-lg max-w-2xl mb-10 text-white/90">
+            Te acompañamos en la compra, venta y arriendo de inmuebles en Pereira, Dosquebradas, Santa Rosa de Cabal y el Eje Cafetero.
+        </p>
+<!-- Search Bar Widget -->
+<div class="w-full max-w-4xl bg-surface/95 backdrop-blur-xl rounded-xl p-3 flex items-center luxury-shadow border border-secondary-fixed/30 text-on-surface">
+<div class="flex items-center flex-1 px-4">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="w-full bg-transparent border-none focus:ring-0 text-on-surface font-body-md placeholder-outline-variant px-3 h-12" placeholder="Buscar por ciudad, zona o código..." type="text"/>
+</div>
+<button class="bg-primary text-on-primary h-[52px] px-10 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-md">
+<span class="font-label-md text-label-md">Buscar</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Featured Properties Section -->
+<section class="py-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="text-secondary font-label-md text-label-md tracking-widest block mb-2 uppercase">Inversión Premium</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Propiedades Destacadas</h2>
+</div>
+<a class="text-primary font-bold font-label-md text-label-md flex items-center gap-1 hover:underline" href="#">
+            Ver todas <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Venta</span>
+</div>
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDszD48JO7vD08Epu-BQDWt1p5zBsqKycrIA5qm5nmBjoTRr-DEXhkWN6IuVRIV-Snvkp7ojpgDTYzBgcGVX7aYZRVk6SFtcZ6hx0ZWh1zWEYGEy2OWmUYTlsoK9_rg7eUOgUxLLOGLF1sosGkr3zs5ng3Yp79w604R5Zj1cGPjZkrPMecYil9cKbtID1PV1gnVbEmp6tp-g1V0rQUqAfScXot7FcALcTQ_guKcqx45tKKDzQAe4cwVZp0O9tiXSlxkjRN0iDCJXgU"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md mb-2 text-on-surface">Villa Campestre Cerritos</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-body-md">Pereira, Risaralda</span>
+</div>
+<div class="flex justify-between items-center py-4 border-t border-outline-variant/30">
+<div class="flex gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">bed</span>
+<span class="text-sm">4</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">shower</span>
+<span class="text-sm">5</span>
+</div>
+</div>
+<p class="font-bold text-primary text-lg">$1.850.000.000</p>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-secondary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Arriendo</span>
+</div>
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDM8FwjTQ6ieoloSvhF7rn__TwPNf2CzHGXpMjOhW28mGt1rKjEi1uMCpmTQDnZKPF6_9ATMs5IWRe3PF-sJ4lVFVxiBSADerPk7J6S2rra8O2tNEKTRgh-YKY22MwTsoEk0PnKhaTsAveGfVUpvoEKWRKDlWUraUarPpSSM0ewsL7vFudcjFGfx35e7y_7UTF9_BFPvoNJV3HfgLPOo5n_eExTOzZvp8c_55uLWJoimMTRA22vNjIa-f0-XyeZdNTbOhzzMvw6HU0"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md mb-2 text-on-surface">Penthouse Norte</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-body-md">Armenia, Quindío</span>
+</div>
+<div class="flex justify-between items-center py-4 border-t border-outline-variant/30">
+<div class="flex gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">bed</span>
+<span class="text-sm">3</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">aspect_ratio</span>
+<span class="text-sm">240m²</span>
+</div>
+</div>
+<p class="font-bold text-primary text-lg">$8.500.000/mes</p>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2">
+<div class="relative h-64 overflow-hidden">
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Venta</span>
+</div>
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWtV7ZP8sh2RULYc0DZHTWAMtqfLUVPDWBDvcnXQgGlPwkQv_xtX27dlx4vi1fVW4BTKDE49b9T55PJzHSCZbD4BUXptzRHRBfpbV6FyUFH5OsBgMhpWrn5fRo_HI_iXkfGVHUEGQNWdTaWxvPRkoPT1CtbEjib7HDPbsUGRUKB8Gtor9X_ORRqViYMLS_jQq_nj753l8ht19iDy2XmNkp24ixLGJAAgeo56QvnqCiiZYpsgo5-AtOgI_cet2XYKmLgP5C31PDD3I"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md mb-2 text-on-surface">Apartamento en Pinares</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md text-body-md">Pereira, Risaralda</span>
+</div>
+<div class="flex justify-between items-center py-4 border-t border-outline-variant/30">
+<div class="flex gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">bed</span>
+<span class="text-sm">3</span>
+</div>
+<div class="flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-lg">bathtub</span>
+<span class="text-sm">2</span>
+</div>
+</div>
+<p class="font-bold text-primary text-lg">$450.000.000</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Value Proposition Section (Por qué elegirnos) -->
+<section class="bg-primary text-on-primary py-section-gap overflow-hidden relative">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+<div class="text-center mb-16">
+<span class="text-secondary-fixed font-label-md text-label-md tracking-widest block mb-4 uppercase">Valor Diferencial</span>
+<h2 class="font-display-lg text-display-lg">Por qué elegir a Ivonne Marin</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="flex flex-col items-center text-center p-8 bg-primary-container/30 rounded-2xl border border-on-primary/10 transition-all hover:bg-primary-container/50">
+<div class="w-16 h-16 bg-secondary-fixed/20 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl text-secondary-fixed">verified</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Experiencia Premium</h3>
+<p class="font-body-md text-on-primary/80">Más de 15 años asesorando en la compra y venta de propiedades exclusivas en la región cafetera.</p>
+</div>
+<div class="flex flex-col items-center text-center p-8 bg-primary-container/30 rounded-2xl border border-on-primary/10 transition-all hover:bg-primary-container/50">
+<div class="w-16 h-16 bg-secondary-fixed/20 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl text-secondary-fixed">handshake</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Atención Personalizada</h3>
+<p class="font-body-md text-on-primary/80">Te acompañamos en cada etapa del proceso con un servicio empático, discreto y altamente profesional.</p>
+</div>
+<div class="flex flex-col items-center text-center p-8 bg-primary-container/30 rounded-2xl border border-on-primary/10 transition-all hover:bg-primary-container/50">
+<div class="w-16 h-16 bg-secondary-fixed/20 rounded-full flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-3xl text-secondary-fixed">trending_up</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">Inversión Segura</h3>
+<p class="font-body-md text-on-primary/80">Portafolio rigurosamente seleccionado para garantizar alta plusvalía y calidad de vida.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Additional Properties Section (Casas Destacadas) -->
+<section class="py-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="flex justify-between items-end mb-12">
+<h2 class="font-headline-lg text-headline-lg text-primary">Casas Destacadas</h2>
+<a class="text-primary font-bold font-label-md text-label-md flex items-center gap-1 hover:underline" href="#">
+            Explorar catálogo <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Casa Card 1 -->
+<div class="group relative h-[450px] rounded-2xl overflow-hidden luxury-shadow">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAboZbCmkucPK261pVfVQY2UbiOAD6cpxPbiE5Mk6xYF77Qm-TuYA9iO1w9ipUWZtuozj-nrcRn0qJ1NImp8IlzoP3CQM1GFKMjhfoDmnmTDPyk7qoew5t7--DdAD55lejFQNiL8ycz__vJ2q6GevIbjzWYdndUNao4gZzcwX-60jBSNwvto_DrGvG8eNt8M77BDKrBszm6KV_NPifyo6AED6eT51tdN3uit61yM-scL2rlKK8OA_3e09OLs7brj67bo2ygb21_oYI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-6 left-6">
+<span class="bg-primary text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase">Lujo</span>
+</div>
+<div class="absolute bottom-0 left-0 p-8 w-full text-white">
+<h3 class="font-headline-lg text-headline-lg mb-2">Casa de Lujo en Pinares</h3>
+<div class="flex items-center gap-1 text-white/80 mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md">Pereira, Risaralda</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined">bed</span>
+<span>5</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined">aspect_ratio</span>
+<span>450m²</span>
+</div>
+</div>
+<p class="font-bold text-2xl text-secondary-fixed">$2.450.000.000</p>
+</div>
+</div>
+</div>
+<!-- Casa Card 2 -->
+<div class="group relative h-[450px] rounded-2xl overflow-hidden luxury-shadow">
+<img class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw2bp7_ihu1sCN6p7DtpZEdnou5gVSswOi3SLalcPqVxU_69HF4DMmi9buQ2j5dYLk-Kj5onlTmOyMKg-hY6EzRbXlm6qNDLHn3ixq4Bs5gl1Iaw31uC-BiOY5sj-sdqf8DEmlXelsj7xSzKk9vE7Syv-18paldTFd-gFndFUJwD3frvICcaytBy5oC5iFIOaW24sI-9atsQ4MJxXw1xkIzTn5NTcgtxSlRs_IvYhSmgTMFLBckFuZ1aS_LwAfL9YuA6UYOnwwLCw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-6 left-6">
+<span class="bg-secondary text-white text-[10px] font-bold px-4 py-1.5 rounded-full uppercase">Tradicional</span>
+</div>
+<div class="absolute bottom-0 left-0 p-8 w-full text-white">
+<h3 class="font-headline-lg text-headline-lg mb-2">Finca Cafetera Tradicional</h3>
+<div class="flex items-center gap-1 text-white/80 mb-4">
+<span class="material-symbols-outlined text-sm">location_on</span>
+<span class="font-body-md">Cerritos, Pereira</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined">bed</span>
+<span>4</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined">aspect_ratio</span>
+<span>3200m²</span>
+</div>
+</div>
+<p class="font-bold text-2xl text-secondary-fixed">$1.200.000.000</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Blog Section -->
+<section class="py-section-gap bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<span class="text-secondary font-label-md text-label-md tracking-widest block mb-2 uppercase">Conocimiento Experto</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Blog Inmobiliario</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-surface rounded-2xl p-8 border border-outline-variant/30 luxury-shadow flex flex-col gap-4">
+<h3 class="font-headline-md text-headline-md text-primary">Guía para comprar tu primera propiedad de lujo</h3>
+<p class="text-on-surface-variant font-body-md">Descubre los pasos esenciales y consejos de expertos para realizar una inversión segura en el mercado premium.</p>
+<a class="text-primary font-bold flex items-center gap-1 group" href="#">
+                    Leer más <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+<div class="bg-surface rounded-2xl p-8 border border-outline-variant/30 luxury-shadow flex flex-col gap-4">
+<h3 class="font-headline-md text-headline-md text-primary">Tendencias inmobiliarias en el Eje Cafetero 2024</h3>
+<p class="text-on-surface-variant font-body-md">Analizamos el crecimiento del sector y las zonas con mayor proyección de valorización para este año.</p>
+<a class="text-primary font-bold flex items-center gap-1 group" href="#">
+                    Leer más <span class="material-symbols-outlined text-sm transition-transform group-hover:translate-x-1">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Services Section -->
+<section class="py-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="text-center mb-16">
+<span class="text-secondary font-label-md text-label-md tracking-widest block mb-2 uppercase">Soluciones</span>
+<h2 class="font-display-lg text-display-lg text-primary">Nuestros Servicios</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/30 hover:border-primary transition-all group text-center flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-5xl mb-6 group-hover:scale-110 transition-transform">shopping_cart</span>
+<h4 class="font-headline-md text-headline-md mb-2">Compra</h4>
+<p class="text-on-surface-variant font-body-md">Encuentra el hogar de tus sueños con nuestra asesoría.</p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/30 hover:border-primary transition-all group text-center flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-5xl mb-6 group-hover:scale-110 transition-transform">sell</span>
+<h4 class="font-headline-md text-headline-md mb-2">Venta</h4>
+<p class="text-on-surface-variant font-body-md">Vendemos tu propiedad de manera efectiva y segura.</p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/30 hover:border-primary transition-all group text-center flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-5xl mb-6 group-hover:scale-110 transition-transform">key</span>
+<h4 class="font-headline-md text-headline-md mb-2">Arriendo</h4>
+<p class="text-on-surface-variant font-body-md">Gestión integral de arrendamientos para tu tranquilidad.</p>
+</div>
+<div class="bg-surface-container-low p-8 rounded-2xl border border-outline-variant/30 hover:border-primary transition-all group text-center flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-5xl mb-6 group-hover:scale-110 transition-transform">account_balance</span>
+<h4 class="font-headline-md text-headline-md mb-2">Inversión</h4>
+<p class="text-on-surface-variant font-body-md">Asesoría financiera para inversiones de alto valor.</p>
+</div>
+</div>
+</section>
+<!-- Featured Zones Section -->
+<section class="py-section-gap bg-surface-container-low">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="mb-12">
+<h2 class="font-headline-lg text-headline-lg text-primary">Zonas Destacadas</h2>
+<p class="text-on-surface-variant font-body-lg mt-2">Encuentra tu próximo hogar en las áreas de mayor valorización.</p>
+</div>
+<!-- Bento Style Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-gutter h-[600px]">
+<div class="md:col-span-2 md:row-span-2 relative rounded-2xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDscPonD9GPgKn0-lhUXW0XCyJvNg_UN9x6aD1P6ebJbSoq9HukxJafMQEFFODBsKJyp4opXzMO-rp3_kajqDmIowYmuwMZDnK4zqwU-8WB2kqIpNblf5FL9PBg3EWGTM1WD7U3zMey-v5dM2RiPW4eSo2xGtlkTuzoByUfOZDI1dbKWDRa55URAX5203rqvWU1c__RP7Ccn_SMskFvol5Fdadzx4xaB--7fXtDhtyW9TolvLATGI5YShOMmrEXO7OX9UTKlc5Zm9w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-8">
+<h4 class="text-white font-headline-lg text-headline-lg">Pereira</h4>
+<p class="text-white/80 font-body-md">El corazón vibrante del Eje</p>
+</div>
+</div>
+<div class="relative rounded-2xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw2bp7_ihu1sCN6p7DtpZEdnou5gVSswOi3SLalcPqVxU_69HF4DMmi9buQ2j5dYLk-Kj5onlTmOyMKg-hY6EzRbXlm6qNDLHn3ixq4Bs5gl1Iaw31uC-BiOY5sj-sdqf8DEmlXelsj7xSzKk9vE7Syv-18paldTFd-gFndFUJwD3frvICcaytBy5oC5iFIOaW24sI-9atsQ4MJxXw1xkIzTn5NTcgtxSlRs_IvYhSmgTMFLBckFuZ1aS_LwAfL9YuA6UYOnwwLCw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-6">
+<h4 class="text-white font-headline-md">Cerritos</h4>
+</div>
+</div>
+<div class="relative rounded-2xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdmgoRJSb9GuU38B7C8MHwmJzQdNfqdpU_pqXDo3KauOwQyLutEEbj1103nelkaAenBzKY_ZI528ZFQUPzFNMtJk6yX0pbHqGQ-1RuWiEwIy4qPy7MJJldwe4S-oJChuRynSwoABMjZuz1IVANNsdUDWSXfEwrrH1vXqzKr68NVkHmewkDae2IFiNeGdM65k6YbUyPT-GA5--XeNRtFHOxwlC7BDHazToTlYoIauFKiGmHieP7UyGGboHxHPNPF2sQmjznuYDc_zQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-6">
+<h4 class="text-white font-headline-md">Dosquebradas</h4>
+</div>
+</div>
+<div class="md:col-span-2 relative rounded-2xl overflow-hidden group">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAboZbCmkucPK261pVfVQY2UbiOAD6cpxPbiE5Mk6xYF77Qm-TuYA9iO1w9ipUWZtuozj-nrcRn0qJ1NImp8IlzoP3CQM1GFKMjhfoDmnmTDPyk7qoew5t7--DdAD55lejFQNiL8ycz__vJ2q6GevIbjzWYdndUNao4gZzcwX-60jBSNwvto_DrGvG8eNt8M77BDKrBszm6KV_NPifyo6AED6eT51tdN3uit61yM-scL2rlKK8OA_3e09OLs7brj67bo2ygb21_oYI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-6">
+<h4 class="text-white font-headline-md">Pinares</h4>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="bg-primary-container rounded-3xl p-12 md:p-20 flex flex-col items-center text-center relative overflow-hidden luxury-shadow">
+<h2 class="font-display-lg text-display-lg text-on-primary-container mb-6 relative z-10">¿Listo para encontrar tu lugar ideal?</h2>
+<p class="font-body-lg text-on-primary-container/80 max-w-2xl mb-10 relative z-10">
+            Inicia hoy tu camino hacia tu nuevo hogar con el respaldo de una profesional que se preocupa por ti. Escríbeme y agendemos una cita.
+        </p>
+<div class="flex flex-col sm:flex-row gap-4 relative z-10">
+<button class="bg-[#25D366] text-white px-10 py-4 rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-3 hover:scale-105 transition-all shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1">chat</span>
+                WhatsApp
+            </button>
+<button class="bg-surface text-primary px-10 py-4 rounded-xl font-headline-md text-headline-md flex items-center justify-center gap-3 hover:opacity-90 transition-all shadow-lg">
+<span class="material-symbols-outlined">mail</span>
+                Contactar
+            </button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="full-width py-section-gap bg-primary text-on-primary">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col gap-6">
+<span class="font-headline-md text-on-primary tracking-tight">Ivonne Marin</span>
+<p class="font-body-md text-on-primary/70 leading-relaxed">Tu asesora inmobiliaria de confianza especializada en el segmento premium del Eje Cafetero colombiano.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href="#">
+<span class="material-symbols-outlined text-lg">share</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<h5 class="font-headline-md text-headline-md">Navegación</h5>
+<ul class="flex flex-col gap-3">
+<li><a class="text-on-primary/80 hover:text-secondary-fixed transition-colors font-label-md" href="#">Inicio</a></li>
+<li><a class="text-on-primary/80 hover:text-secondary-fixed transition-colors font-label-md" href="#">Propiedades</a></li>
+<li><a class="text-on-primary/80 hover:text-secondary-fixed transition-colors font-label-md" href="#">Servicios</a></li>
+<li><a class="text-on-primary/80 hover:text-secondary-fixed transition-colors font-label-md" href="#">Sobre nosotros</a></li>
+</ul>
+</div>
+<div class="flex flex-col gap-6">
+<h5 class="font-headline-md text-headline-md">Soporte</h5>
+<ul class="flex flex-col gap-3">
+<li><a class="text-on-primary/80 hover:text-secondary-fixed transition-colors font-label-md" href="#">Contacto</a></li>
+<li><a class="text-on-primary/80 hover:text-secondary-fixed transition-colors font-label-md" href="#">Privacidad</a></li>
+<li><a class="text-on-primary/80 hover:text-secondary-fixed transition-colors font-label-md" href="#">Legal</a></li>
+<li><a class="text-on-primary/80 hover:text-secondary-fixed transition-colors font-label-md" href="#">FAQ</a></li>
+</ul>
+</div>
+<div class="flex flex-col gap-6">
+<h5 class="font-headline-md text-headline-md">Contacto</h5>
+<ul class="flex flex-col gap-4">
+<li class="flex items-center gap-3 text-on-primary/80">
+<span class="material-symbols-outlined">call</span>
+<span class="font-body-md">+57 300 000 0000</span>
+</li>
+<li class="flex items-center gap-3 text-on-primary/80">
+<span class="material-symbols-outlined">mail</span>
+<span class="font-body-md">contacto@ivonnemarin.com</span>
+</li>
+<li class="flex items-center gap-3 text-on-primary/80">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-body-md">Pereira, Risaralda, Colombia</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="mt-20 pt-10 border-t border-on-primary/10 text-center px-margin-mobile">
+<p class="text-on-primary/60 font-label-md text-[12px]">© 2024 Ivonne Marin Asesora Inmobiliaria. Todos los derechos reservados. Diseñado para la excelencia en el Eje Cafetero.</p>
+</div>
+</footer>
+<script>
+    // Navbar visual feedback on scroll
+    window.addEventListener('scroll', () => {
+        const nav = document.querySelector('nav');
+        if (window.scrollY > 50) {
+            nav.classList.add('shadow-lg', 'py-1');
+            nav.classList.remove('h-20');
+            nav.classList.add('h-16');
+        } else {
+            nav.classList.remove('shadow-lg', 'py-1');
+            nav.classList.add('h-20');
+            nav.classList.remove('h-16');
+        }
+    });
+</script>
+</body></html>

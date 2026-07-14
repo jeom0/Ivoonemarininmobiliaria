@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ivonne Marin | Admin Login</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Plus Jakarta Sans for high-end readability and brand alignment -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols for elegant iconography -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0,0&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#402a00",
+                      "surface-tint": "#9c423d",
+                      "primary": "#3d0003",
+                      "primary-fixed-dim": "#ffb3ad",
+                      "inverse-surface": "#303030",
+                      "surface-container-low": "#f6f3f2",
+                      "inverse-primary": "#ffb3ad",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "surface-container-high": "#eae7e7",
+                      "on-error-container": "#93000a",
+                      "primary-fixed": "#ffdad7",
+                      "on-secondary-container": "#7a5d3f",
+                      "on-primary-fixed": "#410004",
+                      "on-tertiary-container": "#bc8e3f",
+                      "error-container": "#ffdad6",
+                      "surface-dim": "#dcd9d9",
+                      "surface-container-highest": "#e5e2e1",
+                      "surface": "#fcf9f8",
+                      "on-background": "#1b1b1c",
+                      "on-surface": "#1b1b1c",
+                      "primary-container": "#5c1212",
+                      "tertiary": "#251700",
+                      "surface-bright": "#fcf9f8",
+                      "on-primary": "#ffffff",
+                      "secondary-fixed-dim": "#e5c09b",
+                      "on-primary-container": "#e17770",
+                      "background": "#fcf9f8",
+                      "on-surface-variant": "#554240",
+                      "surface-variant": "#e5e2e1",
+                      "secondary": "#75593b",
+                      "tertiary-fixed": "#ffdead",
+                      "on-tertiary-fixed": "#281900",
+                      "secondary-fixed": "#ffddbb",
+                      "on-secondary-fixed": "#2a1702",
+                      "surface-container": "#f0eded",
+                      "on-tertiary-fixed-variant": "#604100",
+                      "outline": "#887270",
+                      "on-tertiary": "#ffffff",
+                      "secondary-container": "#ffd9b3",
+                      "surface-container-lowest": "#ffffff",
+                      "on-error": "#ffffff",
+                      "on-secondary-fixed-variant": "#5b4226",
+                      "outline-variant": "#dbc0be",
+                      "inverse-on-surface": "#f3f0ef",
+                      "tertiary-fixed-dim": "#f1be6a",
+                      "on-primary-fixed-variant": "#7d2b28"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "base": "8px",
+                      "margin-desktop": "40px",
+                      "container-max": "1280px",
+                      "margin-mobile": "16px",
+                      "section-gap": "80px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Plus Jakarta Sans"],
+                      "label-md": ["Plus Jakarta Sans"],
+                      "headline-lg-mobile": ["Plus Jakarta Sans"],
+                      "display-lg": ["Plus Jakarta Sans"],
+                      "body-lg": ["Plus Jakarta Sans"],
+                      "body-md": ["Plus Jakarta Sans"],
+                      "headline-md": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #eff6ed; /* Specified Cream Background */
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+            vertical-align: middle;
+        }
+
+        .ambient-shadow {
+            box-shadow: 0 10px 40px -10px rgba(92, 18, 18, 0.08); /* Tinted shadow per guidance */
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        .focus-ring:focus {
+            outline: none;
+            border-color: #5c1212;
+            box-shadow: 0 0 0 4px rgba(92, 18, 18, 0.1);
+        }
+        
+        /* Subtle architectural pattern background for texture */
+        .pattern-bg {
+            background-image: radial-gradient(#e8c39e 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.2;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative overflow-hidden">
+<!-- Background Texture -->
+<div class="absolute inset-0 pattern-bg pointer-events-none"></div>
+<!-- Top Decorative Gradient -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-primary/5 blur-[120px] rounded-full pointer-events-none"></div>
+<!-- Main Content Area -->
+<main class="flex-grow flex items-center justify-center px-margin-mobile md:px-margin-desktop relative z-10">
+<div class="w-full max-w-md">
+<!-- Brand Identity Container -->
+<div class="text-center mb-base">
+<div class="inline-flex items-center justify-center mb-8">
+<!-- Logo Reconstruction based on Brand Anchors -->
+<div class="flex flex-col items-center">
+<div class="flex items-baseline gap-2">
+<span class="material-symbols-outlined text-primary text-4xl mb-2" style="font-variation-settings: 'FILL' 1;">home_work</span>
+<div class="flex flex-col items-start leading-none">
+<h1 class="font-headline-lg text-headline-lg text-primary tracking-tight">ivonne marin.</h1>
+<p class="font-label-md text-[10px] tracking-[0.2em] text-secondary opacity-80 mt-1 uppercase">asesora inmobiliaria</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Login Card -->
+<div class="bg-surface-container-lowest p-8 md:p-10 rounded-xl ambient-shadow border border-outline-variant/30 relative overflow-hidden">
+<!-- Inner top bar accent -->
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<header class="mb-10">
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Ingresar al sistema</h2>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-80">Panel privado de administración inmobiliaria.</p>
+</header>
+<form class="space-y-6" onsubmit="event.preventDefault(); window.location.reload();">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface" for="email">Correo Electrónico</label>
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/50 group-focus-within:text-primary transition-colors">mail</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface border border-outline-variant rounded-lg font-body-md focus-ring transition-all" id="email" placeholder="nombre@ivonnemarin.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<label class="block font-label-md text-label-md text-on-surface" for="password">Contraseña</label>
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/50 group-focus-within:text-primary transition-colors">lock</span>
+<input class="w-full pl-11 pr-4 py-3 bg-surface border border-outline-variant rounded-lg font-body-md focus-ring transition-all" id="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex items-center justify-between py-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<div class="relative flex items-center">
+<input class="peer h-5 w-5 rounded border-outline-variant text-primary focus:ring-primary/20 transition-all" type="checkbox"/>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant group-hover:text-on-surface transition-colors">Recordarme</span>
+</label>
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors hover:underline decoration-1 underline-offset-4" href="#">
+                            Recuperar contraseña
+                        </a>
+</div>
+<!-- Primary CTA -->
+<button class="w-full bg-primary-container text-on-primary-fixed-variant hover:bg-primary transition-all duration-300 py-4 rounded-lg font-headline-md text-[18px] shadow-lg shadow-primary/10 flex items-center justify-center gap-2 group active:scale-[0.98]" type="submit">
+<span>Ingresar al dashboard</span>
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">login</span>
+</button>
+</form>
+<!-- Security Badge -->
+<div class="mt-10 pt-6 border-t border-outline-variant/20 flex items-center justify-center gap-3 opacity-60">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span class="text-[12px] font-label-md uppercase tracking-widest">Conexión segura SSL</span>
+</div>
+</div>
+<!-- Footer links -->
+<div class="mt-8 flex justify-center gap-8">
+<a class="font-label-md text-[12px] text-on-surface-variant/70 hover:text-primary transition-colors" href="#">Ayuda técnica</a>
+<a class="font-label-md text-[12px] text-on-surface-variant/70 hover:text-primary transition-colors" href="#">Ivonne Marin Web</a>
+<a class="font-label-md text-[12px] text-on-surface-variant/70 hover:text-primary transition-colors" href="#">Privacidad</a>
+</div>
+</div>
+</main>
+<!-- Decorative Image Bleed (Subtle corner hint of luxury property) -->
+<div class="hidden lg:block absolute bottom-0 right-0 w-1/3 h-1/2 opacity-20 pointer-events-none">
+<img class="w-full h-full object-cover object-left-top mask-gradient" data-alt="A sophisticated luxury penthouse interior in the Eje Cafetero region. Wide open spaces with warm lighting, wood accents, and large windows overlooking lush green mountains. The style is minimalist and elegant, using a color palette of burgundies, warm whites, and beige to create a high-end residential atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSSvwF1FY7ggI1RI-dqgo3-sCyA-T7pWjVQueK5hD1fuvqfX7vtjYpDcmSCDiyn7nTg5zYtFbsjbcTkA3nrIUcK2spSGR7ZPTIhue-AlGMpEbv7jYzi5v_ze1b6-GFKo2C3ZW28jP7zFYW_8MM-OLsOcVZk9PnNrmfh-JMEIFxnLaywUYsLy4mFp8WeAd8gP3mdAbygzpABYmtnYqD4madoQ1X42bfEexA4k7FOJu1hcaNKBk4cGIlTylO9aC2JSiY8S34CzbZS64"/>
+</div>
+<style>
+        .mask-gradient {
+            mask-image: linear-gradient(to top left, black, transparent);
+            -webkit-mask-image: linear-gradient(to top left, black, transparent);
+        }
+    </style>
+<script>
+        // Micro-interaction for input fields
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.parentElement.classList.add('scale-[1.01]');
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.parentElement.classList.remove('scale-[1.01]');
+            });
+        });
+    </script>
+</body></html>

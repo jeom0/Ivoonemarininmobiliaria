@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard - Agenda de Visitas</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#bc8e3f",
+                        "primary-container": "#5c1212",
+                        "tertiary-fixed": "#ffdead",
+                        "tertiary-container": "#402a00",
+                        "surface-bright": "#fcf9f8",
+                        "on-tertiary-fixed-variant": "#604100",
+                        "on-tertiary-fixed": "#281900",
+                        "on-surface": "#1b1b1c",
+                        "on-secondary-container": "#7a5d3f",
+                        "surface-container-high": "#eae7e7",
+                        "secondary-fixed": "#ffddbb",
+                        "background": "#fcf9f8",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#ffdad7",
+                        "inverse-primary": "#ffb3ad",
+                        "on-primary": "#ffffff",
+                        "outline": "#887270",
+                        "secondary-fixed-dim": "#e5c09b",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#dbc0be",
+                        "secondary-container": "#ffd9b3",
+                        "on-primary-fixed-variant": "#7d2b28",
+                        "surface-tint": "#9c423d",
+                        "on-secondary-fixed": "#2a1702",
+                        "on-primary-fixed": "#410004",
+                        "surface": "#fcf9f8",
+                        "surface-container": "#f0eded",
+                        "on-primary-container": "#e17770",
+                        "surface-dim": "#dcd9d9",
+                        "tertiary-fixed-dim": "#f1be6a",
+                        "secondary": "#75593b",
+                        "surface-container-highest": "#e5e2e1",
+                        "tertiary": "#251700",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#1b1b1c",
+                        "inverse-on-surface": "#f3f0ef",
+                        "primary": "#3d0003",
+                        "on-secondary-fixed-variant": "#5b4226",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#554240",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e5e2e1",
+                        "inverse-surface": "#303030",
+                        "primary-fixed-dim": "#ffb3ad",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "section-gap": "80px",
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "600" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-panel {
+            background: rgba(239, 246, 237, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(232, 195, 158, 0.3);
+        }
+        .ambient-shadow {
+            box-shadow: 0 4px 16px rgba(92, 18, 18, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-surface-container dark:bg-surface-container-low shadow-md flex flex-col h-full p-4 z-50">
+<div class="flex items-center gap-3 mb-8 px-2">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A professional headshot of a female real estate administrator, wearing a chic business blazer, set against a bright, warm office background with soft natural lighting, conveying trust and elegance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQC-I3s6LUkVyA7eHHTsXS1mTCmUU-5H02eQLy5twMomJJfQYM_yawVwXM8F16FX7YGnhPzHrzVHTyNKxWKkU8xJvO0cnA47c3_1NOTddCPYNHVkYY46FqVtyIK30_yEspetMpQcBwIvU6d_P8z1UT4EjPjWza8QKe3kKg53gojhPd64mjHTO5m_0mxJyv-jA28wnLDaBH3o5n5p1BUXzvow5158bBOg_DdaplXbJgv4RiaCXKRy2xc0ecWY8svcJcngg1bhhnOu0"/>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed-dim font-bold">Ivonne Marin</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Administrador</p>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-label-md text-label-md py-3 rounded-lg mb-8 hover:bg-surface-tint transition-colors shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+            Crear Inmueble
+        </button>
+<ul class="flex-1 space-y-2">
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="font-label-md text-label-md">Inmuebles</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="font-label-md text-label-md">Leads</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-on-primary-container font-bold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
+<span class="font-label-md text-label-md">Visitas</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Reportes</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Configuración</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto space-y-2 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Ayuda</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Cerrar Sesión</span>
+</a>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="ml-64 flex-1 p-margin-desktop bg-background min-h-screen">
+<header class="flex justify-between items-center mb-section-gap">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary">Agenda de Visitas</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-2">Gestiona tus recorridos y reuniones con clientes.</p>
+</div>
+<button class="bg-primary-container text-on-primary-container font-label-md text-label-md px-6 py-3 rounded-full hover:bg-surface-tint transition-colors shadow-sm flex items-center gap-2 ambient-shadow">
+<span class="material-symbols-outlined">event_available</span>
+                Agendar Nueva Visita
+            </button>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Calendar Section -->
+<section class="lg:col-span-7 bg-surface rounded-xl p-8 border border-secondary-fixed-dim/30 ambient-shadow">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Octubre 2024</h2>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg border border-secondary-fixed-dim/50 text-secondary hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-2 rounded-lg border border-secondary-fixed-dim/50 text-secondary hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-4 mb-4">
+<div class="text-center font-label-md text-label-md text-on-surface-variant">Lun</div>
+<div class="text-center font-label-md text-label-md text-on-surface-variant">Mar</div>
+<div class="text-center font-label-md text-label-md text-on-surface-variant">Mié</div>
+<div class="text-center font-label-md text-label-md text-on-surface-variant">Jue</div>
+<div class="text-center font-label-md text-label-md text-on-surface-variant">Vie</div>
+<div class="text-center font-label-md text-label-md text-on-surface-variant">Sáb</div>
+<div class="text-center font-label-md text-label-md text-on-surface-variant">Dom</div>
+</div>
+<div class="grid grid-cols-7 gap-4">
+<!-- Placeholder days for structure -->
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface-variant opacity-50">30</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface-variant opacity-50">1</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">2</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">3</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">4</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">5</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">6</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface relative">
+                        7
+                        <div class="mt-1 w-full bg-primary-container text-on-primary-container text-xs rounded px-1 py-0.5 truncate">10:00 - Villa</div>
+</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">8</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface relative">
+                        9
+                        <div class="mt-1 w-full bg-secondary-fixed text-on-secondary-fixed text-xs rounded px-1 py-0.5 truncate">14:00 - Apto</div>
+</div>
+<div class="h-24 p-2 border-2 border-primary-container rounded-lg bg-surface-bright text-primary-container font-bold relative shadow-sm">
+                        10
+                        <div class="mt-1 w-full bg-primary-container text-on-primary-container text-xs rounded px-1 py-0.5 truncate">09:00 - Finca</div>
+<div class="mt-1 w-full bg-primary-container text-on-primary-container text-xs rounded px-1 py-0.5 truncate">16:30 - Penthouse</div>
+</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">11</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">12</div>
+<div class="h-24 p-2 border border-surface-variant rounded-lg bg-surface-container-lowest text-on-surface">13</div>
+</div>
+</section>
+<!-- Upcoming Visits List -->
+<section class="lg:col-span-5 flex flex-col gap-6">
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Próximas Visitas</h2>
+<!-- Visit Card 1 -->
+<div class="glass-panel rounded-xl p-6 ambient-shadow flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-md text-xs mb-2">Hoy, 09:00 AM</span>
+<h3 class="font-headline-md text-body-lg text-primary font-bold">Finca Cafetera "El Ocaso"</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-sm">person</span> Sr. Carlos Restrepo
+                            </p>
+</div>
+<span class="px-3 py-1 rounded-full border border-primary-container text-primary-container font-label-md text-xs">Confirmada</span>
+</div>
+<div class="flex gap-3 mt-2">
+<button class="flex-1 bg-surface-container border border-secondary-fixed-dim/50 text-secondary font-label-md text-label-md py-2 rounded-lg hover:bg-surface-container-high transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-sm">info</span> Detalles
+                        </button>
+<button class="flex-1 bg-[#25D366]/10 border border-[#25D366]/30 text-[#075E54] font-label-md text-label-md py-2 rounded-lg hover:bg-[#25D366]/20 transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-sm">chat</span> Recordatorio
+                        </button>
+</div>
+</div>
+<!-- Visit Card 2 -->
+<div class="glass-panel rounded-xl p-6 ambient-shadow flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block px-3 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-md text-xs mb-2">Hoy, 04:30 PM</span>
+<h3 class="font-headline-md text-body-lg text-primary font-bold">Penthouse Pinares</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-sm">person</span> Familia Uribe
+                            </p>
+</div>
+<span class="px-3 py-1 rounded-full bg-tertiary-container text-on-tertiary-container font-label-md text-xs">Pendiente</span>
+</div>
+<div class="flex gap-3 mt-2">
+<button class="flex-1 bg-surface-container border border-secondary-fixed-dim/50 text-secondary font-label-md text-label-md py-2 rounded-lg hover:bg-surface-container-high transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-sm">info</span> Detalles
+                        </button>
+<button class="flex-1 bg-[#25D366]/10 border border-[#25D366]/30 text-[#075E54] font-label-md text-label-md py-2 rounded-lg hover:bg-[#25D366]/20 transition-colors flex justify-center items-center gap-2">
+<span class="material-symbols-outlined text-sm">chat</span> Recordatorio
+                        </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

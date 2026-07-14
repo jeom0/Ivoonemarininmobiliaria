@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ivonne Marin - Admin Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#402a00",
+                        "surface-tint": "#9c423d",
+                        "primary": "#3d0003",
+                        "primary-fixed-dim": "#ffb3ad",
+                        "inverse-surface": "#303030",
+                        "surface-container-low": "#f6f3f2",
+                        "inverse-primary": "#ffb3ad",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#eae7e7",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#ffdad7",
+                        "on-secondary-container": "#7a5d3f",
+                        "on-primary-fixed": "#410004",
+                        "on-tertiary-container": "#bc8e3f",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface": "#fcf9f8",
+                        "on-background": "#1b1b1c",
+                        "on-surface": "#1b1b1c",
+                        "primary-container": "#5c1212",
+                        "tertiary": "#251700",
+                        "surface-bright": "#fcf9f8",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#e5c09b",
+                        "on-primary-container": "#e17770",
+                        "background": "#fcf9f8",
+                        "on-surface-variant": "#554240",
+                        "surface-variant": "#e5e2e1",
+                        "secondary": "#75593b",
+                        "tertiary-fixed": "#ffdead",
+                        "on-tertiary-fixed": "#281900",
+                        "secondary-fixed": "#ffddbb",
+                        "on-secondary-fixed": "#2a1702",
+                        "surface-container": "#f0eded",
+                        "on-tertiary-fixed-variant": "#604100",
+                        "outline": "#887270",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#ffd9b3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#5b4226",
+                        "outline-variant": "#dbc0be",
+                        "inverse-on-surface": "#f3f0ef",
+                        "tertiary-fixed-dim": "#f1be6a",
+                        "on-primary-fixed-variant": "#7d2b28"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin-desktop": "40px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "section-gap": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sidebar-active {
+            background-color: #5c1212; /* primary-container fallback or exact from JSON */
+            color: #e17770; /* on-primary-container */
+        }
+        body {
+            background-color: #fcf9f8;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1b1b1c;
+        }
+        .bento-card {
+            background-color: #ffffff;
+            border: 1px solid rgba(232, 195, 158, 0.3);
+            box-shadow: 0 4px 20px -5px rgba(92, 18, 18, 0.05);
+            transition: all 0.3s ease;
+        }
+        .bento-card:hover {
+            box-shadow: 0 10px 25px -5px rgba(92, 18, 18, 0.08);
+            transform: translateY(-2px);
+        }
+        .sparkline {
+            height: 32px;
+            width: 80px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+        }
+        .spark-bar {
+            background: #5c1212;
+            width: 4px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar - JSON Command Execution -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container border-r border-outline-variant/20 z-50">
+<div class="flex flex-col h-full p-4">
+<!-- Brand Logo -->
+<div class="flex items-center gap-3 mb-10 px-2">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">home_work</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight leading-none">ivonne marin.</h1>
+<p class="text-[10px] uppercase tracking-widest text-secondary font-bold">Administrador</p>
+</div>
+</div>
+<!-- Primary Nav -->
+<nav class="flex-1 space-y-1">
+<!-- Dashboard Active State -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="font-label-md text-label-md">Inmuebles</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="font-label-md text-label-md">Leads</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-md text-label-md">Visitas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Reportes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Configuración</span>
+</a>
+</nav>
+<!-- CTA -->
+<button class="mt-4 mb-8 bg-primary text-on-primary font-label-md text-label-md py-3 px-4 rounded-lg flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                Crear Inmueble
+            </button>
+<!-- Footer Nav -->
+<div class="pt-4 border-t border-outline-variant/30 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Ayuda</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Cerrar Sesión</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-background min-h-screen">
+<!-- Internal Header -->
+<header class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary tracking-tighter">Bienvenida, Ivonne</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Aquí tienes el resumen de tu actividad para hoy.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative group">
+<button class="w-12 h-12 rounded-full border-2 border-primary/20 p-1 overflow-hidden transition-transform group-hover:scale-105">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of a real estate executive, Ivonne Marin, smiling warmly with a soft blur background of a high-end modern interior. She wears a cream-colored professional blouse that reflects the warm beige tones of the brand identity. The lighting is soft and flattering, emphasizing a trustworthy and elegant persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC2_gL929Y-4pF03IW9z-RI4u1oLCWCxd4o1u_H72CAE5BNlZhGFJMyqSD5YF0SYJ-vEKnpJXUZPbXV_aN0vczoc1VyB7v__uG8YxxB943x89ib1msbR0ob--TNNWy6OV5LOrlySBpBnrsb25BiesHk5lKSeJDYgK7B1mZj4Nxw08BrdJmwbajQZQsch3rrxF__aSZs0c_AS0cAlQOpygoJUlO0USAGKeS2w1NYJV3rbAYitByYkpGfBF5mebboJMY5e6UNoDfIw0c"/>
+</button>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+</div>
+<div class="hidden sm:block">
+<p class="font-label-md text-label-md text-on-surface leading-tight">Ivonne Marin</p>
+<p class="text-[11px] text-on-surface-variant">Asesora Principal</p>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-surface-container-high text-on-surface-variant ml-2">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<!-- Quick Actions Bar -->
+<section class="flex flex-wrap gap-4 mb-section-gap">
+<button class="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined">add_home</span>
+                Crear Inmueble
+            </button>
+<button class="flex items-center gap-2 px-6 py-3 bg-white border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-all active:scale-95">
+<span class="material-symbols-outlined">person_add</span>
+                Registrar Lead
+            </button>
+<button class="flex items-center gap-2 px-6 py-3 bg-white border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-all active:scale-95">
+<span class="material-symbols-outlined">event</span>
+                Agendar Visita
+            </button>
+</section>
+<!-- KPI Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-section-gap">
+<!-- Card 1 -->
+<div class="bento-card p-6 rounded-xl relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined">apartment</span>
+</div>
+<div class="sparkline">
+<div class="spark-bar h-[40%]"></div>
+<div class="spark-bar h-[60%]"></div>
+<div class="spark-bar h-[50%]"></div>
+<div class="spark-bar h-[80%]"></div>
+<div class="spark-bar h-[90%]"></div>
+</div>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">Total Inmuebles</p>
+<div class="flex items-end gap-2">
+<h3 class="text-[32px] font-bold text-primary leading-none">142</h3>
+<span class="text-green-600 text-xs font-bold pb-1">+12%</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bento-card p-6 rounded-xl relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div class="sparkline">
+<div class="spark-bar h-[30%]"></div>
+<div class="spark-bar h-[40%]"></div>
+<div class="spark-bar h-[70%]"></div>
+<div class="spark-bar h-[60%]"></div>
+<div class="spark-bar h-[85%]"></div>
+</div>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">Leads del Mes</p>
+<div class="flex items-end gap-2">
+<h3 class="text-[32px] font-bold text-primary leading-none">84</h3>
+<span class="text-green-600 text-xs font-bold pb-1">+24%</span>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bento-card p-6 rounded-xl relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined">pending_actions</span>
+</div>
+<div class="sparkline">
+<div class="spark-bar h-[80%]"></div>
+<div class="spark-bar h-[60%]"></div>
+<div class="spark-bar h-[50%]"></div>
+<div class="spark-bar h-[30%]"></div>
+<div class="spark-bar h-[20%]"></div>
+</div>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">Visitas Pendientes</p>
+<div class="flex items-end gap-2">
+<h3 class="text-[32px] font-bold text-primary leading-none">12</h3>
+<span class="text-amber-600 text-xs font-bold pb-1">-5%</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bento-card p-6 rounded-xl relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div class="sparkline">
+<div class="spark-bar h-[20%]"></div>
+<div class="spark-bar h-[40%]"></div>
+<div class="spark-bar h-[30%]"></div>
+<div class="spark-bar h-[70%]"></div>
+<div class="spark-bar h-[95%]"></div>
+</div>
+</div>
+<p class="text-on-surface-variant font-label-md text-label-md">Inmuebles Vendidos</p>
+<div class="flex items-end gap-2">
+<h3 class="text-[32px] font-bold text-primary leading-none">38</h3>
+<span class="text-green-600 text-xs font-bold pb-1">+8%</span>
+</div>
+</div>
+</section>
+<!-- Main Area -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Left: Últimos Leads Table -->
+<div class="lg:col-span-2 bento-card rounded-2xl p-8 overflow-hidden">
+<div class="flex items-center justify-between mb-8">
+<h4 class="font-headline-md text-headline-md text-primary">Últimos Leads</h4>
+<button class="text-secondary font-label-md text-label-md hover:underline">Ver todos</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/30 text-on-surface-variant font-label-md text-[12px] uppercase tracking-wider">
+<th class="pb-4 font-semibold">Cliente</th>
+<th class="pb-4 font-semibold">Interés</th>
+<th class="pb-4 font-semibold">Estado</th>
+<th class="pb-4 font-semibold">Fecha</th>
+<th class="pb-4 font-semibold text-right">Acción</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md">
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-4 border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold">AC</div>
+<div>
+<p class="font-semibold text-primary">Alejandro Cano</p>
+<p class="text-xs text-on-surface-variant">+57 310 445 221</p>
+</div>
+</div>
+</td>
+<td class="py-4 border-b border-outline-variant/10 text-on-surface-variant">Apartamento Luxury Pereira</td>
+<td class="py-4 border-b border-outline-variant/10">
+<span class="px-3 py-1 bg-green-100 text-green-800 text-[10px] font-bold uppercase rounded-full">Nuevo</span>
+</td>
+<td class="py-4 border-b border-outline-variant/10 text-on-surface-variant text-sm">Hoy, 10:45 AM</td>
+<td class="py-4 border-b border-outline-variant/10 text-right">
+<button class="text-primary hover:bg-primary-fixed p-1 rounded-full"><span class="material-symbols-outlined">chat</span></button>
+</td>
+</tr>
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-4 border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center text-xs font-bold">MP</div>
+<div>
+<p class="font-semibold text-primary">Mariana Posada</p>
+<p class="text-xs text-on-surface-variant">+57 312 889 443</p>
+</div>
+</div>
+</td>
+<td class="py-4 border-b border-outline-variant/10 text-on-surface-variant">Casa Campestre Armenia</td>
+<td class="py-4 border-b border-outline-variant/10">
+<span class="px-3 py-1 bg-amber-100 text-amber-800 text-[10px] font-bold uppercase rounded-full">En Proceso</span>
+</td>
+<td class="py-4 border-b border-outline-variant/10 text-on-surface-variant text-sm">Ayer, 4:20 PM</td>
+<td class="py-4 border-b border-outline-variant/10 text-right">
+<button class="text-primary hover:bg-primary-fixed p-1 rounded-full"><span class="material-symbols-outlined">call</span></button>
+</td>
+</tr>
+<tr class="group hover:bg-surface-container-low transition-colors">
+<td class="py-4 border-b border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center text-xs font-bold">JR</div>
+<div>
+<p class="font-semibold text-primary">Juan Ricardo</p>
+<p class="text-xs text-on-surface-variant">+57 321 009 332</p>
+</div>
+</div>
+</td>
+<td class="py-4 border-b border-outline-variant/10 text-on-surface-variant">Oficina Centro Manizales</td>
+<td class="py-4 border-b border-outline-variant/10">
+<span class="px-3 py-1 bg-surface-container-highest text-on-surface-variant text-[10px] font-bold uppercase rounded-full">Frío</span>
+</td>
+<td class="py-4 border-b border-outline-variant/10 text-on-surface-variant text-sm">24 Oct, 2024</td>
+<td class="py-4 border-b border-outline-variant/10 text-right">
+<button class="text-primary hover:bg-primary-fixed p-1 rounded-full"><span class="material-symbols-outlined">more_vert</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right: Próximas Visitas List -->
+<div class="bento-card rounded-2xl p-8 bg-surface-container-low">
+<div class="flex items-center justify-between mb-8">
+<h4 class="font-headline-md text-headline-md text-primary">Próximas Visitas</h4>
+<span class="bg-primary-container text-on-primary-container text-[10px] font-bold py-1 px-2 rounded">3 HOY</span>
+</div>
+<div class="space-y-6">
+<!-- Visita 1 -->
+<div class="flex gap-4 p-4 rounded-xl bg-white border-l-4 border-primary shadow-sm">
+<div class="flex-shrink-0 flex flex-col items-center justify-center bg-surface-container w-14 h-14 rounded-lg">
+<span class="text-xs font-bold text-primary">OCT</span>
+<span class="text-lg font-bold text-primary">26</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-primary">Andrés Valencia</p>
+<p class="text-xs text-on-surface-variant flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                Penthouse El Poblado
+                            </p>
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-secondary uppercase">2:30 PM</span>
+<button class="text-xs text-primary font-bold hover:underline">Recordatorio</button>
+</div>
+</div>
+</div>
+<!-- Visita 2 -->
+<div class="flex gap-4 p-4 rounded-xl bg-white/60 border-l-4 border-outline-variant">
+<div class="flex-shrink-0 flex flex-col items-center justify-center bg-surface-container w-14 h-14 rounded-lg opacity-60">
+<span class="text-xs font-bold text-primary">OCT</span>
+<span class="text-lg font-bold text-primary">26</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Beatriz Helena</p>
+<p class="text-xs text-on-surface-variant flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                Local Unicentro
+                            </p>
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase">4:00 PM</span>
+<button class="text-xs text-on-surface-variant hover:underline">Ver mapa</button>
+</div>
+</div>
+</div>
+<!-- Visita 3 -->
+<div class="flex gap-4 p-4 rounded-xl bg-white/60 border-l-4 border-outline-variant">
+<div class="flex-shrink-0 flex flex-col items-center justify-center bg-surface-container w-14 h-14 rounded-lg opacity-60">
+<span class="text-xs font-bold text-primary">OCT</span>
+<span class="text-lg font-bold text-primary">27</span>
+</div>
+<div class="flex-1">
+<p class="font-label-md text-label-md text-on-surface">Carlos Gómez</p>
+<p class="text-xs text-on-surface-variant flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-[14px]">location_on</span>
+                                Lote Campestre Condina
+                            </p>
+<div class="flex items-center justify-between">
+<span class="text-[11px] font-bold text-on-surface-variant uppercase">10:00 AM</span>
+</div>
+</div>
+</div>
+<button class="w-full py-3 border-2 border-dashed border-outline-variant rounded-xl text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high transition-colors">
+                        + Agendar nueva visita
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom NavBar (Visible only on small screens) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container h-16 flex items-center justify-around px-4 border-t border-outline-variant/20 z-50">
+<button class="flex flex-col items-center text-primary-container">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-bold">Inicio</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">home_work</span>
+<span class="text-[10px] font-medium">Inmuebles</span>
+</button>
+<div class="-mt-8 bg-primary w-12 h-12 rounded-full flex items-center justify-center text-on-primary shadow-lg">
+<span class="material-symbols-outlined">add</span>
+</div>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">person_search</span>
+<span class="text-[10px] font-medium">Leads</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+<span class="text-[10px] font-medium">Más</span>
+</button>
+</nav>
+<script>
+        // Simple micro-interactions
+        document.querySelectorAll('.bento-card').forEach(card => {
+            card.addEventListener('mousedown', () => {
+                card.style.transform = 'scale(0.98)';
+            });
+            card.addEventListener('mouseup', () => {
+                card.style.transform = 'translateY(-2px)';
+            });
+        });
+    </script>
+</body></html>

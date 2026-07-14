@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Property {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  internalCode    String?  @unique
+  shortDesc       String?
+  fullDesc        String?
+  modality        String   // "VENTA" or "ARRIENDO"
+  propertyType    String   // e.g., "Apartamento", "Casa"
+  status          String   @default("DISPONIBLE") // "DISPONIBLE", "NO_DISPONIBLE"
+  price           Float
+  currency        String   @default("COP")
+  city            String
+  sector          String?
+  address         String?
+  lat             Float?
+  lng             Float?
+  builtArea       Float?
+  lotArea         Float?
+  bedrooms        Int?
+  bathrooms       Int?
+  parking         Int?
+  stratum         Int?     // Estrato
+  antiquity       Int?     // Años
+  adminFee        Float?   // Administración
+  amenities       String?  // JSON string or comma separated
+  features        String?  // JSON string or comma separated
+  mainImage       String?
+  images          String?  // JSON array
+  videos          String?  // JSON array
+  virtualTour     String?
+  documents       String?  // JSON array
+  isFeatured      Boolean  @default(false)
+  isInvestment    Boolean  @default(false)
+  seoTitle        String?
+  seoDesc         String?
+  publishedAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model BlogPost {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  summary     String?
+  content     String
+  mainImage   String?
+  author      String?
+  category    String?
+  tags        String?  // comma separated
+  status      String   @default("DRAFT") // "DRAFT" or "PUBLISHED"
+  seoTitle    String?
+  seoDesc     String?
+  publishedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Lead {
+  id          String   @id @default(uuid())
+  type        String   // "CONTACT", "VISIT", "SELL", "RENT"
+  name        String
+  email       String
+  phone       String?
+  message     String?
+  propertyId  String?
+  status      String   @default("NEW") // "NEW", "CONTACTED", "CLOSED"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  content   String
+  rating    Int      @default(5)
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

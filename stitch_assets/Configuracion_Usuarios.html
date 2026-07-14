@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Configuración - Ivonne Marin</title>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#eae7e7",
+                      "surface-dim": "#dcd9d9",
+                      "on-secondary-container": "#7a5d3f",
+                      "on-primary-container": "#e17770",
+                      "on-tertiary-container": "#bc8e3f",
+                      "tertiary": "#251700",
+                      "tertiary-fixed": "#ffdead",
+                      "secondary-container": "#ffd9b3",
+                      "primary-container": "#5c1212",
+                      "on-primary-fixed": "#410004",
+                      "surface-variant": "#e5e2e1",
+                      "surface-container": "#f0eded",
+                      "on-primary-fixed-variant": "#7d2b28",
+                      "inverse-on-surface": "#f3f0ef",
+                      "on-surface-variant": "#554240",
+                      "on-error": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "surface-container-lowest": "#ffffff",
+                      "surface": "#fcf9f8",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#f1be6a",
+                      "primary-fixed-dim": "#ffb3ad",
+                      "on-secondary-fixed-variant": "#5b4226",
+                      "inverse-surface": "#303030",
+                      "on-tertiary": "#ffffff",
+                      "on-surface": "#1b1b1c",
+                      "tertiary-container": "#402a00",
+                      "surface-bright": "#fcf9f8",
+                      "on-tertiary-fixed-variant": "#604100",
+                      "primary": "#3d0003",
+                      "secondary": "#75593b",
+                      "outline-variant": "#dbc0be",
+                      "on-primary": "#ffffff",
+                      "background": "#fcf9f8",
+                      "on-tertiary-fixed": "#281900",
+                      "on-background": "#1b1b1c",
+                      "surface-container-highest": "#e5e2e1",
+                      "surface-container-low": "#f6f3f2",
+                      "primary-fixed": "#ffdad7",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#ffb3ad",
+                      "surface-tint": "#9c423d",
+                      "on-secondary-fixed": "#2a1702",
+                      "secondary-fixed-dim": "#e5c09b",
+                      "outline": "#887270",
+                      "secondary-fixed": "#ffddbb",
+                      "error": "#ba1a1a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin-mobile": "16px",
+                      "margin-desktop": "40px",
+                      "base": "8px",
+                      "section-gap": "80px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "display-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "label-md": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "headline-lg-mobile": [
+                              "Plus Jakarta Sans"
+                      ],
+                      "body-md": [
+                              "Plus Jakarta Sans"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "label-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "28px",
+                              {
+                                      "lineHeight": "36px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(247, 243, 239, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(232, 195, 158, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container shadow-md p-4 z-50">
+<div class="mb-8 px-4 mt-4">
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">Ivonne Marin</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Administrador</p>
+</div>
+<div class="flex-1 overflow-y-auto space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">home_work</span>
+<span class="font-label-md text-label-md">Inmuebles</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">person_search</span>
+<span class="font-label-md text-label-md">Leads</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-md text-label-md">Visitas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Reportes</span>
+</a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined icon-fill">settings</span>
+<span class="font-label-md text-label-md">Configuración</span>
+</a>
+</div>
+<div class="mt-auto space-y-2 pt-4 border-t border-surface-dim/30">
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 rounded-lg mb-4 hover:opacity-90 transition-opacity">
+                Crear Inmueble
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Ayuda</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Cerrar Sesión</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-background min-h-screen">
+<header class="mb-section-gap max-w-container-max mx-auto">
+<h2 class="font-display-lg text-display-lg text-on-background mb-2">Configuración</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Gestiona los ajustes generales de la plataforma y el perfil público.</p>
+</header>
+<div class="max-w-container-max mx-auto">
+<!-- Tabs Navigation -->
+<div class="flex border-b border-surface-dim mb-8 overflow-x-auto hide-scrollbar">
+<button class="px-6 py-4 font-label-md text-label-md border-b-2 border-primary text-primary font-bold whitespace-nowrap" id="tab-empresa">
+                    Perfil de Empresa
+                </button>
+<button class="px-6 py-4 font-label-md text-label-md border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap" id="tab-sitio">
+                    Configuración del Sitio
+                </button>
+<button class="px-6 py-4 font-label-md text-label-md border-b-2 border-transparent text-on-surface-variant hover:text-primary transition-colors whitespace-nowrap" id="tab-usuarios">
+                    Usuarios y Roles
+                </button>
+</div>
+<!-- Tab Content: Empresa -->
+<div class="space-y-8 fade-in" id="content-empresa">
+<!-- Bento Grid Layout for Forms -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Logo & Brand Identity (Spans 1 col) -->
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-secondary-fixed-dim/30 shadow-sm col-span-1 flex flex-col items-center justify-center text-center">
+<div class="w-32 h-32 rounded-full bg-surface-container flex items-center justify-center mb-6 overflow-hidden border-2 border-outline-variant border-dashed">
+<img class="w-full h-full object-cover opacity-50" data-alt="A professional, minimalist brand logo for a luxury real estate agency, featuring elegant typography and warm earthy tones, displayed on a clean white background in a studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZAmb0vC4unzvHS9v5JfK2ae35nKQyWZwGS4VO9SO4TMtHJyEcFhrmsvMNh2aDhTFWMggrEdFefRHgRI_WwN4iN3L89XOV1lodjrF6wgvgz8x2Hazlbte6wkjBMJHaVLD6IF_WJNH4BzckeDNBKphSbKbWRAbYnlUoElsOE-5CPoerW7fWSAEZmr9mUC9aD757Dqlo_ThhdsY-Qv_XGOWunAcYvHYNHAWpuJXqVO6vzLuMOkNAi0N2UB3L0kdFxqKZ-3ViR_I34To"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background mb-2">Logo Principal</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Formato recomendado: PNG transparente, 500x500px.</p>
+<button class="border border-secondary-fixed-dim text-primary font-label-md text-label-md py-2 px-4 rounded-lg hover:bg-surface-container transition-colors w-full flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">upload</span>
+                            Subir Nuevo Logo
+                        </button>
+</div>
+<!-- Contact Info (Spans 2 cols) -->
+<div class="bg-surface-container-lowest rounded-xl p-8 border border-secondary-fixed-dim/30 shadow-sm md:col-span-2 space-y-6">
+<h3 class="font-headline-md text-headline-md text-on-background border-b border-surface-dim pb-4">Información de Contacto</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div>
+<label class="block font-label-md text-label-md text-on-background mb-2">Nombre de la Agencia</label>
+<input class="w-full bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" type="text" value="Ivonne Marin Asesora Inmobiliaria"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-background mb-2">Número WhatsApp Principal</label>
+<input class="w-full bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" type="tel" value="+57 300 000 0000"/>
+</div>
+<div class="md:col-span-2">
+<label class="block font-label-md text-label-md text-on-background mb-2">Dirección de Oficina</label>
+<input class="w-full bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" type="text" value="Pereira, Eje Cafetero, Colombia"/>
+</div>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-background border-b border-surface-dim pb-4 mt-8 pt-4">Redes Sociales</h4>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">link</span>
+<input class="flex-1 bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" placeholder="URL de Instagram" type="url" value="https://instagram.com/"/>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant">link</span>
+<input class="flex-1 bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" placeholder="URL de Facebook" type="url" value="https://facebook.com/"/>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-end pt-6">
+<button class="bg-primary text-on-primary font-label-md text-label-md py-3 px-8 rounded-lg hover:opacity-90 transition-opacity shadow-sm">
+                        Guardar Cambios
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .fade-in {
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+<script>
+        // Simple tab switching logic for demonstration
+        const tabs = ['empresa', 'sitio', 'usuarios'];
+        
+        tabs.forEach(tab => {
+            document.getElementById(`tab-${tab}`).addEventListener('click', (e) => {
+                // Reset all tabs
+                tabs.forEach(t => {
+                    const btn = document.getElementById(`tab-${t}`);
+                    btn.classList.remove('border-primary', 'text-primary', 'font-bold');
+                    btn.classList.add('border-transparent', 'text-on-surface-variant');
+                });
+                
+                // Set active tab
+                e.target.classList.remove('border-transparent', 'text-on-surface-variant');
+                e.target.classList.add('border-primary', 'text-primary', 'font-bold');
+                
+                // In a real app, this would show/hide corresponding content divs
+                // For this UI mockup, we're just animating the active state of the tab button
+            });
+        });
+    </script>
+</body></html>

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ivonne Marin | Apartamento Guaduales del Otún</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#402a00",
+                        "surface-tint": "#9c423d",
+                        "primary": "#3d0003",
+                        "primary-fixed-dim": "#ffb3ad",
+                        "inverse-surface": "#303030",
+                        "surface-container-low": "#f6f3f2",
+                        "inverse-primary": "#ffb3ad",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#eae7e7",
+                        "on-error-container": "#93000a",
+                        "primary-fixed": "#ffdad7",
+                        "on-secondary-container": "#7a5d3f",
+                        "on-primary-fixed": "#410004",
+                        "on-tertiary-container": "#bc8e3f",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#dcd9d9",
+                        "surface-container-highest": "#e5e2e1",
+                        "surface": "#fcf9f8",
+                        "on-background": "#1b1b1c",
+                        "on-surface": "#1b1b1c",
+                        "primary-container": "#5c1212",
+                        "tertiary": "#251700",
+                        "surface-bright": "#fcf9f8",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed-dim": "#e5c09b",
+                        "on-primary-container": "#e17770",
+                        "background": "#fcf9f8",
+                        "on-surface-variant": "#554240",
+                        "surface-variant": "#e5e2e1",
+                        "secondary": "#75593b",
+                        "tertiary-fixed": "#ffdead",
+                        "on-tertiary-fixed": "#281900",
+                        "secondary-fixed": "#ffddbb",
+                        "on-secondary-fixed": "#2a1702",
+                        "surface-container": "#f0eded",
+                        "on-tertiary-fixed-variant": "#604100",
+                        "outline": "#887270",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#ffd9b3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#5b4226",
+                        "outline-variant": "#dbc0be",
+                        "inverse-on-surface": "#f3f0ef",
+                        "tertiary-fixed-dim": "#f1be6a",
+                        "on-primary-fixed-variant": "#7d2b28"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin-desktop": "40px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "section-gap": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-lg-mobile": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .property-grid-asymmetric {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: repeat(2, 300px);
+            gap: 16px;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5c09b; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-secondary-fixed selection:text-on-secondary-fixed">
+<nav class="bg-surface/80 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-4">
+<span class="text-headline-md font-headline-lg text-primary tracking-tight">ivonne marin.</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Inicio</a>
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary font-bold" href="#">Inmuebles</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Vender</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Arrendar</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Nosotros</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden lg:flex px-6 py-2 bg-primary text-on-primary font-label-md text-label-md rounded-lg hover:opacity-90 active:scale-95 transition-all">Contacto</button>
+<button class="p-2 text-primary md:hidden">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8">
+<nav class="flex mb-8 items-center gap-2 font-label-md text-label-md text-on-surface-variant overflow-x-auto whitespace-nowrap">
+<a class="hover:text-primary" href="#">Inicio</a>
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary" href="#">Inmuebles</a>
+<span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">Apartamento en venta en Guaduales del Otún</span>
+</nav>
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
+<div class="lg:col-span-2 space-y-10">
+<div class="property-grid-asymmetric rounded-2xl overflow-hidden shadow-sm">
+<div class="row-span-2 relative group cursor-pointer overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A sprawling luxury apartment living room featuring floor-to-ceiling windows overlooking a lush Colombian mountain landscape. The interior is styled with warm beige fabrics, rich vinotinto accents, and contemporary wooden furniture under soft, natural golden-hour lighting, creating a serene and sophisticated residential atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXi_mvYjCXmrOX1oD0hCc1AtnH8p5GkVk4kHVsR3qjP6-SN6pEUrxpYT8Of3LTqMDl7N3dfKZ2b4lTxDXA7kENzPv9rq409QowdMnSeVU6IS_7NU1YdRTc_YqXu8dw9o7eylXwcM8RW3VuiKkyJ0OBzulCHsfl864-icpX3WOzw8Gd4_6m5CQZWQUfSvui0pUFduRkMQIfp3jFeGbt5R6w1wmxOP6kPZA9oKj_PoHjd6xRsf8hXibPRjsehpVOJp5V8timQgbw7Ls"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+<span class="text-white font-label-md">Ver más fotos</span>
+</div>
+</div>
+<div class="relative overflow-hidden cursor-pointer group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern kitchen with minimalist white cabinetry and a warm marble island. Subtle vinotinto decorative elements like a vase and textiles complement the high-end appliances. The lighting is bright and clean, emphasizing a premium architectural photography style in a light-mode color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqSMRHxPSOYjee_WPgYAM526qfvitvbSXQAsInVePgGzLitl1yh0gBf7p1zoN9gvMVUeZZ3c1nw7hqxPKf4db2gl15k6cKxhs7baRmrF2isCF9HO2EiOBjvuW_qiYSxnNbXM9Bcf6AcH09I8MnEO6vvY1W16luWkAUhr1iPcvSpXhXh8mJD54wDCFsZ84hutlIyOi9x9UdmdjsfnYPUkxbKgd1rBHi66E4rzVE59OJKg0UU-keANqHtcAxxfLAVu2L7QoKnttBNXM"/>
+</div>
+<div class="relative overflow-hidden cursor-pointer group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A master bedroom suite with a wide balcony access, showcasing high-quality linens in warm white and earth tones. The morning light spills across the room, highlighting the professional interior design and empathetic, welcoming ambiance of the luxury real estate brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy3HITxy6C1OgR-NhRfK40qSmiVeOgBIA17j533UH37TadPB_2dUgz-qZiG3KR8A4LfbFWKA4UejyelGgxNsSmt0Gpi-8ZJUQ--FZ9VZycV8DP5w7YSI9Kmk_1-fKHolHEfXnAmEbzibDv6FI4KwZ821NLb4Wugv8pK2nRw9AZz__00JZovaTiLY63T7CkhIvDdz6IXhHrd5tZMVWhTY_Cr4vBtcM9FvmQhqkz1q0kH0ihTZcvKMuqi6t032ZUfFDygF2NkwvYqAk"/>
+<div class="absolute inset-0 bg-primary/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-on-primary font-headline-md">+12 Fotos</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-outline-variant pb-8">
+<div class="space-y-2">
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container font-label-md text-[12px] rounded-full uppercase tracking-wider">Disponible</span>
+<h1 class="font-headline-lg text-headline-lg text-primary">Apartamento Guaduales del Otún</h1>
+<p class="flex items-center gap-1 text-on-surface-variant font-body-md">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                            Dosquebradas, Risaralda
+                        </p>
+</div>
+<div class="text-right">
+<p class="text-on-surface-variant font-label-md uppercase tracking-tighter">Precio de Venta</p>
+<p class="font-display-lg text-display-lg text-primary">$450.000.000</p>
+<p class="text-[12px] text-on-surface-variant font-body-md">Cód: IM-8821</p>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+<div class="flex flex-col items-center p-4 bg-surface-container rounded-xl border border-outline-variant/30 text-center hover:shadow-md transition-shadow">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="square_foot">square_foot</span>
+<span class="text-[12px] font-label-md text-on-surface-variant">Área Total</span>
+<span class="font-headline-md text-[18px]">98m²</span>
+</div>
+<div class="flex flex-col items-center p-4 bg-surface-container rounded-xl border border-outline-variant/30 text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="aspect_ratio">aspect_ratio</span>
+<span class="text-[12px] font-label-md text-on-surface-variant">Área Privada</span>
+<span class="font-headline-md text-[18px]">92m²</span>
+</div>
+<div class="flex flex-col items-center p-4 bg-surface-container rounded-xl border border-outline-variant/30 text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="bed">bed</span>
+<span class="text-[12px] font-label-md text-on-surface-variant">Habitaciones</span>
+<span class="font-headline-md text-[18px]">3</span>
+</div>
+<div class="flex flex-col items-center p-4 bg-surface-container rounded-xl border border-outline-variant/30 text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="bathtub">bathtub</span>
+<span class="text-[12px] font-label-md text-on-surface-variant">Baños</span>
+<span class="font-headline-md text-[18px]">2</span>
+</div>
+<div class="flex flex-col items-center p-4 bg-surface-container rounded-xl border border-outline-variant/30 text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="directions_car">directions_car</span>
+<span class="text-[12px] font-label-md text-on-surface-variant">Parqueadero</span>
+<span class="font-headline-md text-[18px]">1</span>
+</div>
+<div class="flex flex-col items-center p-4 bg-surface-container rounded-xl border border-outline-variant/30 text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="layers">layers</span>
+<span class="text-[12px] font-label-md text-on-surface-variant">Estrato</span>
+<span class="font-headline-md text-[18px]">4</span>
+</div>
+<div class="flex flex-col items-center p-4 bg-surface-container rounded-xl border border-outline-variant/30 text-center">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="payments">payments</span>
+<span class="text-[12px] font-label-md text-on-surface-variant">Admin</span>
+<span class="font-headline-md text-[18px]">$280k</span>
+</div>
+</div>
+<div class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-primary">Descripción Comercial</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                        Este sofisticado apartamento ubicado en el corazón de Dosquebradas ofrece una experiencia de vida inigualable. Con acabados de alta gama y una iluminación natural excepcional, cada rincón ha sido diseñado para brindar confort y elegancia. La propiedad cuenta con una amplia zona social integrada que se conecta armoniosamente con un balcón privado, ideal para disfrutar de los atardeceres del Eje Cafetero.
+                        <br/><br/>
+                        Situado en Guaduales del Otún, usted tendrá acceso a las mejores zonas comunes del sector y una ubicación estratégica cerca de centros comerciales, colegios y vías principales, manteniendo siempre la tranquilidad de un entorno residencial exclusivo.
+                    </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+<div class="space-y-6">
+<h3 class="font-headline-md text-headline-md text-primary border-l-4 border-secondary pl-4">Características Internas</h3>
+<ul class="grid grid-cols-1 gap-3">
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span> Sala y Comedor independientes
+                            </li>
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span> Cocina integral tipo americana
+                            </li>
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span> Zona de lavandería cubierta
+                            </li>
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span> Pisos en porcelanato de gran formato
+                            </li>
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="check_circle">check_circle</span> Closets en madera de cedro
+                            </li>
+</ul>
+</div>
+<div class="space-y-6">
+<h3 class="font-headline-md text-headline-md text-primary border-l-4 border-secondary pl-4">Zonas Comunes</h3>
+<ul class="grid grid-cols-1 gap-3">
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="pool">pool</span> Piscina para adultos y niños
+                            </li>
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="security">security</span> Vigilancia privada 24/7
+                            </li>
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="fitness_center">fitness_center</span> Gimnasio totalmente dotado
+                            </li>
+<li class="flex items-center gap-3 font-body-md text-on-surface-variant">
+<span class="material-symbols-outlined text-secondary" data-icon="celebration">celebration</span> Salón social climatizado
+                            </li>
+</ul>
+</div>
+</div>
+<div class="space-y-6">
+<h2 class="font-headline-md text-headline-md text-primary">Ubicación</h2>
+<div class="w-full h-80 bg-surface-container rounded-2xl overflow-hidden shadow-inner relative">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A stylized professional map display showing a neighborhood in Dosquebradas, Pereira. The map is rendered in warm, soft colors matching the brand's primary vinotinto and beige palette, with a prominent but elegant marker highlighting the property's location near local landmarks and green areas." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBgLW5kfd0pSAmOJDmTvWaCzVkhZUy5-Oeno5aFRjGKOTbkMJY6e7n078utxKW94p_IU4DGRxi4L0rH4kTwQhgU4ez2n2TmaD_TagyibUGuXPoMxHpphwXZsgvkWTNhHrmH0CuYRhPdQkBAH7V-c2qQP9sIuQ6dBdwNlBsWP2iYU6WgcWeJKBxF13JD5geuxUR02PygHTtgp6QM71KTdmdMjfFApmBKRWFWyKvsTQI-27X2El4FyGT3Af8Z9zPDb1QenbSH3ieW7XQ')"></div>
+<div class="absolute inset-0 flex items-center justify-center bg-black/5 hover:bg-black/0 transition-colors pointer-events-none">
+<span class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span> Ampliar Mapa
+                            </span>
+</div>
+</div>
+</div>
+</div>
+<aside class="space-y-gutter lg:sticky lg:top-24">
+<div class="bg-surface border border-outline-variant/50 rounded-2xl p-8 shadow-sm">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-16 h-16 rounded-full overflow-hidden border-2 border-secondary p-0.5">
+<img class="w-full h-full object-cover rounded-full" data-alt="A professional headshot of Ivonne Marin, a high-end real estate advisor in her 40s with a warm and empathetic smile. She is wearing a cream-colored professional blouse that reflects the brand identity, photographed in a high-key studio setting with a clean, soft-focus architectural background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgZcfdPi_n0TAneC3N3wNfETdI8oO_G8QIPcsWa34_-98wnMr-m5RZQHICFsdciNAf2VLZZL3RkumToH7vrXWuozf0hInLZaGyF6lGXKOYDqmSjwITTmLqO7oLzDv_NqBTEzGBIEC-293iwhGjLJ6l22s1Hh9BxY-bjG8CudzkuWoKZkN2746Z-94jtta0xzNY9iv7o2Y7c-mWcOqmJCUpbG7QFOIoHu_kpCloGebH6kRR3hPJAX2d6QR6g-LUlCdd1kSrRt6Qj0w"/>
+</div>
+<div>
+<h4 class="font-headline-md text-[18px] text-primary">Ivonne Marin</h4>
+<p class="text-on-surface-variant font-label-md text-[12px]">Asesora Inmobiliaria</p>
+</div>
+</div>
+<form class="space-y-4">
+<div class="space-y-1">
+<label class="font-label-md text-[12px] text-on-surface-variant">Nombre completo</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary" placeholder="Ej. Juan Perez" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-[12px] text-on-surface-variant">Correo electrónico</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary" placeholder="email@ejemplo.com" type="email"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-[12px] text-on-surface-variant">WhatsApp / Teléfono</label>
+<input class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary" placeholder="+57 300 000 0000" type="tel"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-md text-[12px] text-on-surface-variant">Mensaje</label>
+<textarea class="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary" rows="4">Hola, estoy interesado en el apartamento Guaduales del Otún (Cód: IM-8821). ¿Podrían darme más información?</textarea>
+</div>
+<button class="w-full py-4 bg-primary text-on-primary font-headline-md text-[16px] rounded-xl hover:opacity-95 transition-all shadow-md active:scale-95 flex items-center justify-center gap-2">
+                            Enviar Solicitud
+                        </button>
+</form>
+<div class="mt-6 flex flex-col gap-3">
+<a class="flex items-center justify-center gap-2 w-full py-3 border-2 border-secondary text-primary font-label-md rounded-xl hover:bg-secondary-fixed transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span> Agendar Visita
+                        </a>
+<a class="flex items-center justify-center gap-2 w-full py-3 bg-[#25D366] text-white font-label-md rounded-xl hover:opacity-90 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="chat">chat</span> WhatsApp Directo
+                        </a>
+</div>
+</div>
+<div class="bg-primary p-6 rounded-2xl text-on-primary space-y-4">
+<h5 class="font-headline-md text-[18px]">¿Necesitas vender tu propiedad?</h5>
+<p class="font-body-md text-on-primary/80">Ofrecemos asesoría integral y posicionamiento premium para tu inmueble en el Eje Cafetero.</p>
+<button class="px-6 py-2 bg-secondary text-on-primary font-label-md rounded-lg w-full">Más información</button>
+</div>
+</aside>
+</section>
+<section class="mt-section-gap">
+<div class="flex justify-between items-end mb-8">
+<h2 class="font-headline-lg text-headline-lg text-primary">Inmuebles Similares</h2>
+<a class="text-secondary font-label-md flex items-center gap-1 hover:underline" href="#">Ver todos <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span></a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface border border-outline-variant/30 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A bright, luxury 3-bedroom house in Dosquebradas with modern architectural lines, white stone facades, and large balconies. The property is surrounded by manicured tropical gardens under a clear blue sky, presenting a high-end real estate opportunity in a prestigious neighborhood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA48eAHdLrV1vtCeewi3AJtZSEy5I44jD5e3MElUgpLktmjrTUvh9iS7kTHFziww4HrS6Re93Y6RcPiqmD8Al7YXGQIEIg47KikEiSA_TNkbnKk0d39WD8UeHcqms8QQ9D7hQl_0PZp2ye0jDODN3jmh5NylqftYqqduIQg9IOZgqiWEqSUBm_qxqKZUTH61ePQrNwZZBG36hhhZ3bFejk179l0MCYHnjBV3xqxUV-w63ha_PPwGLT6xChrb_2OGeG2rL8kr8HxnVs"/>
+<div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-label-md uppercase">Venta</div>
+</div>
+<div class="p-6 space-y-3">
+<h3 class="font-headline-md text-[18px] text-primary group-hover:text-secondary transition-colors">Casa Campestre El Jordan</h3>
+<p class="text-on-surface-variant font-body-md flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span> Dosquebradas</p>
+<div class="flex items-center gap-4 text-on-surface-variant border-y border-outline-variant/30 py-3 my-4">
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="bed">bed</span> 3</span>
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="bathtub">bathtub</span> 3</span>
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="square_foot">square_foot</span> 120m²</span>
+</div>
+<p class="font-headline-md text-primary">$620.000.000</p>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant/30 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="An elegant apartment building penthouse in Pereira with a large rooftop terrace featuring a private hot tub and outdoor lounge area. The image captures the twilight mood with warm interior lights glowing against a dark blue sky, highlighting a luxurious and empathetic lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzQHEKeF0ipvn_LeZ_enjuqhRp8NqoVsc4oshjKiupvCnTJhpIweDtKAhb8dHzG-NZt8TMRupVpj872h2LlG5Rp7HOtm8g6b91K64va901Y_5C60or-3ummsHr2EyP1lDDnaQs6ICoLgO6Vnz2B61NsglfDdVDrAzS73gaERAVmgM9yW-L9w_7AvYjBH1QIe4sTe44VT4kGQQB0w5o7Kw-iGFmQWEIxdOQ9n375G9qNhtBKRiFEk2x1mychIamws24h9Uwpv-4WN4"/>
+<div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-label-md uppercase">Venta</div>
+</div>
+<div class="p-6 space-y-3">
+<h3 class="font-headline-md text-[18px] text-primary group-hover:text-secondary transition-colors">Apartamento Mirador de la Colina</h3>
+<p class="text-on-surface-variant font-body-md flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span> Pereira, Pinares</p>
+<div class="flex items-center gap-4 text-on-surface-variant border-y border-outline-variant/30 py-3 my-4">
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="bed">bed</span> 2</span>
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="bathtub">bathtub</span> 2</span>
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="square_foot">square_foot</span> 85m²</span>
+</div>
+<p class="font-headline-md text-primary">$385.000.000</p>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant/30 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow group">
+<div class="relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern open-concept apartment with high ceilings and wood-plank flooring. The interior features a neutral warm palette with vinotinto textile accents, showing a spacious living and dining area with a high-end designer kitchen in the background, professional staging for real estate." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbQm4vhr1evcgKG4qFc7yw1_OOyaNxC-0Zk_pZ1zd0xJbonxBX__OGpO-KpAtmCYyedEpsgmBH3u_B94CMgMLxEYRx5Petljv-TuDH7vMN6AV4Nq8XqIrnqqjZHbvZ_wzmb7epkN2Rmn6AqC2vva0nUPQbyoxf2dMdrNy4iHl6t3gOfco6khxwOyTPjMujXBYABeE1UGb8RYqgTzzYr6L9C4-m41jL-3e93SjelPJDTMEu8TGUjBS-b2-jmmPSdRT19s2FGr8Hr_I"/>
+<div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-label-md uppercase">Venta</div>
+</div>
+<div class="p-6 space-y-3">
+<h3 class="font-headline-md text-[18px] text-primary group-hover:text-secondary transition-colors">Penthouse Guaduales Reservado</h3>
+<p class="text-on-surface-variant font-body-md flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span> Dosquebradas</p>
+<div class="flex items-center gap-4 text-on-surface-variant border-y border-outline-variant/30 py-3 my-4">
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="bed">bed</span> 4</span>
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="bathtub">bathtub</span> 4</span>
+<span class="flex items-center gap-1 text-[13px]"><span class="material-symbols-outlined text-[18px]" data-icon="square_foot">square_foot</span> 155m²</span>
+</div>
+<p class="font-headline-md text-primary">$720.000.000</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="bg-primary dark:bg-primary-container text-on-primary mt-section-gap py-section-gap">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="space-y-6">
+<span class="font-headline-md text-on-primary tracking-tight">ivonne marin.</span>
+<p class="font-body-md text-on-primary/80 max-w-xs">Especialista en propiedad raíz de lujo en el Eje Cafetero. Tu sueño de hogar, asesorado con empatía y profesionalismo.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="public">public</span></a>
+<a class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors" href="#"><span class="material-symbols-outlined text-[20px]" data-icon="chat">chat</span></a>
+</div>
+</div>
+<div class="space-y-4">
+<h6 class="font-headline-md text-[18px]">Navegación</h6>
+<ul class="space-y-2 font-label-md text-on-primary/70">
+<li><a class="hover:text-secondary-fixed transition-colors" href="#">Inicio</a></li>
+<li><a class="hover:text-secondary-fixed transition-colors" href="#">Propiedades</a></li>
+<li><a class="hover:text-secondary-fixed transition-colors" href="#">Vender</a></li>
+<li><a class="hover:text-secondary-fixed transition-colors" href="#">Proyectos</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h6 class="font-headline-md text-[18px]">Legal</h6>
+<ul class="space-y-2 font-label-md text-on-primary/70">
+<li><a class="hover:text-secondary-fixed transition-colors" href="#">Términos y condiciones</a></li>
+<li><a class="hover:text-secondary-fixed transition-colors" href="#">Política de privacidad</a></li>
+<li><a class="hover:text-secondary-fixed transition-colors" href="#">Aviso legal</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h6 class="font-headline-md text-[18px]">Newsletter</h6>
+<p class="font-body-md text-on-primary/80">Recibe las mejores ofertas inmobiliarias del mes.</p>
+<div class="flex">
+<input class="bg-white/10 border-transparent rounded-l-lg p-3 text-on-primary focus:ring-0 w-full placeholder:text-white/40" placeholder="Tu email" type="email"/>
+<button class="bg-secondary px-4 rounded-r-lg hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+<div class="border-t border-white/10 mt-16 pt-8 text-center px-margin-mobile">
+<p class="font-label-md text-[12px] text-on-primary/60">© 2024 Ivonne Marin Asesora Inmobiliaria. Todos los derechos reservados.</p>
+</div>
+</footer>
+<script>
+        // Micro-interaction for gallery hover
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbar = document.querySelector('nav');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('h-16', 'shadow-md');
+                    navbar.classList.remove('h-20');
+                } else {
+                    navbar.classList.add('h-20');
+                    navbar.classList.remove('h-16', 'shadow-md');
+                }
+            });
+        });
+    </script>
+</body></html>

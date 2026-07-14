@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Administración de Inmuebles | Ivonne Marin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary-container": "#402a00",
+            "surface-tint": "#9c423d",
+            "primary": "#3d0003",
+            "primary-fixed-dim": "#ffb3ad",
+            "inverse-surface": "#303030",
+            "surface-container-low": "#f6f3f2",
+            "inverse-primary": "#ffb3ad",
+            "on-secondary": "#ffffff",
+            "error": "#ba1a1a",
+            "surface-container-high": "#eae7e7",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#ffdad7",
+            "on-secondary-container": "#7a5d3f",
+            "on-primary-fixed": "#410004",
+            "on-tertiary-container": "#bc8e3f",
+            "error-container": "#ffdad6",
+            "surface-dim": "#dcd9d9",
+            "surface-container-highest": "#e5e2e1",
+            "surface": "#fcf9f8",
+            "on-background": "#1b1b1c",
+            "on-surface": "#1b1b1c",
+            "primary-container": "#5c1212",
+            "tertiary": "#251700",
+            "surface-bright": "#fcf9f8",
+            "on-primary": "#ffffff",
+            "secondary-fixed-dim": "#e5c09b",
+            "on-primary-container": "#e17770",
+            "background": "#fcf9f8",
+            "on-surface-variant": "#554240",
+            "surface-variant": "#e5e2e1",
+            "secondary": "#75593b",
+            "tertiary-fixed": "#ffdead",
+            "on-tertiary-fixed": "#281900",
+            "secondary-fixed": "#ffddbb",
+            "on-secondary-fixed": "#2a1702",
+            "surface-container": "#f0eded",
+            "on-tertiary-fixed-variant": "#604100",
+            "outline": "#887270",
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#ffd9b3",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "on-secondary-fixed-variant": "#5b4226",
+            "outline-variant": "#dbc0be",
+            "inverse-on-surface": "#f3f0ef",
+            "tertiary-fixed-dim": "#f1be6a",
+            "on-primary-fixed-variant": "#7d2b28"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "24px",
+            "base": "8px",
+            "margin-desktop": "40px",
+            "container-max": "1280px",
+            "margin-mobile": "16px",
+            "section-gap": "80px"
+          },
+          "fontFamily": {
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+            "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+            "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #f7f3ef; /* Level 0 Background per Style Guidance */
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f0eded;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #887270;
+      border-radius: 10px;
+    }
+    .property-row:hover {
+      background-color: rgba(232, 195, 158, 0.1);
+    }
+    /* Logo recreation from images */
+    .brand-logo {
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      line-height: 0.9;
+    }
+  </style>
+</head>
+<body class="text-on-surface">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-surface-container dark:bg-surface-container-low shadow-md flex flex-col h-full p-4 z-50">
+<div class="mb-10 px-2 flex items-center gap-3">
+<div class="flex flex-col">
+<span class="font-headline-md text-primary dark:text-primary-fixed-dim brand-logo">ivonne</span>
+<span class="font-headline-md text-primary dark:text-primary-fixed-dim brand-logo -mt-1">marin.</span>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-on-primary-container rounded-lg font-bold translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home_work">home_work</span>
+<span class="font-label-md text-label-md">Inmuebles</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="person_search">person_search</span>
+<span class="font-label-md text-label-md">Leads</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-label-md text-label-md">Visitas</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-md text-label-md">Reportes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-md text-label-md">Configuración</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-4">
+<button class="w-full mb-6 py-3 bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="add">add</span>
+        Crear Inmueble
+      </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-md text-label-md">Ayuda</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-error hover:bg-error-container/20 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-md text-label-md">Cerrar Sesión</span>
+</a>
+</div>
+<div class="mt-6 flex items-center gap-3 px-2">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of Ivonne Marin, a high-end real estate advisor, with a warm and empathetic expression. She is in an elegant, well-lit modern office setting in Colombia's Eje Cafetero. The lighting is soft and residential, highlighting her professional demeanor. The image uses a warm-gallery aesthetic with soft beige and vinotinto tones consistent with her luxury brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCiCKwGOtkk343QkPmPCkiiRkHMc4lH1L6pLk8IjPUKdWPR-32vZ_G-_hJuayECobSR4L48_4quJDKpA-DD8n7PvoN3KPDT831foyITR8wgy62MTTbMgqKdRRl0_UBDLNBCG8_oCWAyhWZJR27uGvJc6ZMUUnBlLINZziHKeVHeDJJVO9KL1fSg3by0Gv1Pva-j0WYjOrljwmUUiuYrGspL-ESDnphd8CHXN20uAkSfSy6-5HvDiVyg_xO89uwam_Ec9n_EwQ6AgOg"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface font-bold">Ivonne Marin</span>
+<span class="text-[12px] text-on-surface-variant">Administrador</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- Top Context Bar -->
+<header class="h-20 bg-surface/80 backdrop-blur-md sticky top-0 z-40 px-margin-desktop flex items-center justify-between border-b border-outline-variant/20">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary">Administración de Inmuebles</h1>
+<p class="text-[14px] text-on-surface-variant">Gestiona tu catálogo de propiedades exclusivas</p>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+</button>
+</div>
+</header>
+<div class="p-margin-desktop space-y-8">
+<!-- Stats / Quick Insights (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-label-md text-label-md">Total Inmuebles</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="home">home</span>
+</div>
+<span class="text-display-lg font-display-lg text-primary">124</span>
+<span class="text-[12px] text-secondary font-medium">+12% este mes</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-label-md text-label-md">Disponibles</span>
+<span class="material-symbols-outlined text-green-700" data-icon="check_circle">check_circle</span>
+</div>
+<span class="text-display-lg font-display-lg text-primary">86</span>
+<span class="text-[12px] text-on-surface-variant font-medium">69% del inventario</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-label-md text-label-md">Vendidos / Arrendados</span>
+<span class="material-symbols-outlined text-secondary" data-icon="sell">sell</span>
+</div>
+<span class="text-display-lg font-display-lg text-primary">38</span>
+<span class="text-[12px] text-on-surface-variant font-medium">Histórico anual</span>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-on-surface-variant font-label-md text-label-md">Vistas Totales</span>
+<span class="material-symbols-outlined text-tertiary-fixed-dim" data-icon="visibility">visibility</span>
+</div>
+<span class="text-display-lg font-display-lg text-primary">14.2k</span>
+<span class="text-[12px] text-secondary font-medium">+2.4k esta semana</span>
+</div>
+</section>
+<!-- Action Bar -->
+<section class="bg-white p-4 rounded-xl shadow-sm border border-outline-variant/30 flex flex-col md:flex-row items-center gap-gutter">
+<!-- Search -->
+<div class="relative flex-1 group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-lg focus:ring-2 focus:ring-primary/20 text-body-md transition-all" placeholder="Buscar por código, título o ubicación..." type="text"/>
+</div>
+<!-- Filters -->
+<div class="flex items-center gap-3 w-full md:w-auto">
+<select class="bg-surface-container-low border-none rounded-lg py-3 px-4 text-label-md font-label-md text-on-surface-variant min-w-[140px] focus:ring-2 focus:ring-primary/20 cursor-pointer">
+<option>Estado: Todos</option>
+<option>Disponible</option>
+<option>Vendido</option>
+<option>Arrendado</option>
+<option>Reservado</option>
+</select>
+<select class="bg-surface-container-low border-none rounded-lg py-3 px-4 text-label-md font-label-md text-on-surface-variant min-w-[140px] focus:ring-2 focus:ring-primary/20 cursor-pointer">
+<option>Tipo: Todos</option>
+<option>Casa</option>
+<option>Apartamento</option>
+<option>Finca</option>
+<option>Lote</option>
+</select>
+<button class="flex items-center gap-2 px-4 py-3 border border-outline-variant rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+<span class="font-label-md">Más filtros</span>
+</button>
+</div>
+</section>
+<!-- Table Section -->
+<div class="bg-white rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/20">
+<th class="p-4 w-12 text-center">
+<input class="rounded border-outline-variant text-primary focus:ring-primary/40" type="checkbox"/>
+</th>
+<th class="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Imagen</th>
+<th class="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Código</th>
+<th class="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Inmueble</th>
+<th class="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Tipo / Operación</th>
+<th class="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Precio</th>
+<th class="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Estado</th>
+<th class="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px] text-center">Destacado</th>
+<th class="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px] text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Property Row 1 -->
+<tr class="property-row transition-colors group">
+<td class="p-4 text-center">
+<input class="rounded border-outline-variant text-primary focus:ring-primary/40" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="w-16 h-12 rounded-lg overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="High-quality architectural photograph of a luxury modern mansion in the Eje Cafetero region of Colombia. The property features large glass windows, warm wooden accents, and is surrounded by lush green tropical vegetation and coffee plantations. The lighting is golden hour, creating a warm and sophisticated atmosphere consistent with the Ivonne Marin brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDS9cE2RL1HIR4-1uzAKXBt_FDoFhyw6zvYr7TPTawvt2HxGPJdZ-ujswLmMhfK4Jen79l9uECzeQ5kho9pOhcUDTtmiUvvUqVfpUaCQGJ0XIZGsQqCpexsoudJAVNiLoYBtBmddRKlrKFYd3ExvDboNH9Lg6s0OwcP7P_eZ16Rbfjk-x0aUm7tKiCPgVN5lC1s2yKCbg1kXEm2qVrE-Zk58KJsJIptfX8USmva8aNVChA4WmvFFDlAEyi9PCcwdw_CaFBIDr4a264"/>
+</div>
+</td>
+<td class="p-4 font-label-md text-on-surface-variant">IM-1042</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Reserva de la Sierra - Casa 14</span>
+<span class="text-[12px] text-on-surface-variant">Pereira, Risaralda</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-body-md">Casa de Lujo</span>
+<span class="text-[12px] text-secondary-fixed-variant font-medium">Venta</span>
+</div>
+</td>
+<td class="p-4">
+<span class="font-bold text-on-surface">$2.450M</span>
+</td>
+<td class="p-4">
+<span class="px-3 py-1 rounded-full bg-green-100 text-green-800 text-[11px] font-bold uppercase">Disponible</span>
+</td>
+<td class="p-4 text-center">
+<button class="w-10 h-6 bg-primary rounded-full relative inline-flex items-center px-1 transition-all">
+<span class="w-4 h-4 bg-white rounded-full translate-x-4"></span>
+</button>
+</td>
+<td class="p-4">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all" title="Ver">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all" title="Editar">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all" title="Compartir">
+<span class="material-symbols-outlined text-[20px]" data-icon="share">share</span>
+</button>
+<button class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-all" title="Eliminar">
+<span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Property Row 2 -->
+<tr class="property-row transition-colors group">
+<td class="p-4 text-center">
+<input class="rounded border-outline-variant text-primary focus:ring-primary/40" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="w-16 h-12 rounded-lg overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Interior view of a luxury penthouse in Manizales, Colombia. High ceilings, marble floors, and contemporary furniture with warm color palettes of beige and burgundy. Large windows overlooking the city mountains. Professional real estate photography style, airy, clean, and elegant, conveying trust and premium lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0TD3HZOOv-u86CiP1nZnqEtRXtr4N6E2pdsF1UG7UyD9TxV1V11ih1hrSBw8mXC9RqmSjLiDBTCSOlF19OOM1bIBF_2N7VbX4EENfuTjD3xp7IHqPXUaGGjsvgMSkTjQBtkkBETCyORx1LLTDC2WcVa_Dq8jpyLet354UPI418xYxpZxdmqLUBkxC83IXvpH-jZkM3JUzbEXqTtkFk8OvwijiVA_3vS_oifUXIh3NNhf_v0rwPRuLKlO6-C1UUbfmZt5Yab3C32c"/>
+</div>
+</td>
+<td class="p-4 font-label-md text-on-surface-variant">IM-1058</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Penthouse Edificio Avignon</span>
+<span class="text-[12px] text-on-surface-variant">Manizales, Caldas</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-body-md">Apartamento</span>
+<span class="text-[12px] text-secondary font-medium">Arriendo</span>
+</div>
+</td>
+<td class="p-4">
+<span class="font-bold text-on-surface">$8.5M/mes</span>
+</td>
+<td class="p-4">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-[11px] font-bold uppercase">Reservado</span>
+</td>
+<td class="p-4 text-center">
+<button class="w-10 h-6 bg-surface-container-highest rounded-full relative inline-flex items-center px-1 transition-all">
+<span class="w-4 h-4 bg-white rounded-full translate-x-0"></span>
+</button>
+</td>
+<td class="p-4">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all"><span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span></button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all"><span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span></button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all"><span class="material-symbols-outlined text-[20px]" data-icon="share">share</span></button>
+<button class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-all"><span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+<!-- Property Row 3 -->
+<tr class="property-row transition-colors group">
+<td class="p-4 text-center">
+<input class="rounded border-outline-variant text-primary focus:ring-primary/40" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="w-16 h-12 rounded-lg overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Traditional coffee farm estate (Finca) exterior in Quindio, Colombia. Red and white wooden balconies, tile roofs, and colorful flower pots. The background shows sprawling coffee hills under a soft misty sky. The visual style is warm, welcoming, and captures the heritage of the Colombian Eje Cafetero region through a high-end luxury lens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCwDnC6xG-N1Y6b8knDycScPrGOJa63gwjUWEdGsgIHLDcT_-zOf_MFQ2i0YGqkctM5jhjeFWuKratlVFZG0WA3khDhGFO5zOk5aQfbjIsCPPyMKe9FDco1pUXi2hxM-SKqNeyEhmlti-X3jsNvimmi7zm9TteS1lAa1RnHEMJv9Kk7_qowMzTcRQOORqVL-tsrr34lvi-0OjjSH7PWbyp1v0ORrZQEWAdN_Uq3UZr0IGzl62cWEfTImYrWktdeuxscB-XRueWQcY"/>
+</div>
+</td>
+<td class="p-4 font-label-md text-on-surface-variant">IM-0982</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Finca El Descanso - Tradicional</span>
+<span class="text-[12px] text-on-surface-variant">Salento, Quindío</span>
+</div>
+</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="text-body-md">Finca</span>
+<span class="text-[12px] text-secondary-fixed-variant font-medium">Venta</span>
+</div>
+</td>
+<td class="p-4">
+<span class="font-bold text-on-surface">$1.200M</span>
+</td>
+<td class="p-4">
+<span class="px-3 py-1 rounded-full bg-primary-container text-on-primary-container text-[11px] font-bold uppercase">Vendido</span>
+</td>
+<td class="p-4 text-center">
+<button class="w-10 h-6 bg-surface-container-highest rounded-full relative inline-flex items-center px-1 transition-all">
+<span class="w-4 h-4 bg-white rounded-full translate-x-0"></span>
+</button>
+</td>
+<td class="p-4">
+<div class="flex items-center justify-end gap-1">
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all"><span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span></button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all"><span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span></button>
+<button class="p-2 hover:bg-surface-container-high rounded-lg text-on-surface-variant transition-all"><span class="material-symbols-outlined text-[20px]" data-icon="share">share</span></button>
+<button class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-all"><span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 flex items-center justify-between bg-surface-container-low/50">
+<div class="flex items-center gap-4">
+<span class="text-[13px] text-on-surface-variant">Mostrando 1 a 10 de 124 resultados</span>
+<div class="flex items-center gap-2">
+<span class="text-[13px] text-on-surface-variant">Filas por página:</span>
+<select class="bg-transparent border-none text-[13px] font-bold py-0 pl-0 pr-8 focus:ring-0">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-white disabled:opacity-30 transition-all" disabled="">
+<span class="material-symbols-outlined text-[20px]" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="px-4 py-2 rounded-lg bg-primary text-on-primary font-bold text-[13px]">1</button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant hover:bg-white text-[13px] transition-all">2</button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant hover:bg-white text-[13px] transition-all">3</button>
+<span class="text-on-surface-variant">...</span>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant hover:bg-white text-[13px] transition-all">13</button>
+<button class="p-2 rounded-lg border border-outline-variant text-on-surface-variant hover:bg-white transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bulk Selection Actions Floating Bar (Mockup Logic) -->
+<div class="fixed bottom-10 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface px-8 py-4 rounded-full shadow-xl flex items-center gap-8 z-50 transform translate-y-24 transition-transform duration-300" id="bulkActions">
+<span class="font-label-md"><span id="selectedCount">0</span> inmuebles seleccionados</span>
+<div class="h-6 w-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
+<span class="text-label-md">Editar</span>
+</button>
+<button class="flex items-center gap-2 hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="sell">sell</span>
+<span class="text-label-md">Cambiar Estado</span>
+</button>
+<button class="flex items-center gap-2 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
+<span class="text-label-md">Eliminar</span>
+</button>
+</div>
+<button class="p-1 hover:bg-white/10 rounded-full" onclick="hideBulkActions()">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</div>
+</div>
+</main>
+<script>
+    // Simple UI Interaction for Bulk Actions
+    const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+    const bulkActionsBar = document.getElementById('bulkActions');
+    const selectedCountSpan = document.getElementById('selectedCount');
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        const checkedCount = Array.from(checkboxes).filter(c => c.checked).length;
+        selectedCountSpan.textContent = checkedCount;
+        
+        if (checkedCount > 0) {
+          bulkActionsBar.classList.remove('translate-y-24');
+        } else {
+          bulkActionsBar.classList.add('translate-y-24');
+        }
+      });
+    });
+
+    function hideBulkActions() {
+      checkboxes.forEach(c => c.checked = false);
+      bulkActionsBar.classList.add('translate-y-24');
+    }
+
+    // Toggle interaction for buttons
+    const toggles = document.querySelectorAll('button.relative');
+    toggles.forEach(toggle => {
+      toggle.addEventListener('click', () => {
+        const dot = toggle.querySelector('span');
+        if (toggle.classList.contains('bg-primary')) {
+          toggle.classList.replace('bg-primary', 'bg-surface-container-highest');
+          dot.classList.replace('translate-x-4', 'translate-x-0');
+        } else {
+          toggle.classList.replace('bg-surface-container-highest', 'bg-primary');
+          dot.classList.replace('translate-x-0', 'translate-x-4');
+        }
+      });
+    });
+  </script>
+</body></html>
