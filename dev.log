@@ -9,3 +9,15 @@
 ✓ Ready in 520ms
 ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
 
+ GET / 200 in 754ms (next.js: 298ms, application-code: 457ms)
+⚠ Blocked cross-origin request to Next.js dev resource /_next/webpack-hmr from "breezy-grasshopper-83.loca.lt".
+Cross-origin access to Next.js dev resources is blocked by default for safety.
+
+To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+
+// next.config.js
+module.exports = {
+  allowedDevOrigins: ['breezy-grasshopper-83.loca.lt'],
+}
+
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
