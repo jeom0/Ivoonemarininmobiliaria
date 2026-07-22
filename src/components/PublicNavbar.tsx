@@ -1,0 +1,120 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
+export default function PublicNavbar() {
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const navLinks = [
+    { label: "Inicio", href: "/" },
+    { label: "Inmuebles", href: "/propiedades" },
+    { label: "Nosotros", href: "/nosotros" },
+    { label: "Vender", href: "/vender" },
+    { label: "Arrendar", href: "/arrendar" },
+    { label: "Blog", href: "/blog" },
+  ];
+
+  return (
+    <nav className="docked full-width top-0 sticky z-50 glass-nav shadow-sm h-20 transition-all bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-md">
+      <div className="flex justify-between items-center w-full px-base md:px-margin-desktop max-w-container-max mx-auto h-full">
+        {/* Brand */}
+        <div className="flex items-center gap-2">
+          <Link href="/">
+            <span className="text-headline-md font-headline-lg text-primary tracking-tight cursor-pointer">
+              Ivonne Marin
+            </span>
+          </Link>
+        </div>
+        
+        {/* Desktop Nav */}
+        <div className="hidden md:flex items-center space-x-8">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/');
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`transition-colors duration-300 font-label-md text-label-md ${
+                  isActive 
+                    ? "font-bold text-primary hover:text-primary-fixed-dim" 
+                    : "text-on-surface-variant font-medium hover:text-primary"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+        </div>
+        
+        {/* Actions */}
+        <div className="flex items-center gap-4">
+          <Link href="/contacto" className="hidden lg:flex items-center gap-2 text-on-surface-variant hover:text-primary transition-all">
+            <span className="material-symbols-outlined">chat</span>
+            <span className="font-label-md text-label-md">Contacto</span>
+          </Link>
+          <Link href="/vender">
+            <button className="bg-primary text-on-primary px-6 py-2.5 rounded-lg font-label-md text-label-md hover:opacity-90 active:scale-95 transition-all shadow-md">
+              Publicar
+            </button>
+          </Link>
+          <Link href="/admin/login" className="hidden lg:flex items-center justify-center w-10 h-10 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary transition-all" title="Acceso Administrativo">
+            <span className="material-symbols-outlined text-[20px]">person</span>
+          </Link>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="md:hidden text-primary p-2 flex items-center"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle Menu"
+          >
+            <span className="material-symbols-outlined text-[28px]">{isMenuOpen ? "close" : "menu"}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMenuOpen && (
+        <div className="md:hidden absolute top-20 left-0 w-full bg-surface dark:bg-surface-container-highest shadow-lg border-t border-outline-variant/30 flex flex-col p-4 space-y-4">
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/');
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setIsMenuOpen(false)}
+                className={`font-label-md text-label-md py-2 px-4 rounded-lg transition-colors ${
+                  isActive 
+                    ? "bg-primary/10 text-primary font-bold" 
+                    : "text-on-surface-variant hover:bg-surface-container-low"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
+          <div className="border-t border-outline-variant/30 pt-4 flex flex-col gap-3">
+            <Link 
+              href="/admin/login"
+              onClick={() => setIsMenuOpen(false)}
+              className="font-label-md text-label-md text-center py-3 border border-outline rounded-lg text-primary hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-[20px]">person</span>
+              Acceso Admin
+            </Link>
+            <Link 
+              href="/contacto"
+              onClick={() => setIsMenuOpen(false)}
+              className="font-label-md text-label-md text-center py-3 border border-outline rounded-lg text-primary hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-[20px]">chat</span>
+              Contacto
+            </Link>
+          </div>
+        </div>
+      )}
+    </nav>
+  );
+}

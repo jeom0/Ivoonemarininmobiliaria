@@ -3,17 +3,10 @@ const path = require('path');
 
 const homeHtml = fs.readFileSync(path.join(__dirname, 'stitch_assets', 'Home.html'), 'utf8');
 
-// 1. Extract tailwind config
 const twMatch = homeHtml.match(/tailwind\.config = (\{[\s\S]*?\})\s*<\/script>/);
 let colors = {}, borderRadius = {}, spacing = {}, fontFamily = {}, fontSize = {};
 if (twMatch) {
-    const configStr = twMatch[1]
-        // Fix standard JSON issues (e.g. trailing commas, lack of quotes on keys if any)
-        .replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ')
-        // Convert to evalable JS since it's a JS object, not strict JSON
-        ;
-    
-    // Evaluate the object safely-ish (it's our own code)
+    const configStr = twMatch[1].replace(/(['"])?([a-z0-9A-Z_]+)(['"])?:/g, '"$2": ');
     const config = eval('(' + twMatch[1] + ')');
     if (config.theme && config.theme.extend) {
         const ext = config.theme.extend;
@@ -25,7 +18,6 @@ if (twMatch) {
     }
 }
 
-// 2. Extract all unique <style> blocks from all HTML files
 const files = fs.readdirSync(path.join(__dirname, 'stitch_assets')).filter(f => f.endsWith('.html'));
 const allStyles = new Set();
 files.forEach(f => {
@@ -36,10 +28,9 @@ files.forEach(f => {
     }
 });
 
-// 3. Generate globals.css
 let css = `@import "tailwindcss";
 
-@theme inline {
+@theme {
 `;
 
 for (const [k, v] of Object.entries(colors)) {
@@ -51,13 +42,9 @@ for (const [k, v] of Object.entries(spacing)) {
 for (const [k, v] of Object.entries(borderRadius)) {
     css += `  --radius-${k}: ${v};\n`;
 }
-// Font families
 for (const [k, v] of Object.entries(fontFamily)) {
     css += `  --font-${k}: "${v[0]}", sans-serif;\n`;
 }
-// Font sizes (v4 uses text-*)
-// Actually, font sizes mapped to class names in v4 might require --text-* or utilities.
-// We'll define them as text sizes.
 for (const [k, v] of Object.entries(fontSize)) {
     const size = v[0];
     const lineHeight = v[1] && v[1].lineHeight ? v[1].lineHeight : 'normal';

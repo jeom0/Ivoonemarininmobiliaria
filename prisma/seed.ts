@@ -1,16 +1,16 @@
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 const prisma = new PrismaClient()
 
 async function main() {
+  const hashedPassword = await bcrypt.hash('admin', 10)
   const admin = await prisma.user.upsert({
     where: { email: 'admin@ivonnemarin.com' },
     update: {},
     create: {
       email: 'admin@ivonnemarin.com',
       name: 'Ivonne Marín',
-      // En producción esto debe estar hasheado con bcrypt, pero para el prototipo NextAuth con credentials
-      // o usaremos bcryptjs.
-      password: 'admin', 
+      password: hashedPassword, 
       role: 'ADMIN',
     },
   })

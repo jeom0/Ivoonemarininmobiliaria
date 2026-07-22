@@ -1,31 +1,17 @@
-
 import Link from "next/link";
-
+import { PrismaClient } from '@prisma/client';
+import PublicNavbar from "@/components/PublicNavbar";
+import PublicFooter from "@/components/PublicFooter";
+const prisma = new PrismaClient();
 
 export default async function Page() {
+  const properties = await prisma.property.findMany({ orderBy: { createdAt: 'desc' } });
+
   return (
     <>
       
 
-<header className="bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-md shadow-sm fixed top-0 w-full z-50">
-<div className="flex justify-between items-center w-full px-base md:px-margin-desktop max-w-container-max mx-auto h-20">
-<div className="text-headline-md font-headline-lg text-primary dark:text-primary-fixed-dim tracking-tight">
-                ivonne marin.
-            </div>
-<nav className="hidden md:flex gap-8 items-center">
-<a className="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Inicio</a>
-<a className="text-primary dark:text-primary-fixed-dim border-b-2 border-primary dark:border-primary-fixed-dim font-bold transition-colors duration-300" href="#">Inmuebles</a>
-<a className="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Vender</a>
-<a className="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Arrendar</a>
-<a className="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed-dim transition-colors duration-300" href="#">Proyectos</a>
-</nav>
-<div className="flex items-center gap-4">
-<span className="material-symbols-outlined text-primary cursor-pointer p-2 rounded-full hover:bg-surface-container transition-all">chat</span>
-<button className="hidden lg:block border border-secondary-fixed-dim text-primary px-6 py-2 rounded-lg font-label-md hover:bg-secondary-container transition-all active:scale-95">Contacto</button>
-<button className="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-md hover:opacity-90 transition-all active:scale-95 shadow-lg shadow-primary/20">Publicar</button>
-</div>
-</div>
-</header>
+<PublicNavbar />
 <main className="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
 <header className="mb-12">
 <h1 className="font-display-lg text-display-lg text-primary mb-2">Inmuebles disponibles</h1>
@@ -111,8 +97,8 @@ export default async function Page() {
 </aside>
 
 <div className="lg:col-span-9">
-<div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-<span className="font-body-md text-on-surface-variant"><strong className="text-primary">124</strong> inmuebles encontrados</span>
+<div className="flex justify-between items-center mb-6">
+<span className="font-body-md text-on-surface-variant"><strong className="text-primary">{properties.length}</strong> inmuebles encontrados</span>
 <div className="flex items-center gap-3">
 <span className="text-label-md text-secondary">Ordenar por:</span>
 <select className="border-none bg-transparent font-bold text-primary focus:ring-0 cursor-pointer">
@@ -126,151 +112,49 @@ export default async function Page() {
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">
 
-<div className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 card-hover transition-all duration-300">
-<div className="relative h-64">
-<div className="absolute top-4 left-4 z-10 flex gap-2">
-<span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">En Venta</span>
-<span className="bg-white/90 backdrop-blur text-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">Premium</span>
-</div>
-<button className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/40 transition-all">
-<span className="material-symbols-outlined">favorite</span>
-</button>
-<div className="w-full h-full bg-cover bg-center" data-alt="A luxury modern apartment building exterior in the coffee region of Colombia, specifically Pereira. The building features sleek architectural lines, large glass windows reflecting a warm golden sunset, and lush tropical greenery in the surrounding landscape. The lighting is soft and empathetic, highlighting the warm beige and vinotinto color palette of the brand." style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuDSCpy0N1m9xCM7xXEs7ZSo_LfE-YJD0gb3btvJeNQJsj8LjCai1IogutNN4rQ8hYvieyOm5Aj-FyldAgk-tp8M-jboSa2u01c8YSOrf6pbNb84c10Tt0YS0z18_9RoSoiT1EpLbIvmiCudqGasr2z4rH2gAAxVhVkmVnFPF7hY-ph_3wvWQdGZKFhOPTKmbCjzD5aehrBHNjvGTj8MHzI9qWJ90wpBa4ylYRm8rXa7x6cxdTEh6wtFUl_TqaeUtawlFFLo7PdlsL8\")"}}></div>
-</div>
-<div className="p-6">
-<div className="flex justify-between items-start mb-2">
-<h3 className="font-headline-md text-headline-md text-primary">Penthouse Pinares</h3>
-<span className="text-headline-md font-bold text-on-surface">$1.250M</span>
-</div>
-<div className="flex items-center gap-1 text-on-surface-variant mb-4">
-<span className="material-symbols-outlined text-[18px]">location_on</span>
-<span className="text-body-md">Sector Pinares, Pereira</span>
-</div>
-<div className="flex justify-between py-4 border-t border-outline-variant/30 text-on-surface-variant">
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">bed</span>
-<span className="text-label-md">3 Hab</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">bathtub</span>
-<span className="text-label-md">4 Baños</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">square_foot</span>
-<span className="text-label-md">240m²</span>
-</div>
-</div>
-</div>
-</div>
+{properties.length === 0 ? (
+    <div className="col-span-1 md:col-span-2 text-center py-12 text-on-surface-variant bg-surface-container-lowest rounded-xl border border-outline-variant/20">
+        No hay inmuebles que coincidan con tu búsqueda.
+    </div>
+) : (
+    properties.map(p => (
+        <div key={p.id} className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 card-hover transition-all duration-300">
+            <div className="relative h-64">
+                <div className="absolute top-4 left-4 z-10 flex gap-2">
+                    <span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">{p.modality}</span>
+                    {p.status === 'NUEVO' && <span className="bg-secondary-fixed text-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">Nuevo</span>}
+                </div>
+                <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url('${p.mainImage}')` }}></div>
+            </div>
+            <div className="p-6">
+                <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-headline-md text-headline-md text-primary">{p.title}</h3>
+                    <span className="text-headline-md font-bold text-on-surface">${p.price.toLocaleString('es-CO')}</span>
+                </div>
+                <div className="flex items-center gap-1 text-on-surface-variant mb-4">
+                    <span className="material-symbols-outlined text-[18px]">location_on</span>
+                    <span className="text-body-md">{p.city} {p.sector ? '- ' + p.sector : ''}</span>
+                </div>
+                <div className="flex justify-between py-4 border-t border-outline-variant/30 text-on-surface-variant">
+                    <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined">bed</span>
+                        <span className="text-label-md">{p.bedrooms} Hab</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined">bathtub</span>
+                        <span className="text-label-md">{p.bathrooms} Baños</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="material-symbols-outlined">square_foot</span>
+                        <span className="text-label-md">{p.builtArea}m²</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    ))
+)}
 
-<div className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 card-hover transition-all duration-300">
-<div className="relative h-64">
-<div className="absolute top-4 left-4 z-10 flex gap-2">
-<span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">En Venta</span>
-<span className="bg-secondary-fixed text-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">Nuevo</span>
-</div>
-<button className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/40 transition-all">
-<span className="material-symbols-outlined">favorite</span>
-</button>
-<div className="w-full h-full bg-cover bg-center" data-alt="A spacious villa with a red-tiled roof and white walls, typical of high-end real estate in the Eje Cafetero region. The villa is surrounded by vibrant coffee plantations and features a modern pool with turquoise water. The sky is a warm dusk hue, casting long shadows and creating a peaceful, luxurious atmosphere that aligns with the brand's professional and empathetic identity." style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuCIcGFFQi4uMDYv8SG2LCNXsXfyAayqdwGsISRWjJhvVb7NdYj1Twnc8-JviZalpZ17Zz8Z-Wd851PsZVrAbLsMqo9M7oVebQLM-PqJDSHflOKUIndEN65pD6_8_TGtOnnhexy93r243nPx6UULyiOOAKoZ3cKGu2Z2k8w18dV5l-TAkRk-TPIrmzcsOms85tLniC-QkqLOI5mJv6nsL7rXWS0BYm5Ig4vkkWdWyaB0HhGw8MwZXcmqrUsqrtkrAHLADamJsH6Lwj8\")"}}></div>
-</div>
-<div className="p-6">
-<div className="flex justify-between items-start mb-2">
-<h3 className="font-headline-md text-headline-md text-primary">Casa de Campo Cerritos</h3>
-<span className="text-headline-md font-bold text-on-surface">$2.800M</span>
-</div>
-<div className="flex items-center gap-1 text-on-surface-variant mb-4">
-<span className="material-symbols-outlined text-[18px]">location_on</span>
-<span className="text-body-md">Condominio Cerritos, Pereira</span>
-</div>
-<div className="flex justify-between py-4 border-t border-outline-variant/30 text-on-surface-variant">
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">bed</span>
-<span className="text-label-md">5 Hab</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">pool</span>
-<span className="text-label-md">Piscina</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">square_foot</span>
-<span className="text-label-md">1.200m²</span>
-</div>
-</div>
-</div>
-</div>
 
-<div className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 card-hover transition-all duration-300">
-<div className="relative h-64">
-<div className="absolute top-4 left-4 z-10 flex gap-2">
-<span className="bg-secondary text-on-secondary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">En Arriendo</span>
-</div>
-<button className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/40 transition-all">
-<span className="material-symbols-outlined">favorite</span>
-</button>
-<div className="w-full h-full bg-cover bg-center" data-alt="Interior of a modern executive apartment in Armenia, Colombia. The space is filled with natural light, featuring high ceilings and minimalist furniture in warm neutral tones. Large glass doors open to a balcony with a view of the Andes mountains. The scene is styled to evoke trust and sophistication, using the warm gallery aesthetic of the Ivonne Marin brand." style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuDQttMg9ndLtKtnv_HiH3wyr9DI5gLwlaf_EzAnFiixZwZxinJX-XVq_ChK5YJ4OYbhqf3WZC63YVxbJTHZDGqpdT6TJ6EMUzQUXMb2ckFKAkjyxnxZA6xhRqcoZHtzhvpnUkIUO65bjDpJNtOuDNA9mbw3dJzAUkh4lK4qZ7zBhJDM29X4IrFqF075nBsslSy17XX75h-BseJOU-G5R0nHmmmgJuFR8l4jYWXJ6lVnyBIWcInnHSWGReaqpqGSrxgaicsXlyklaSs\")"}}></div>
-</div>
-<div className="p-6">
-<div className="flex justify-between items-start mb-2">
-<h3 className="font-headline-md text-headline-md text-primary">Apto. Norte Armenia</h3>
-<span className="text-headline-md font-bold text-on-surface">$4.5M/mes</span>
-</div>
-<div className="flex items-center gap-1 text-on-surface-variant mb-4">
-<span className="material-symbols-outlined text-[18px]">location_on</span>
-<span className="text-body-md">Av. Centenario, Armenia</span>
-</div>
-<div className="flex justify-between py-4 border-t border-outline-variant/30 text-on-surface-variant">
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">bed</span>
-<span className="text-label-md">2 Hab</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">directions_car</span>
-<span className="text-label-md">1 Parq</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">square_foot</span>
-<span className="text-label-md">95m²</span>
-</div>
-</div>
-</div>
-</div>
-
-<div className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 card-hover transition-all duration-300">
-<div className="relative h-64">
-<div className="absolute top-4 left-4 z-10 flex gap-2">
-<span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">En Venta</span>
-</div>
-<button className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/20 backdrop-blur text-white flex items-center justify-center hover:bg-white/40 transition-all">
-<span className="material-symbols-outlined">favorite</span>
-</button>
-<div className="w-full h-full bg-cover bg-center" data-alt="A luxurious duplex apartment in Manizales, showcasing mountain views through floor-to-ceiling windows. The interior is elegant with polished wooden floors and a warm lighting scheme. The environment is designed to appeal to high-net-worth clients, emphasizing professional service and residential comfort through a soft color palette and refined details." style={{"backgroundImage":"url(\"https://lh3.googleusercontent.com/aida-public/AB6AXuBHDmKZptTErASp2yrKBPwlb3DfYpdsD-eFrH_7yStzJmYVFkQHjv2uZzcCr0shE3RLc4tXU_-R710oIQj8lvESOk3whJk3nEBGtB9TuzaP1GmLFQQZsDWKXxuVmJA_Fy4XZUk6xjF6brLrtV26pPm2F5yf-W3NzMxjhaL_rkGkvw16_oIDVC1F1VacLIk1cmhmCI6Qk2WZ8hgQmFIr4e0Wr0Naq6p40t_P_y9tll12aL4m-wagz9Bvw1AiG3j9T4OfoMXV0mCYg5A\")"}}></div>
-</div>
-<div className="p-6">
-<div className="flex justify-between items-start mb-2">
-<h3 className="font-headline-md text-headline-md text-primary">Duplex Palermo</h3>
-<span className="text-headline-md font-bold text-on-surface">$820M</span>
-</div>
-<div className="flex items-center gap-1 text-on-surface-variant mb-4">
-<span className="material-symbols-outlined text-[18px]">location_on</span>
-<span className="text-body-md">Barrio Palermo, Manizales</span>
-</div>
-<div className="flex justify-between py-4 border-t border-outline-variant/30 text-on-surface-variant">
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">bed</span>
-<span className="text-label-md">4 Hab</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">bathtub</span>
-<span className="text-label-md">3 Baños</span>
-</div>
-<div className="flex items-center gap-2">
-<span className="material-symbols-outlined">square_foot</span>
-<span className="text-label-md">165m²</span>
-</div>
-</div>
-</div>
-</div>
 </div>
 
 <div className="mt-16 flex justify-center items-center gap-2">
@@ -290,53 +174,7 @@ export default async function Page() {
 </div>
 </main>
 
-<footer className="bg-primary dark:bg-primary-container text-on-primary full-width py-section-gap">
-<div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
-<div className="space-y-6">
-<div className="font-headline-md text-on-primary dark:text-on-primary-container">ivonne marin.</div>
-<p className="font-body-md text-on-primary/80">Tu socia de confianza en el mercado inmobiliario del Eje Cafetero. Elegancia y profesionalismo en cada propiedad.</p>
-<div className="flex gap-4">
-<a className="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href="#"><span className="material-symbols-outlined">public</span></a>
-<a className="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href="#"><span className="material-symbols-outlined">mail</span></a>
-</div>
-</div>
-<div className="space-y-4">
-<h4 className="font-label-md text-label-md uppercase tracking-widest text-secondary-fixed">Enlaces</h4>
-<ul className="space-y-2">
-<li><a className="text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Inicio</a></li>
-<li><a className="text-secondary-fixed underline" href="#">Inmuebles</a></li>
-<li><a className="text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Servicios</a></li>
-<li><a className="text-on-primary/80 hover:text-secondary-fixed transition-colors" href="#">Cobertura</a></li>
-</ul>
-</div>
-<div className="space-y-4">
-<h4 className="font-label-md text-label-md uppercase tracking-widest text-secondary-fixed">Contacto</h4>
-<ul className="space-y-4">
-<li className="flex items-center gap-3">
-<span className="material-symbols-outlined text-secondary-fixed">phone</span>
-<span className="text-on-primary/80 font-body-md">+57 300 123 4567</span>
-</li>
-<li className="flex items-center gap-3">
-<span className="material-symbols-outlined text-secondary-fixed">location_on</span>
-<span className="text-on-primary/80 font-body-md">Pereira, Risaralda - Colombia</span>
-</li>
-</ul>
-</div>
-<div className="space-y-6">
-<h4 className="font-label-md text-label-md uppercase tracking-widest text-secondary-fixed">Boletín</h4>
-<p className="text-on-primary/80 text-body-md">Recibe las mejores ofertas en tu correo.</p>
-<div className="relative">
-<input className="w-full bg-on-primary/10 border-on-primary/20 rounded-lg py-3 px-4 text-on-primary focus:ring-secondary-fixed focus:border-secondary-fixed placeholder:text-on-primary/40" placeholder="Tu email" type="email"/>
-<button className="absolute right-2 top-2 p-1.5 bg-secondary-fixed text-primary rounded-md">
-<span className="material-symbols-outlined">arrow_forward</span>
-</button>
-</div>
-</div>
-</div>
-<div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop mt-16 pt-8 border-t border-on-primary/10 text-center md:text-left text-on-primary/60 text-label-md">
-            © 2024 Ivonne Marin Asesora Inmobiliaria. Todos los derechos reservados.
-        </div>
-</footer>
+<PublicFooter />
 
 
     </>

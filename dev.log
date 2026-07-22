@@ -6,18 +6,550 @@
 - Local:         http://localhost:3000
 - Network:       http://192.168.101.71:3000
 - Environments: .env
-✓ Ready in 520ms
+✓ Ready in 373ms
 ⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
 
- GET / 200 in 754ms (next.js: 298ms, application-code: 457ms)
-⚠ Blocked cross-origin request to Next.js dev resource /_next/webpack-hmr from "breezy-grasshopper-83.loca.lt".
-Cross-origin access to Next.js dev resources is blocked by default for safety.
+ GET /admin/login 200 in 447ms (next.js: 167ms, proxy.ts: 78ms, application-code: 202ms)
+ GET /api/auth/session 200 in 744ms (next.js: 727ms, application-code: 17ms)
+ GET /api/auth/session 200 in 10ms (next.js: 4ms, application-code: 6ms)
+ GET /login 404 in 69ms (next.js: 40ms, application-code: 30ms)
+ GET /api/auth/session 200 in 12ms (next.js: 5ms, application-code: 7ms)
+ GET /api/auth/session 200 in 7ms (next.js: 1297µs, application-code: 5ms)
+ GET /api/auth/session 200 in 238ms (next.js: 130ms, application-code: 108ms)
+ GET /api/auth/session 200 in 20ms (next.js: 14ms, application-code: 6ms)
+ GET /blog 200 in 644ms (next.js: 403ms, application-code: 241ms)
+ GET /api/auth/session 200 in 23ms (next.js: 12ms, application-code: 11ms)
+ GET /api/auth/session 200 in 11ms (next.js: 3ms, application-code: 8ms)
+ GET /api/auth/session 200 in 184ms (next.js: 93ms, application-code: 90ms)
+ GET /admin/login 200 in 102ms (next.js: 12ms, proxy.ts: 47ms, application-code: 44ms)
+✓ Compiled in 521ms
+✓ Compiled in 123ms
+✓ Compiled in 610ms
+⨯ ./src/app/admin/layout.tsx:52:26
+Unterminated template
+  [90m 50 |[0m
+  [90m 51 |[0m       {[90m/* SideNavBar - User's exact design */[0m}
+[31m[1m>[0m [90m 52 |[0m       <aside className={\[32m`\${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:tran...[0m
+  [90m    |[0m                          [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 53 |[0m [32m        <div className="mb-10 px-2 flex items-center gap-3">[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 54 |[0m [32m            <div className="flex flex-col">[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 55 |[0m [32m            <span className="font-headline-md text-primary dark:text-primary-fixed-dim fo...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 56 |[0m [32m            <span className="font-headline-md text-primary dark:text-primary-fixed-dim fo...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 57 |[0m [32m            </div>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 58 |[0m [32m        </div>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 59 |[0m [32m        [0m
+  [90m    |[0m [31m[1m^^^^^^^^[0m
+[31m[1m>[0m [90m 60 |[0m [32m        <nav className="flex-1 space-y-1">[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 61 |[0m [32m            {navItems.map(item => {[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 62 |[0m [32m                const isActive = pathname === item.href;[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 63 |[0m [32m                return ([0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 64 |[0m [32m                    <Link [0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 65 |[0m [32m                        key={item.name}[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 66 |[0m [32m                        href={item.href}[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 67 |[0m [32m                        onClick={() => setSidebarOpen(false)}[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 68 |[0m [32m                        className={\`flex items-center gap-3 px-4 py-3 rounded-lg transit...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 69 |[0m [32m                    >[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 70 |[0m [32m                        <span className="material-symbols-outlined">{item.icon}</span>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 71 |[0m [32m                        <span className="font-label-md text-label-md">{item.name}</span>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 72 |[0m [32m                    </Link>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 73 |[0m [32m                )[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 74 |[0m [32m            })}[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 75 |[0m [32m        </nav>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 76 |[0m [32m        [0m
+  [90m    |[0m [31m[1m^^^^^^^^[0m
+[31m[1m>[0m [90m 77 |[0m [32m        <div className="mt-auto border-t border-outline-variant/30 pt-4">[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 78 |[0m [32m            <Link href="/admin/properties/new" className="w-full mb-6 py-3 bg-primary tex...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 79 |[0m [32m                <span className="material-symbols-outlined text-[20px]">add</span>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 80 |[0m [32m                Crear Inmueble[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 81 |[0m [32m            </Link>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 82 |[0m [32m            [0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 83 |[0m [32m            <div className="space-y-1">[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 84 |[0m [32m                <Link href="#" className="flex items-center gap-3 px-4 py-2 text-on-surfa...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 85 |[0m [32m                    <span className="material-symbols-outlined">help</span>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 86 |[0m [32m                    <span className="font-label-md text-label-md">Ayuda</span>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 87 |[0m [32m                </Link>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 88 |[0m [32m                <button onClick={() => signOut()} className="w-full flex items-center gap...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 89 |[0m [32m                    <span className="material-symbols-outlined">logout</span>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 90 |[0m [32m                    <span className="font-label-md text-label-md">Cerrar Sesión</span>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 91 |[0m [32m                </button>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 92 |[0m [32m            </div>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 93 |[0m [32m            [0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 94 |[0m [32m            <div className="mt-6 flex items-center gap-3 px-2">[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 95 |[0m [32m                <div className="w-10 h-10 rounded-full bg-secondary-container flex items-...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 96 |[0m [32m                    <img className="w-full h-full object-cover" src="https://lh3.googleus...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 97 |[0m [32m                </div>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 98 |[0m [32m                <div className="flex flex-col text-left">[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m 99 |[0m [32m                    <span className="font-label-md text-on-surface font-bold truncate w-2...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m100 |[0m [32m                    <span className="text-[12px] text-on-surface-variant">Administrador</...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m101 |[0m [32m                </div>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m102 |[0m [32m            </div>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m103 |[0m [32m        </div>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m104 |[0m [32m      </aside>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m105 |[0m
+  [90m    |[0m [31m[1m^[0m
+[31m[1m>[0m [90m106 |[0m [32m      {/* Main Canvas */}[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m107 |[0m [32m      <main className="flex-1 min-h-screen bg-background overflow-x-hidden md:p-margin-de...[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m108 |[0m [32m        {children}[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m109 |[0m [32m      </main>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^^^^[0m
+[31m[1m>[0m [90m110 |[0m [32m    </div>[0m
+  [90m    |[0m [31m[1m^^^^^^^^^^[0m
+[31m[1m>[0m [90m111 |[0m [32m  )[0m
+  [90m    |[0m [31m[1m^^^[0m
+[31m[1m>[0m [90m112 |[0m [32m}[0m
+  [90m    |[0m [31m[1m^[0m
+[31m[1m>[0m [90m113 |[0m
+  [90m    |[0m [31m[1m^[0m
 
-To allow this host in development, add it to "allowedDevOrigins" in next.config.js and restart the dev server:
+Parsing ecmascript source code failed
 
-// next.config.js
-module.exports = {
-  allowedDevOrigins: ['breezy-grasshopper-83.loca.lt'],
-}
 
-Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ GET /admin/login 500 in 3.0s (next.js: 2.2s, proxy.ts: 675ms, application-code: 130ms)
+[browser] ./src/app/admin/layout.tsx:52:26
+Unterminated template
+   50 |
+   51 |       {/* SideNavBar - User's exact design */}
+>  52 |       <aside className={\`\${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:tran...
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  53 |         <div className="mb-10 px-2 flex items-center gap-3">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  54 |             <div className="flex flex-col">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  55 |             <span className="font-headline-md text-primary dark:text-primary-fixed-dim fo...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  56 |             <span className="font-headline-md text-primary dark:text-primary-fixed-dim fo...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  57 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+>  58 |         </div>
+      | ^^^^^^^^^^^^^^
+>  59 |         
+      | ^^^^^^^^
+>  60 |         <nav className="flex-1 space-y-1">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  61 |             {navItems.map(item => {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  62 |                 const isActive = pathname === item.href;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  63 |                 return (
+      | ^^^^^^^^^^^^^^^^^^^^^^^^
+>  64 |                     <Link 
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  65 |                         key={item.name}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  66 |                         href={item.href}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  67 |                         onClick={() => setSidebarOpen(false)}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  68 |                         className={\`flex items-center gap-3 px-4 py-3 rounded-lg transit...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  69 |                     >
+      | ^^^^^^^^^^^^^^^^^^^^^
+>  70 |                         <span className="material-symbols-outlined">{item.icon}</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  71 |                         <span className="font-label-md text-label-md">{item.name}</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  72 |                     </Link>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  73 |                 )
+      | ^^^^^^^^^^^^^^^^^
+>  74 |             })}
+      | ^^^^^^^^^^^^^^^
+>  75 |         </nav>
+      | ^^^^^^^^^^^^^^
+>  76 |         
+      | ^^^^^^^^
+>  77 |         <div className="mt-auto border-t border-outline-variant/30 pt-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  78 |             <Link href="/admin/properties/new" className="w-full mb-6 py-3 bg-primary tex...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  79 |                 <span className="material-symbols-outlined text-[20px]">add</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  80 |                 Crear Inmueble
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  81 |             </Link>
+      | ^^^^^^^^^^^^^^^^^^^
+>  82 |             
+      | ^^^^^^^^^^^^
+>  83 |             <div className="space-y-1">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  84 |                 <Link href="#" className="flex items-center gap-3 px-4 py-2 text-on-surfa...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  85 |                     <span className="material-symbols-outlined">help</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  86 |                     <span className="font-label-md text-label-md">Ayuda</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  87 |                 </Link>
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+>  88 |                 <button onClick={() => signOut()} className="w-full flex items-center gap...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  89 |                     <span className="material-symbols-outlined">logout</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  90 |                     <span className="font-label-md text-label-md">Cerrar Sesión</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  91 |                 </button>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+>  92 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+>  93 |             
+      | ^^^^^^^^^^^^
+>  94 |             <div className="mt-6 flex items-center gap-3 px-2">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  95 |                 <div className="w-10 h-10 rounded-full bg-secondary-container flex items-...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  96 |                     <img className="w-full h-full object-cover" src="https://lh3.googleus...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  97 |                 </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^
+>  98 |                 <div className="flex flex-col text-left">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  99 |                     <span className="font-label-md text-on-surface font-bold truncate w-2...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 100 |                     <span className="text-[12px] text-on-surface-variant">Administrador</...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 101 |                 </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^
+> 102 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+> 103 |         </div>
+      | ^^^^^^^^^^^^^^
+> 104 |       </aside>
+      | ^^^^^^^^^^^^^^
+> 105 |
+      | ^
+> 106 |       {/* Main Canvas */}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 107 |       <main className="flex-1 min-h-screen bg-background overflow-x-hidden md:p-margin-de...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 108 |         {children}
+      | ^^^^^^^^^^^^^^^^^^
+> 109 |       </main>
+      | ^^^^^^^^^^^^^
+> 110 |     </div>
+      | ^^^^^^^^^^
+> 111 |   )
+      | ^^^
+> 112 | }
+      | ^
+> 113 |
+      | ^
+
+Parsing ecmascript source code failed 
+[browser] Uncaught Error: ./src/app/admin/layout.tsx:52:26
+Unterminated template
+   50 |
+   51 |       {/* SideNavBar - User's exact design */}
+>  52 |       <aside className={\`\${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:tran...
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  53 |         <div className="mb-10 px-2 flex items-center gap-3">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  54 |             <div className="flex flex-col">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  55 |             <span className="font-headline-md text-primary dark:text-primary-fixed-dim fo...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  56 |             <span className="font-headline-md text-primary dark:text-primary-fixed-dim fo...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  57 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+>  58 |         </div>
+      | ^^^^^^^^^^^^^^
+>  59 |         
+      | ^^^^^^^^
+>  60 |         <nav className="flex-1 space-y-1">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  61 |             {navItems.map(item => {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  62 |                 const isActive = pathname === item.href;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  63 |                 return (
+      | ^^^^^^^^^^^^^^^^^^^^^^^^
+>  64 |                     <Link 
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  65 |                         key={item.name}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  66 |                         href={item.href}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  67 |                         onClick={() => setSidebarOpen(false)}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  68 |                         className={\`flex items-center gap-3 px-4 py-3 rounded-lg transit...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  69 |                     >
+      | ^^^^^^^^^^^^^^^^^^^^^
+>  70 |                         <span className="material-symbols-outlined">{item.icon}</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  71 |                         <span className="font-label-md text-label-md">{item.name}</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  72 |                     </Link>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  73 |                 )
+      | ^^^^^^^^^^^^^^^^^
+>  74 |             })}
+      | ^^^^^^^^^^^^^^^
+>  75 |         </nav>
+      | ^^^^^^^^^^^^^^
+>  76 |         
+      | ^^^^^^^^
+>  77 |         <div className="mt-auto border-t border-outline-variant/30 pt-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  78 |             <Link href="/admin/properties/new" className="w-full mb-6 py-3 bg-primary tex...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  79 |                 <span className="material-symbols-outlined text-[20px]">add</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  80 |                 Crear Inmueble
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  81 |             </Link>
+      | ^^^^^^^^^^^^^^^^^^^
+>  82 |             
+      | ^^^^^^^^^^^^
+>  83 |             <div className="space-y-1">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  84 |                 <Link href="#" className="flex items-center gap-3 px-4 py-2 text-on-surfa...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  85 |                     <span className="material-symbols-outlined">help</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  86 |                     <span className="font-label-md text-label-md">Ayuda</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  87 |                 </Link>
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+>  88 |                 <button onClick={() => signOut()} className="w-full flex items-center gap...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  89 |                     <span className="material-symbols-outlined">logout</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  90 |                     <span className="font-label-md text-label-md">Cerrar Sesión</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  91 |                 </button>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+>  92 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+>  93 |             
+      | ^^^^^^^^^^^^
+>  94 |             <div className="mt-6 flex items-center gap-3 px-2">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  95 |                 <div className="w-10 h-10 rounded-full bg-secondary-container flex items-...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  96 |                     <img className="w-full h-full object-cover" src="https://lh3.googleus...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  97 |                 </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^
+>  98 |                 <div className="flex flex-col text-left">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  99 |                     <span className="font-label-md text-on-surface font-bold truncate w-2...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 100 |                     <span className="text-[12px] text-on-surface-variant">Administrador</...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 101 |                 </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^
+> 102 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+> 103 |         </div>
+      | ^^^^^^^^^^^^^^
+> 104 |       </aside>
+      | ^^^^^^^^^^^^^^
+> 105 |
+      | ^
+> 106 |       {/* Main Canvas */}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 107 |       <main className="flex-1 min-h-screen bg-background overflow-x-hidden md:p-margin-de...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 108 |         {children}
+      | ^^^^^^^^^^^^^^^^^^
+> 109 |       </main>
+      | ^^^^^^^^^^^^^
+> 110 |     </div>
+      | ^^^^^^^^^^
+> 111 |   )
+      | ^^^
+> 112 | }
+      | ^
+> 113 |
+      | ^
+
+Parsing ecmascript source code failed
+
+
+    at <unknown> (Error: ./src/app/admin/layout.tsx:52:26)
+    at <unknown> (Error: (./src/app/admin/layout.tsx:52:26)
+[browser] ./src/app/admin/layout.tsx:52:26
+Unterminated template
+   50 |
+   51 |       {/* SideNavBar - User's exact design */}
+>  52 |       <aside className={\`\${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:tran...
+      |                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  53 |         <div className="mb-10 px-2 flex items-center gap-3">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  54 |             <div className="flex flex-col">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  55 |             <span className="font-headline-md text-primary dark:text-primary-fixed-dim fo...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  56 |             <span className="font-headline-md text-primary dark:text-primary-fixed-dim fo...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  57 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+>  58 |         </div>
+      | ^^^^^^^^^^^^^^
+>  59 |         
+      | ^^^^^^^^
+>  60 |         <nav className="flex-1 space-y-1">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  61 |             {navItems.map(item => {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  62 |                 const isActive = pathname === item.href;
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  63 |                 return (
+      | ^^^^^^^^^^^^^^^^^^^^^^^^
+>  64 |                     <Link 
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  65 |                         key={item.name}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  66 |                         href={item.href}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  67 |                         onClick={() => setSidebarOpen(false)}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  68 |                         className={\`flex items-center gap-3 px-4 py-3 rounded-lg transit...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  69 |                     >
+      | ^^^^^^^^^^^^^^^^^^^^^
+>  70 |                         <span className="material-symbols-outlined">{item.icon}</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  71 |                         <span className="font-label-md text-label-md">{item.name}</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  72 |                     </Link>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  73 |                 )
+      | ^^^^^^^^^^^^^^^^^
+>  74 |             })}
+      | ^^^^^^^^^^^^^^^
+>  75 |         </nav>
+      | ^^^^^^^^^^^^^^
+>  76 |         
+      | ^^^^^^^^
+>  77 |         <div className="mt-auto border-t border-outline-variant/30 pt-4">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  78 |             <Link href="/admin/properties/new" className="w-full mb-6 py-3 bg-primary tex...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  79 |                 <span className="material-symbols-outlined text-[20px]">add</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  80 |                 Crear Inmueble
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  81 |             </Link>
+      | ^^^^^^^^^^^^^^^^^^^
+>  82 |             
+      | ^^^^^^^^^^^^
+>  83 |             <div className="space-y-1">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  84 |                 <Link href="#" className="flex items-center gap-3 px-4 py-2 text-on-surfa...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  85 |                     <span className="material-symbols-outlined">help</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  86 |                     <span className="font-label-md text-label-md">Ayuda</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  87 |                 </Link>
+      | ^^^^^^^^^^^^^^^^^^^^^^^
+>  88 |                 <button onClick={() => signOut()} className="w-full flex items-center gap...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  89 |                     <span className="material-symbols-outlined">logout</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  90 |                     <span className="font-label-md text-label-md">Cerrar Sesión</span>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  91 |                 </button>
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+>  92 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+>  93 |             
+      | ^^^^^^^^^^^^
+>  94 |             <div className="mt-6 flex items-center gap-3 px-2">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  95 |                 <div className="w-10 h-10 rounded-full bg-secondary-container flex items-...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  96 |                     <img className="w-full h-full object-cover" src="https://lh3.googleus...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  97 |                 </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^
+>  98 |                 <div className="flex flex-col text-left">
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>  99 |                     <span className="font-label-md text-on-surface font-bold truncate w-2...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 100 |                     <span className="text-[12px] text-on-surface-variant">Administrador</...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 101 |                 </div>
+      | ^^^^^^^^^^^^^^^^^^^^^^
+> 102 |             </div>
+      | ^^^^^^^^^^^^^^^^^^
+> 103 |         </div>
+      | ^^^^^^^^^^^^^^
+> 104 |       </aside>
+      | ^^^^^^^^^^^^^^
+> 105 |
+      | ^
+> 106 |       {/* Main Canvas */}
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^
+> 107 |       <main className="flex-1 min-h-screen bg-background overflow-x-hidden md:p-margin-de...
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 108 |         {children}
+      | ^^^^^^^^^^^^^^^^^^
+> 109 |       </main>
+      | ^^^^^^^^^^^^^
+> 110 |     </div>
+      | ^^^^^^^^^^
+> 111 |   )
+      | ^^^
+> 112 | }
+      | ^
+> 113 |
+      | ^
+
+Parsing ecmascript source code failed 
+[?25h

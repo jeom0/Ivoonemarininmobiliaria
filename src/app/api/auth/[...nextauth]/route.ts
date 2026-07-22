@@ -20,15 +20,7 @@ export const authOptions: AuthOptions = {
         
         if (!user) return null
         
-        // En desarrollo/seed si la clave es "admin" en texto plano, la aceptamos si no está hasheada
-        // pero idealmente deberíamos comparar hashes. Como en el seed puse "admin" texto plano, 
-        // haré un fallback simple para el prototipo.
-        let isValid = false
-        if (user.password === credentials.password) {
-            isValid = true;
-        } else {
-            isValid = await bcrypt.compare(credentials.password, user.password)
-        }
+        const isValid = await bcrypt.compare(credentials.password, user.password)
         
         if (!isValid) return null
         
@@ -36,7 +28,9 @@ export const authOptions: AuthOptions = {
           id: user.id,
           name: user.name,
           email: user.email,
-          role: user.role
+          role: user.role,
+          image: user.image,
+          permissions: user.permissions
         }
       }
     })
@@ -45,10 +39,18 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update" && session) {
+        if (session.name) token.name = session.name;
+        if (session.image) token.image = session.image;
+        if (session.permissions) token.permissions = session.permissions;
+      }
+      
       if (user) {
         token.role = (user as any).role
         token.id = user.id
+        token.permissions = (user as any).permissions
+        token.image = (user as any).image
       }
       return token
     },
@@ -56,6 +58,8 @@ export const authOptions: AuthOptions = {
       if (session?.user) {
         (session.user as any).role = token.role;
         (session.user as any).id = token.id;
+        (session.user as any).permissions = token.permissions;
+        if (token.image) session.user.image = token.image as string;
       }
       return session
     }

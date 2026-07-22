@@ -1,0 +1,460 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+type Lead = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  message: string | null;
+  type: string;
+  status: string;
+  propertyId: string | null;
+  createdAt: string; // ISO string
+};
+
+const STATUS_STYLES: Record<string, string> = {
+  NEW: "bg-tertiary-container text-on-tertiary",
+  CONTACTED: "bg-surface-container-high text-on-surface",
+  NEGOTIATING: "bg-secondary-container text-on-secondary-container",
+  CLOSED: "bg-outline-variant/30 text-on-surface-variant",
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  NEW: "Nuevo",
+  CONTACTED: "Contactado",
+  NEGOTIATING: "En Negociación",
+  CLOSED: "Cerrado",
+};
+
+function timeAgo(isoDate: string): string {
+  const diff = Date.now() - new Date(isoDate).getTime();
+  const mins = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  if (mins < 60) return `Hace ${mins} minuto${mins !== 1 ? "s" : ""}`;
+  if (hours < 24) return `Hace ${hours} hora${hours !== 1 ? "s" : ""}`;
+  if (days < 7) return `Hace ${days} día${days !== 1 ? "s" : ""}`;
+  return new Date(isoDate).toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" });
+}
+
+interface LeadsTableProps {
+  initialLeads: Lead[];
+}
+
+const PAGE_SIZE = 10;
+
+export default function LeadsTable({ initialLeads }: LeadsTableProps) {
+  const router = useRouter();
+  const [leads, setLeads] = useState<Lead[]>(initialLeads);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("ALL");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isCreating, setIsCreating] = useState(false);
+  const [newLeadData, setNewLeadData] = useState({ name: '', email: '', phone: '', message: '', type: 'CONTACT' });
+
+  // Editing status inline
+  const [editingStatusId, setEditingStatusId] = useState<string | null>(null);
+
+  // Detail modal
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+
+  const filtered = leads.filter((l) => {
+    const matchesSearch =
+      l.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      l.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (l.phone || "").includes(searchTerm) ||
+      (l.message || "").toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === "ALL" || l.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("¿Eliminar este lead permanentemente?")) return;
+    try {
+      await fetch(`/api/leads/${id}`, { method: "DELETE" });
+      setLeads((prev) => prev.filter((l) => l.id !== id));
+      if (selectedLead?.id === id) setSelectedLead(null);
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert('Error al eliminar');
+    }
+  };
+
+  const handleCreateLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newLeadData)
+      });
+      if (res.ok) {
+        const lead = await res.json();
+        setLeads([lead, ...leads]);
+        setIsCreating(false);
+        setNewLeadData({ name: '', email: '', phone: '', message: '', type: 'CONTACT' });
+      } else {
+        alert('Error al crear lead');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error de red');
+    }
+  };
+
+  const handleStatusChange = async (id: string, newStatus: string) => {
+    setLeads((prev) =>
+      prev.map((l) => (l.id === id ? { ...l, status: newStatus } : l))
+    );
+    setEditingStatusId(null);
+    try {
+      await fetch(`/api/leads/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      router.refresh();
+    } catch {
+      alert("Error al actualizar el estado");
+    }
+  };
+
+  // KPIs
+  const totalLeads = leads.length;
+  const newLeads = leads.filter((l) => l.status === "NEW").length;
+  const contactedLeads = leads.filter((l) => l.status === "CONTACTED").length;
+
+  return (
+    <div className="space-y-6">
+      {/* KPI Cards */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+        <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-on-surface-variant font-label-md text-label-md">Total Leads</span>
+            <span className="material-symbols-outlined text-primary-container">groups</span>
+          </div>
+          <span className="text-display-lg font-display-lg text-primary">{totalLeads}</span>
+          <span className="text-[12px] text-secondary font-medium">Histórico en base de datos</span>
+        </div>
+        <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-on-surface-variant font-label-md text-label-md">Nuevos (Sin contacto)</span>
+            <span className="material-symbols-outlined text-error">priority_high</span>
+          </div>
+          <span className="text-display-lg font-display-lg text-primary">{newLeads}</span>
+          <span className="text-[12px] text-on-surface-variant font-medium">Requieren atención inmediata</span>
+        </div>
+        <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-on-surface-variant font-label-md text-label-md">Contactados</span>
+            <span className="material-symbols-outlined text-green-700">check_circle</span>
+          </div>
+          <span className="text-display-lg font-display-lg text-primary">{contactedLeads}</span>
+          <span className="text-[12px] text-secondary font-medium">En seguimiento activo</span>
+        </div>
+      </section>
+
+      {/* Toolbar */}
+      <div className="flex flex-wrap gap-4 bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant/20 items-center justify-between">
+        <div className="relative flex-1 min-w-[250px] max-w-md">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+          <input
+            value={searchTerm}
+            onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
+            className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+            placeholder="Buscar por nombre, teléfono, email..."
+            type="text"
+          />
+        </div>
+        <div className="flex gap-3 flex-wrap">
+          <select
+            value={statusFilter}
+            onChange={(e) => { setStatusFilter(e.target.value); setCurrentPage(1); }}
+            className="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg bg-surface-container-lowest text-on-surface hover:bg-surface-container-low transition-colors font-label-md text-label-md focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer"
+          >
+            <option value="ALL">Estado: Todos</option>
+            <option value="NEW">Nuevo</option>
+            <option value="CONTACTED">Contactado</option>
+            <option value="NEGOTIATING">En Negociación</option>
+            <option value="CLOSED">Cerrado</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col">
+        <div className="overflow-x-auto flex-1">
+          <table className="w-full text-left border-collapse min-w-[800px]">
+            <thead className="bg-surface-container-low border-b border-outline-variant/30 sticky top-0 z-10">
+              <tr>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Cliente</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Contacto</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Mensaje</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Tipo</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Estado</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-outline-variant/20 font-body-md text-body-md text-on-surface">
+              {paginated.map((lead) => (
+                <tr key={lead.id} className="hover:bg-surface-container-low/50 transition-colors group">
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold flex-shrink-0">
+                        {lead.name.substring(0, 2).toUpperCase()}
+                      </div>
+                      <div>
+                        <div className="font-medium text-on-surface">{lead.name}</div>
+                        <div className="text-sm text-on-surface-variant mt-0.5">{timeAgo(lead.createdAt)}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6">
+                    <div className="flex flex-col gap-1">
+                      {lead.phone && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="material-symbols-outlined text-sm text-on-surface-variant">call</span>
+                          {lead.phone}
+                        </div>
+                      )}
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="material-symbols-outlined text-sm text-on-surface-variant">mail</span>
+                        <span className="truncate max-w-[160px]">{lead.email}</span>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="py-4 px-6">
+                    <span className="text-[14px] text-on-surface-variant line-clamp-2 max-w-[200px]">
+                      {lead.message ? lead.message.substring(0, 60) + (lead.message.length > 60 ? '...' : '') : 'Sin mensaje'}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface text-sm border border-outline-variant/30">
+                      <span className="material-symbols-outlined text-sm">language</span>
+                      {lead.type === "VISIT" ? "Visita" : "Contacto"}
+                    </span>
+                  </td>
+                  <td className="py-4 px-6">
+                    {editingStatusId === lead.id ? (
+                      <select
+                        autoFocus
+                        defaultValue={lead.status}
+                        onBlur={() => setEditingStatusId(null)}
+                        onChange={(e) => handleStatusChange(lead.id, e.target.value)}
+                        className="text-xs border border-primary rounded-lg px-2 py-1 bg-surface focus:outline-none cursor-pointer"
+                      >
+                        {Object.entries(STATUS_LABELS).map(([value, label]) => (
+                          <option key={value} value={value}>{label}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <button
+                        onClick={() => setEditingStatusId(lead.id)}
+                        className={`inline-flex items-center px-2.5 py-1 rounded-full font-label-md text-xs hover:opacity-80 transition-opacity cursor-pointer ${STATUS_STYLES[lead.status] || "bg-surface-container text-on-surface"}`}
+                        title="Clic para cambiar estado"
+                      >
+                        {STATUS_LABELS[lead.status] || lead.status}
+                      </button>
+                    )}
+                  </td>
+                  <td className="py-4 px-6 text-right">
+                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => setSelectedLead(lead)}
+                        className="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-colors"
+                        title="Ver detalle"
+                      >
+                        <span className="material-symbols-outlined text-[20px]">visibility</span>
+                      </button>
+                      {lead.phone && (
+                        <a
+                          href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}?text=Hola ${lead.name}, te escribo de parte de Ivonne Marin Inmobiliaria.`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-colors"
+                          title="WhatsApp"
+                        >
+                          <span className="material-symbols-outlined text-[20px]">chat</span>
+                        </a>
+                      )}
+                      <button
+                        onClick={() => setEditingStatusId(lead.id)}
+                        className="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-colors"
+                        title="Cambiar estado"
+                      >
+                        <span className="material-symbols-outlined text-[20px]">edit</span>
+                      </button>
+                      <button
+                        onClick={() => handleDelete(lead.id)}
+                        className="p-2 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors"
+                        title="Eliminar"
+                      >
+                        <span className="material-symbols-outlined text-[20px]">delete</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {paginated.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="text-center p-8 text-on-surface-variant">
+                    {leads.length === 0 ? 'No hay leads registrados aún.' : 'No se encontraron resultados.'}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="border-t border-outline-variant/20 p-4 flex justify-between items-center bg-surface-container-lowest flex-wrap gap-3">
+          <p className="font-body-md text-sm text-on-surface-variant">
+            Mostrando {Math.min((currentPage - 1) * PAGE_SIZE + 1, filtered.length)}–{Math.min(currentPage * PAGE_SIZE, filtered.length)} de {filtered.length} leads
+          </p>
+          <div className="flex gap-2">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(p => p - 1)}
+              className="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low disabled:opacity-40 transition-colors"
+            >
+              <span className="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                onClick={() => setCurrentPage(p)}
+                className={`w-8 h-8 rounded border flex items-center justify-center font-label-md text-sm transition-colors ${p === currentPage ? "border-primary bg-primary text-on-primary" : "border-outline-variant text-on-surface hover:bg-surface-container-low"}`}
+              >
+                {p}
+              </button>
+            ))}
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => setCurrentPage(p => p + 1)}
+              className="w-8 h-8 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-container-low disabled:opacity-40 transition-colors"
+            >
+              <span className="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Detail Modal */}
+      {selectedLead && (
+        <div
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          onClick={() => setSelectedLead(null)}
+        >
+          <div
+            className="bg-surface w-full max-w-lg rounded-2xl shadow-2xl p-8 space-y-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xl font-bold">
+                  {selectedLead.name.substring(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="font-headline-md text-headline-md text-primary">{selectedLead.name}</h3>
+                  <p className="text-[12px] text-on-surface-variant">{timeAgo(selectedLead.createdAt)}</p>
+                </div>
+              </div>
+              <button onClick={() => setSelectedLead(null)} className="p-2 hover:bg-surface-container rounded-full text-on-surface-variant">
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg">
+                <span className="material-symbols-outlined text-secondary">mail</span>
+                <span className="font-body-md text-on-surface">{selectedLead.email}</span>
+              </div>
+              {selectedLead.phone && (
+                <div className="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg">
+                  <span className="material-symbols-outlined text-secondary">call</span>
+                  <span className="font-body-md text-on-surface">{selectedLead.phone}</span>
+                </div>
+              )}
+              {selectedLead.message && (
+                <div className="p-3 bg-surface-container-low rounded-lg">
+                  <p className="font-label-md text-on-surface-variant mb-1">Mensaje:</p>
+                  <p className="font-body-md text-on-surface">{selectedLead.message}</p>
+                </div>
+              )}
+              <div className="flex gap-2">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${STATUS_STYLES[selectedLead.status]}`}>
+                  {STATUS_LABELS[selectedLead.status]}
+                </span>
+                <span className="px-3 py-1 rounded-full text-xs font-bold bg-surface-container text-on-surface border border-outline-variant/30">
+                  {selectedLead.type === "VISIT" ? "Solicitud de Visita" : "Contacto General"}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex gap-3">
+              {selectedLead.phone && (
+                <a
+                  href={`https://wa.me/${selectedLead.phone.replace(/[^0-9]/g, "")}?text=Hola ${selectedLead.name}, te escribo de parte de Ivonne Marin Inmobiliaria.`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex-1 py-3 bg-[#25D366] text-white font-label-md rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                >
+                  <span className="material-symbols-outlined">chat</span> WhatsApp
+                </a>
+              )}
+              <button
+                onClick={() => handleDelete(selectedLead.id)}
+                className="px-4 py-3 border border-error/30 text-error font-label-md rounded-xl hover:bg-error-container transition-colors"
+              >
+                <span className="material-symbols-outlined">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Lead Modal */}
+      {isCreating && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setIsCreating(false)}>
+          <div className="bg-surface w-full max-w-md rounded-2xl shadow-2xl p-8 space-y-6" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center">
+              <h3 className="font-headline-md text-headline-md text-primary">Registrar Lead Manual</h3>
+              <button onClick={() => setIsCreating(false)} className="p-2 hover:bg-surface-container rounded-full"><span className="material-symbols-outlined">close</span></button>
+            </div>
+            <form onSubmit={handleCreateLead} className="space-y-4">
+              <div>
+                <label className="block text-sm font-label-md mb-1">Nombre Completo</label>
+                <input required type="text" value={newLeadData.name} onChange={e => setNewLeadData({...newLeadData, name: e.target.value})} className="w-full rounded-lg border-outline-variant p-3" />
+              </div>
+              <div>
+                <label className="block text-sm font-label-md mb-1">Correo Electrónico</label>
+                <input required type="email" value={newLeadData.email} onChange={e => setNewLeadData({...newLeadData, email: e.target.value})} className="w-full rounded-lg border-outline-variant p-3" />
+              </div>
+              <div>
+                <label className="block text-sm font-label-md mb-1">Teléfono</label>
+                <input type="tel" value={newLeadData.phone} onChange={e => setNewLeadData({...newLeadData, phone: e.target.value})} className="w-full rounded-lg border-outline-variant p-3" />
+              </div>
+              <div>
+                <label className="block text-sm font-label-md mb-1">Tipo</label>
+                <select value={newLeadData.type} onChange={e => setNewLeadData({...newLeadData, type: e.target.value})} className="w-full rounded-lg border-outline-variant p-3">
+                  <option value="CONTACT">Contacto General</option>
+                  <option value="VISIT">Solicitud de Visita</option>
+                </select>
+              </div>
+              <button type="submit" className="w-full py-3 bg-primary text-on-primary rounded-xl font-label-md hover:opacity-90 transition-opacity">
+                Guardar Lead
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
