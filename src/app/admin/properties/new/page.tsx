@@ -16,57 +16,67 @@ export default function NewProperty() {
         try {
             let mainImageUrl = data.mainImage;
             
-            // Si el usuario seleccionó un archivo
-            const fileInput = e.currentTarget.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
-            if (fileInput && fileInput.files && fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                const uploadFormData = new FormData();
-                uploadFormData.append("file", file);
-                
-                const uploadRes = await fetch('/api/upload', {
-                    method: 'POST',
-                    body: uploadFormData
-                });
-                
-                if (uploadRes.ok) {
-                    const uploadData = await uploadRes.json();
-                    mainImageUrl = uploadData.url;
+            // Multiple images upload
+            const imagesInput = e.currentTarget.querySelector('input[name="imagesFiles"]') as HTMLInputElement;
+            if (imagesInput && imagesInput.files && imagesInput.files.length > 0) {
+                const uploadedImages = [];
+                for (let i = 0; i < imagesInput.files.length; i++) {
+                    const file = imagesInput.files[i];
+                    const uploadFormData = new FormData();
+                    uploadFormData.append("file", file);
+                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                    if (uploadRes.ok) {
+                        const uploadData = await uploadRes.json();
+                        uploadedImages.push(uploadData.url);
+                    }
+                }
+                if (uploadedImages.length > 0) {
+                    mainImageUrl = uploadedImages[0];
+                    data.images = JSON.stringify(uploadedImages);
                 } else {
-                    alert("Error al subir la imagen. Procediendo sin imagen.");
+                    alert("Error al subir las imágenes. Procediendo sin imágenes.");
                 }
             }
 
-            // Video upload
-            const videoInput = e.currentTarget.querySelector('input[name="videoFile"]') as HTMLInputElement;
+            // Multiple video upload
+            const videoInput = e.currentTarget.querySelector('input[name="videoFiles"]') as HTMLInputElement;
             if (videoInput && videoInput.files && videoInput.files.length > 0) {
-                const file = videoInput.files[0];
-                const uploadFormData = new FormData();
-                uploadFormData.append("file", file);
-                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (uploadRes.ok) {
-                    const uploadData = await uploadRes.json();
-                    data.videos = JSON.stringify([uploadData.url]);
+                const uploadedVideos = [];
+                for (let i = 0; i < videoInput.files.length; i++) {
+                    const file = videoInput.files[i];
+                    const uploadFormData = new FormData();
+                    uploadFormData.append("file", file);
+                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                    if (uploadRes.ok) {
+                        const uploadData = await uploadRes.json();
+                        uploadedVideos.push(uploadData.url);
+                    }
                 }
+                if (uploadedVideos.length > 0) data.videos = JSON.stringify(uploadedVideos);
             }
 
-            // PDF upload
-            const pdfInput = e.currentTarget.querySelector('input[name="pdfFile"]') as HTMLInputElement;
+            // Multiple PDF upload
+            const pdfInput = e.currentTarget.querySelector('input[name="pdfFiles"]') as HTMLInputElement;
             if (pdfInput && pdfInput.files && pdfInput.files.length > 0) {
-                const file = pdfInput.files[0];
-                const uploadFormData = new FormData();
-                uploadFormData.append("file", file);
-                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (uploadRes.ok) {
-                    const uploadData = await uploadRes.json();
-                    data.documents = JSON.stringify([uploadData.url]);
+                const uploadedPdfs = [];
+                for (let i = 0; i < pdfInput.files.length; i++) {
+                    const file = pdfInput.files[i];
+                    const uploadFormData = new FormData();
+                    uploadFormData.append("file", file);
+                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                    if (uploadRes.ok) {
+                        const uploadData = await uploadRes.json();
+                        uploadedPdfs.push(uploadData.url);
+                    }
                 }
+                if (uploadedPdfs.length > 0) data.documents = JSON.stringify(uploadedPdfs);
             }
 
             // Actualizar la data con la URL de la imagen
             const propertyData: any = { ...data, mainImage: mainImageUrl };
-            delete propertyData.mainImageFile;
-            delete propertyData.videoFile;
-            delete propertyData.pdfFile;
+            delete propertyData.imagesFiles;
+            delete propertyData.videoFiles;
+            delete propertyData.pdfFiles;
             
             // Set price to 0 if not provided
             if (!propertyData.price) {

@@ -2,10 +2,33 @@ import Link from "next/link";
 import { PrismaClient } from '@prisma/client';
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
+import SortSelect from "@/components/SortSelect";
 const prisma = new PrismaClient();
 
-export default async function Page() {
-  const properties = await prisma.property.findMany({ orderBy: { createdAt: 'desc' } });
+import { Prisma } from '@prisma/client';
+
+export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+  const params = await searchParams;
+  const modality = typeof params.modality === 'string' && params.modality !== 'Todos' ? params.modality : undefined;
+  const type = typeof params.type === 'string' && params.type !== 'Todos' ? params.type : undefined;
+  const city = typeof params.city === 'string' && params.city !== 'Todas' ? params.city : undefined;
+  const rooms = typeof params.rooms === 'string' ? parseInt(params.rooms) : undefined;
+  const bathrooms = typeof params.bathrooms === 'string' ? parseInt(params.bathrooms) : undefined;
+  const stratum = typeof params.stratum === 'string' ? parseInt(params.stratum) : undefined;
+  const sortParam = typeof params.sort === 'string' ? params.sort : 'desc';
+  
+  const where: Prisma.PropertyWhereInput = {};
+  if (modality) where.modality = modality;
+  if (type) where.propertyType = type;
+  if (city) where.city = city;
+  if (rooms) where.bedrooms = { gte: rooms };
+  if (bathrooms) where.bathrooms = { gte: bathrooms };
+  if (stratum) where.stratum = { gte: stratum };
+
+  const properties = await prisma.property.findMany({ 
+      where,
+      orderBy: { createdAt: sortParam === 'asc' ? 'asc' : 'desc' } 
+  });
 
   return (
     <>
@@ -20,94 +43,85 @@ export default async function Page() {
 <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
 
 <aside className="lg:col-span-3 space-y-8">
-<div className="bg-surface-container-low p-6 rounded-xl sticky top-32 border border-outline-variant/30">
+<form method="GET" action="/propiedades" className="bg-surface-container-low p-6 rounded-xl sticky top-32 border border-outline-variant/30">
 <div className="flex items-center justify-between mb-6">
 <h3 className="font-headline-md text-headline-md text-primary">Filtros</h3>
-<button className="text-outline text-label-md hover:text-primary transition-colors">Limpiar</button>
+<Link href="/propiedades" className="text-outline text-label-md hover:text-primary transition-colors">Limpiar</Link>
 </div>
 <div className="space-y-6 custom-scrollbar max-h-[calc(100vh-400px)] overflow-y-auto pr-2">
 
 <div>
 <label className="font-label-md text-label-md block mb-3 uppercase tracking-wider text-secondary">Operación</label>
 <div className="grid grid-cols-2 gap-2">
-<button className="py-2 px-4 rounded-lg border border-primary bg-primary text-on-primary text-label-md transition-all">Venta</button>
-<button className="py-2 px-4 rounded-lg border border-outline-variant hover:border-primary text-label-md transition-all">Arriendo</button>
+<label className="cursor-pointer">
+<input type="radio" name="modality" value="VENTA" defaultChecked={modality === 'VENTA'} className="peer hidden" />
+<div className="py-2 px-4 rounded-lg border border-outline-variant peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary text-label-md transition-all text-center hover:border-primary">Venta</div>
+</label>
+<label className="cursor-pointer">
+<input type="radio" name="modality" value="ARRIENDO" defaultChecked={modality === 'ARRIENDO'} className="peer hidden" />
+<div className="py-2 px-4 rounded-lg border border-outline-variant peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary text-label-md transition-all text-center hover:border-primary">Arriendo</div>
+</label>
 </div>
 </div>
 <div>
 <label className="font-label-md text-label-md block mb-3 uppercase tracking-wider text-secondary">Tipo de Propiedad</label>
-<select className="w-full rounded-lg border-outline-variant bg-surface focus:ring-primary focus:border-primary text-body-md py-3 px-4">
-<option>Todos</option>
-<option>Apartamento</option>
-<option>Casa</option>
-<option>Finca</option>
-<option>Local Comercial</option>
+<select name="type" defaultValue={type || "Todos"} className="w-full rounded-lg border-outline-variant bg-surface focus:ring-primary focus:border-primary text-body-md py-3 px-4">
+<option value="Todos">Todos</option>
+<option value="Apartamento">Apartamento</option>
+<option value="Casa">Casa</option>
+<option value="Finca">Finca</option>
+<option value="Local Comercial">Local Comercial</option>
 </select>
 </div>
 <div>
 <label className="font-label-md text-label-md block mb-3 uppercase tracking-wider text-secondary">Ciudad</label>
-<select className="w-full rounded-lg border-outline-variant bg-surface focus:ring-primary focus:border-primary text-body-md py-3 px-4">
-<option>Pereira</option>
-<option>Armenia</option>
-<option>Manizales</option>
-<option>Dosquebradas</option>
+<select name="city" defaultValue={city || "Todas"} className="w-full rounded-lg border-outline-variant bg-surface focus:ring-primary focus:border-primary text-body-md py-3 px-4">
+<option value="Todas">Todas</option>
+<option value="Pereira">Pereira</option>
+<option value="Armenia">Armenia</option>
+<option value="Manizales">Manizales</option>
+<option value="Dosquebradas">Dosquebradas</option>
 </select>
 </div>
-<div>
-<label className="font-label-md text-label-md block mb-3 uppercase tracking-wider text-secondary">Rango de Precio</label>
-<div className="space-y-3">
-<input className="w-full h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary" max="1000" min="0" type="range"/>
-<div className="flex justify-between text-body-md text-on-surface-variant font-medium">
-<span>$0</span>
-<span>$1.000M+</span>
-</div>
-</div>
-</div>
-<div className="grid grid-cols-2 gap-4">
+
+<div className="space-y-6">
 <div>
 <label className="font-label-md text-label-md block mb-3 uppercase tracking-wider text-secondary">Habitaciones</label>
 <div className="flex gap-1">
-<button className="w-10 h-10 rounded-lg border border-outline-variant hover:border-primary text-body-md">1+</button>
-<button className="w-10 h-10 rounded-lg border border-outline-variant hover:border-primary text-body-md">2+</button>
-<button className="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container font-bold">3+</button>
+<label className="cursor-pointer"><input type="radio" name="rooms" value="1" defaultChecked={rooms === 1} className="peer hidden" /><div className="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-body-md">1+</div></label>
+<label className="cursor-pointer"><input type="radio" name="rooms" value="2" defaultChecked={rooms === 2} className="peer hidden" /><div className="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-body-md">2+</div></label>
+<label className="cursor-pointer"><input type="radio" name="rooms" value="3" defaultChecked={rooms === 3} className="peer hidden" /><div className="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-body-md">3+</div></label>
 </div>
 </div>
 <div>
 <label className="font-label-md text-label-md block mb-3 uppercase tracking-wider text-secondary">Baños</label>
 <div className="flex gap-1">
-<button className="w-10 h-10 rounded-lg border border-outline-variant hover:border-primary text-body-md">1+</button>
-<button className="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container font-bold">2+</button>
+<label className="cursor-pointer"><input type="radio" name="bathrooms" value="1" defaultChecked={bathrooms === 1} className="peer hidden" /><div className="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-body-md">1+</div></label>
+<label className="cursor-pointer"><input type="radio" name="bathrooms" value="2" defaultChecked={bathrooms === 2} className="peer hidden" /><div className="w-10 h-10 flex items-center justify-center rounded-lg border border-outline-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-body-md">2+</div></label>
 </div>
 </div>
 </div>
 <div>
 <label className="font-label-md text-label-md block mb-3 uppercase tracking-wider text-secondary">Estrato</label>
 <div className="flex flex-wrap gap-2">
-<button className="px-3 py-1 rounded-full border border-outline-variant text-label-md hover:border-primary">4</button>
-<button className="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-bold text-label-md">5</button>
-<button className="px-3 py-1 rounded-full bg-primary-container text-on-primary-container font-bold text-label-md">6</button>
+<label className="cursor-pointer"><input type="radio" name="stratum" value="4" defaultChecked={stratum === 4} className="peer hidden" /><div className="px-3 py-1 flex items-center justify-center rounded-full border border-outline-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-label-md">4</div></label>
+<label className="cursor-pointer"><input type="radio" name="stratum" value="5" defaultChecked={stratum === 5} className="peer hidden" /><div className="px-3 py-1 flex items-center justify-center rounded-full border border-outline-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-label-md">5</div></label>
+<label className="cursor-pointer"><input type="radio" name="stratum" value="6" defaultChecked={stratum === 6} className="peer hidden" /><div className="px-3 py-1 flex items-center justify-center rounded-full border border-outline-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-label-md">6</div></label>
 </div>
 </div>
+
 </div>
-<button className="w-full mt-8 bg-secondary text-on-secondary py-4 rounded-xl font-label-md hover:bg-primary transition-all flex items-center justify-center gap-2 shadow-lg shadow-secondary/10">
+<button type="submit" className="w-full mt-8 bg-secondary text-on-secondary py-4 rounded-xl font-label-md hover:bg-primary transition-all flex items-center justify-center gap-2 shadow-lg shadow-secondary/10">
 <span className="material-symbols-outlined text-[20px]">search</span>
                         Aplicar Filtros
                     </button>
-</div>
+</form>
 </aside>
 
 <div className="lg:col-span-9">
 <div className="flex justify-between items-center mb-6">
 <span className="font-body-md text-on-surface-variant"><strong className="text-primary">{properties.length}</strong> inmuebles encontrados</span>
-<div className="flex items-center gap-3">
-<span className="text-label-md text-secondary">Ordenar por:</span>
-<select className="border-none bg-transparent font-bold text-primary focus:ring-0 cursor-pointer">
-<option>Precio: Mayor a Menor</option>
-<option>Precio: Menor a Mayor</option>
-<option>Más recientes</option>
-<option>Área: Mayor a Menor</option>
-</select>
-</div>
+<SortSelect />
 </div>
 
 <div className="grid grid-cols-1 md:grid-cols-2 gap-gutter">

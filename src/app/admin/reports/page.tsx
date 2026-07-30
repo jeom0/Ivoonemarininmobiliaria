@@ -249,7 +249,7 @@ export default async function Page() {
                 <thead>
                   <tr className="border-b border-outline-variant">
                     <th className="pb-3 font-label-md text-outline font-semibold">Propiedad</th>
-                    <th className="pb-3 font-label-md text-outline font-semibold">Ubicación</th>
+                    <th className="pb-3 font-label-md text-outline font-semibold hidden md:table-cell">Ubicación</th>
                     <th className="pb-3 font-label-md text-outline font-semibold">Precio</th>
                     <th className="pb-3 font-label-md text-outline font-semibold">Estado</th>
                     <th className="pb-3 font-label-md text-outline font-semibold text-right">Acción</th>

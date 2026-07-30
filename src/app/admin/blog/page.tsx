@@ -79,8 +79,8 @@ export default function BlogAdminPage() {
               <thead>
                 <tr className="bg-surface-container-lowest border-b border-outline-variant/50">
                   <th className="p-4 font-label-md text-on-surface-variant font-medium">Título</th>
-                  <th className="p-4 font-label-md text-on-surface-variant font-medium">Categoría</th>
-                  <th className="p-4 font-label-md text-on-surface-variant font-medium">Estado</th>
+                  <th className="p-4 font-label-md text-on-surface-variant font-medium hidden md:table-cell">Categoría</th>
+                  <th className="p-4 font-label-md text-on-surface-variant font-medium hidden md:table-cell">Estado</th>
                   <th className="p-4 font-label-md text-on-surface-variant font-medium">Fecha</th>
                   <th className="p-4 font-label-md text-on-surface-variant font-medium text-right">Acciones</th>
                 </tr>
@@ -89,8 +89,8 @@ export default function BlogAdminPage() {
                 {posts.map(post => (
                   <tr key={post.id} className="hover:bg-surface-container-lowest/50 transition-colors">
                     <td className="p-4 font-body-md text-on-surface">{post.title}</td>
-                    <td className="p-4 font-body-md text-on-surface-variant">{post.category || "-"}</td>
-                    <td className="p-4">
+                    <td className="p-4 font-body-md text-on-surface-variant hidden md:table-cell">{post.category || "-"}</td>
+                    <td className="p-4 hidden md:table-cell">
                       <span className={`px-2 py-1 rounded-full text-[12px] font-label-md ${post.status === 'PUBLISHED' ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container-highest text-on-surface'}`}>
                         {post.status}
                       </span>

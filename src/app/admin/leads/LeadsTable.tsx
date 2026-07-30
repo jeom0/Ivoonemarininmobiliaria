@@ -185,19 +185,26 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
             <option value="NEGOTIATING">En Negociación</option>
             <option value="CLOSED">Cerrado</option>
           </select>
+          <button 
+            onClick={() => setIsCreating(true)}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:opacity-90 transition-opacity"
+          >
+            <span className="material-symbols-outlined text-[18px]">add</span>
+            Nuevo Lead
+          </button>
         </div>
       </div>
 
       {/* Table */}
       <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col">
         <div className="overflow-x-auto flex-1">
-          <table className="w-full text-left border-collapse min-w-[800px]">
+          <table className="w-full text-left border-collapse min-w-full md:min-w-[800px]">
             <thead className="bg-surface-container-low border-b border-outline-variant/30 sticky top-0 z-10">
               <tr>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Cliente</th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Contacto</th>
-                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Mensaje</th>
-                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Tipo</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant hidden md:table-cell">Mensaje</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant hidden md:table-cell">Tipo</th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Estado</th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant text-right">Acciones</th>
               </tr>
@@ -230,12 +237,12 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                       </div>
                     </div>
                   </td>
-                  <td className="py-4 px-6">
+                  <td className="py-4 px-6 hidden md:table-cell">
                     <span className="text-[14px] text-on-surface-variant line-clamp-2 max-w-[200px]">
                       {lead.message ? lead.message.substring(0, 60) + (lead.message.length > 60 ? '...' : '') : 'Sin mensaje'}
                     </span>
                   </td>
-                  <td className="py-4 px-6">
+                  <td className="py-4 px-6 hidden md:table-cell">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-on-surface text-sm border border-outline-variant/30">
                       <span className="material-symbols-outlined text-sm">language</span>
                       {lead.type === "VISIT" ? "Visita" : "Contacto"}
@@ -265,7 +272,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                     )}
                   </td>
                   <td className="py-4 px-6 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex justify-end gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={() => setSelectedLead(lead)}
                         className="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-colors"

@@ -3,15 +3,34 @@
 import { useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import NotificationsDropdown from "./components/NotificationsDropdown"
 import { useEffect, useState } from "react"
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+
   const { data: session, status } = useSession()
   const pathname = usePathname()
   const router = useRouter()
   // By default sidebar is open on desktop, closed on mobile
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
+  // iOS Safari bulletproof scroll lock
+  useEffect(() => {
+    if (isMobile && sidebarOpen) {
+      document.body.style.position = 'fixed';
+      document.body.style.top = '-' + window.scrollY + 'px';
+      document.body.style.width = '100%';
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+  }, [sidebarOpen, isMobile]);
+
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768)
@@ -51,6 +70,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { id: 'blog', name: 'Blog', href: '/admin/blog', icon: 'article' },
     { id: 'reportes', name: 'Reportes', href: '/admin/reports', icon: 'analytics' },
     { id: 'configuracion', name: 'Configuración', href: '/admin/settings', icon: 'settings' },
+    { id: 'ayuda', name: 'Tutoriales', href: '/admin/ayuda', icon: 'local_library' },
   ];
 
   let permissions: string[] = [];
@@ -61,27 +81,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navItems = (session.user as any).role === 'ADMIN' 
     ? allNavItems 
-    : allNavItems.filter(item => item.id === 'dashboard' || permissions.includes(item.id));
+    : allNavItems.filter(item => item.id === 'dashboard' || item.id === 'ayuda' || permissions.includes(item.id));
 
   return (
     <div className="flex min-h-screen bg-background relative">
       {/* Mobile Sidebar Overlay (Only on small screens) */}
       <div 
-        className={`fixed inset-0 bg-black/50 z-40 transition-opacity md:hidden ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        className={`fixed inset-0 bg-black/50 z-[45] transition-opacity md:hidden ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setSidebarOpen(false)}
       ></div>
 
-      {/* Mobile Hamburger Toggle (Visible only on mobile) */}
-      <button 
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 left-4 z-50 p-2 bg-surface-container rounded-lg shadow-md text-on-surface-variant hover:text-primary transition-colors md:hidden"
-      >
-        <span className="material-symbols-outlined">menu</span>
-      </button>
+      {/* Mobile Top Bar */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-surface border-b border-outline-variant/30 z-40 flex items-center justify-between px-4 shadow-sm">
+        <button 
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-2 bg-surface-container rounded-lg text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center"
+        >
+          <span className="material-symbols-outlined">menu</span>
+        </button>
+        <div className="flex flex-col items-center justify-center">
+          <span className="font-headline-md text-primary font-bold tracking-tighter text-lg leading-none">ivonne</span>
+          <span className="font-headline-md text-primary font-bold tracking-tighter text-lg leading-none -mt-1">marin.</span>
+        </div>
+        <NotificationsDropdown />
+      </div>
 
       {/* SideNavBar */}
-      <aside className={`fixed md:sticky top-0 left-0 h-screen bg-surface-container border-r border-outline-variant/20 shadow-md flex flex-col p-4 z-50 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] shrink-0 overflow-hidden ${
-        sidebarOpen ? 'w-64 translate-x-0' : '-translate-x-full w-64 md:translate-x-0 md:w-20'
+      <aside className={`fixed md:sticky top-0 left-0 h-screen bg-surface-container border-r border-outline-variant/20 shadow-md flex flex-col p-4 z-50 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] shrink-0 overflow-y-auto overscroll-contain ${
+        sidebarOpen ? 'w-full md:w-64 translate-x-0' : '-translate-x-full w-full md:w-20 md:translate-x-0'
       }`}>
         {/* Header/Logo section */}
         <div className={`mb-10 mt-2 flex items-center h-12 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${sidebarOpen ? 'justify-between px-2' : 'justify-center w-full'}`}>
@@ -97,6 +124,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               className="hidden md:flex p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-300 shrink-0"
             >
               <span className="material-symbols-outlined">menu</span>
+            </button>
+            {/* Mobile Close Button */}
+            <button 
+              onClick={() => setSidebarOpen(false)}
+              className="md:hidden flex p-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-300 shrink-0"
+            >
+              <span className="material-symbols-outlined text-2xl">close</span>
             </button>
         </div>
         
@@ -149,7 +183,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Canvas */}
-      <main className="flex-1 min-h-screen bg-background overflow-x-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] md:p-margin-desktop p-margin-mobile">
+      <main className={`flex-1 min-h-screen bg-background overflow-x-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] md:p-8 p-4 pt-24 md:pt-8`}>
         {children}
       </main>
     </div>

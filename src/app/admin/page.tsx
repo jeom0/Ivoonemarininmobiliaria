@@ -36,22 +36,22 @@ export default async function Page() {
         </div>
       </header>
 
-      <section className="flex flex-wrap gap-4 mb-section-gap">
-        <Link href="/admin/properties/new" className="flex items-center gap-2 px-6 py-3 bg-primary text-on-primary rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-95">
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 mb-section-gap">
+        <Link href="/admin/properties/new" className="flex justify-center items-center gap-2 px-4 py-3 bg-primary text-on-primary rounded-full font-label-md text-label-md shadow-md hover:shadow-lg transition-all active:scale-95">
         <span className="material-symbols-outlined">add_home</span>
                         Crear Inmueble
                     </Link>
-        <Link href="/admin/leads" className="flex items-center gap-2 px-6 py-3 bg-white border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-all active:scale-95">
+        <Link href="/admin/leads" className="flex justify-center items-center gap-2 px-4 py-3 bg-white border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-all active:scale-95">
         <span className="material-symbols-outlined">person_add</span>
                         Registrar Lead
                     </Link>
-        <Link href="/admin/agenda" className="flex items-center gap-2 px-6 py-3 bg-white border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-all active:scale-95">
+        <Link href="/admin/agenda" className="flex justify-center items-center gap-2 px-4 py-3 bg-white border border-outline-variant text-primary rounded-full font-label-md text-label-md hover:bg-surface-container-low transition-all active:scale-95">
         <span className="material-symbols-outlined">event</span>
                         Agendar Visita
                     </Link>
       </section>
 
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-section-gap">
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-gutter mb-section-gap">
         <div className="bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
         <div className="flex justify-between items-start mb-4">
         <div className="w-10 h-10 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
@@ -60,7 +60,7 @@ export default async function Page() {
         </div>
         <p className="text-on-surface-variant font-label-md text-label-md">Total Inmuebles</p>
         <div className="flex items-end gap-2">
-        <h3 className="text-[32px] font-bold text-primary leading-none">{propertiesCount}</h3>
+        <h3 className="text-2xl md:text-[32px] font-bold text-primary leading-none">{propertiesCount}</h3>
         </div>
         </div>
 
@@ -72,7 +72,7 @@ export default async function Page() {
         </div>
         <p className="text-on-surface-variant font-label-md text-label-md">Leads del Mes</p>
         <div className="flex items-end gap-2">
-        <h3 className="text-[32px] font-bold text-primary leading-none">{leadsCount}</h3>
+        <h3 className="text-2xl md:text-[32px] font-bold text-primary leading-none">{leadsCount}</h3>
         </div>
         </div>
 
@@ -84,7 +84,7 @@ export default async function Page() {
         </div>
         <p className="text-on-surface-variant font-label-md text-label-md">Visitas Pendientes</p>
         <div className="flex items-end gap-2">
-        <h3 className="text-[32px] font-bold text-primary leading-none">{visitsCount}</h3>
+        <h3 className="text-2xl md:text-[32px] font-bold text-primary leading-none">{visitsCount}</h3>
         </div>
         </div>
 
@@ -96,13 +96,13 @@ export default async function Page() {
         </div>
         <p className="text-on-surface-variant font-label-md text-label-md">Inmuebles Vendidos</p>
         <div className="flex items-end gap-2">
-        <h3 className="text-[32px] font-bold text-primary leading-none">{soldCount}</h3>
+        <h3 className="text-2xl md:text-[32px] font-bold text-primary leading-none">{soldCount}</h3>
         </div>
         </div>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-        <div className="lg:col-span-2 bento-card rounded-2xl p-8 overflow-hidden bg-white border border-outline-variant/30 shadow-sm">
+        <div className="lg:col-span-2 bento-card rounded-2xl p-4 md:p-8 overflow-hidden bg-white border border-outline-variant/30 shadow-sm">
         <div className="flex items-center justify-between mb-8">
         <h4 className="font-headline-md text-headline-md text-primary">Últimos Leads</h4>
         <Link href="/admin/leads" className="text-secondary font-label-md text-label-md hover:underline">Ver todos</Link>
@@ -145,7 +145,7 @@ export default async function Page() {
               <td colSpan={5} className="py-12">
                 <div className="flex flex-col items-center justify-center text-center">
                   <div className="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mb-4">
-                    <span className="material-symbols-outlined text-[32px] text-primary/40">person_add</span>
+                    <span className="material-symbols-outlined text-2xl md:text-[32px] text-primary/40">person_add</span>
                   </div>
                   <p className="font-headline-md text-primary mb-1">Sin leads recientes</p>
                   <p className="text-sm text-on-surface-variant max-w-[200px]">Aún no has recibido mensajes o contactos. Cuando un cliente te escriba, aparecerá aquí.</p>
@@ -158,7 +158,7 @@ export default async function Page() {
         </div>
         </div>
 
-        <div className="bento-card rounded-2xl p-8 bg-surface-container-low border border-outline-variant/30 shadow-sm">
+        <div className="bento-card rounded-2xl p-4 md:p-8 bg-surface-container-low border border-outline-variant/30 shadow-sm">
         <div className="flex items-center justify-between mb-8">
         <h4 className="font-headline-md text-headline-md text-primary">Próximas Visitas</h4>
         <span className="bg-primary-container text-on-primary-container text-[10px] font-bold py-1 px-2 rounded">{upcomingVisits.length} PENDIENTES</span>

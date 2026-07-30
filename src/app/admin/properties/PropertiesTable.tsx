@@ -197,7 +197,7 @@ export default function PropertiesTable({ initialProperties, totalVisits }: Prop
       {/* Table Section */}
       <div className="bg-white rounded-xl shadow-sm border border-outline-variant/30 overflow-hidden relative">
         <div className="overflow-x-auto custom-scrollbar">
-          <table className="w-full text-left border-collapse min-w-[900px]">
+          <table className="w-full text-left border-collapse min-w-full md:min-w-[900px]">
             <thead>
               <tr className="bg-surface-container-low border-b border-outline-variant/20">
                 <th className="p-4 w-12 text-center">
@@ -209,12 +209,12 @@ export default function PropertiesTable({ initialProperties, totalVisits }: Prop
                   />
                 </th>
                 <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Imagen</th>
-                <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Código</th>
+                <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px] hidden md:table-cell">Código</th>
                 <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Inmueble</th>
-                <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Tipo / Operación</th>
+                <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px] hidden md:table-cell">Tipo / Operación</th>
                 <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Precio</th>
                 <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Estado</th>
-                <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px] text-center">Destacado</th>
+                <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px] text-center hidden md:table-cell">Destacado</th>
                 <th className="p-4 font-label-md text-on-surface-variant uppercase tracking-wider text-[11px] text-right">Acciones</th>
               </tr>
             </thead>
@@ -238,7 +238,7 @@ export default function PropertiesTable({ initialProperties, totalVisits }: Prop
                       />
                     </div>
                   </td>
-                  <td className="p-4 font-label-md text-on-surface-variant">IM-{p.id.substring(0, 4).toUpperCase()}</td>
+                  <td className="p-4 font-label-md text-on-surface-variant hidden md:table-cell">IM-{p.id.substring(0, 4).toUpperCase()}</td>
                   <td className="p-4">
                     <div className="flex flex-col">
                       <Link href={`/propiedades/${p.id}`} className="font-body-md font-bold text-on-surface group-hover:text-primary transition-colors hover:underline">
@@ -247,7 +247,7 @@ export default function PropertiesTable({ initialProperties, totalVisits }: Prop
                       <span className="text-[12px] text-on-surface-variant">{p.city}</span>
                     </div>
                   </td>
-                  <td className="p-4">
+                  <td className="p-4 hidden md:table-cell">
                     <div className="flex flex-col">
                       <span className="text-body-md">{p.propertyType}</span>
                       <span className="text-[12px] text-secondary-fixed-variant font-medium capitalize">{p.modality.toLowerCase()}</span>
@@ -261,7 +261,7 @@ export default function PropertiesTable({ initialProperties, totalVisits }: Prop
                       {p.status}
                     </span>
                   </td>
-                  <td className="p-4 text-center">
+                  <td className="p-4 text-center hidden md:table-cell">
                     <button 
                       onClick={() => handleToggleFeatured(p.id, p.isFeatured)}
                       className={`w-10 h-6 rounded-full relative inline-flex items-center px-1 transition-all ${p.isFeatured ? 'bg-primary' : 'bg-surface-container-highest'}`}

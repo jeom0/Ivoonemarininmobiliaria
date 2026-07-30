@@ -2,13 +2,12 @@
 import { useState, useEffect } from 'react';
 
 export default function SettingsForm() {
-  const [logoPreview, setLogoPreview] = useState("https://lh3.googleusercontent.com/aida-public/AB6AXuBZAmb0vC4unzvHS9v5JfK2ae35nKQyWZwGS4VO9SO4TMtHJyEcFhrmsvMNh2aDhTFWMggrEdFefRHgRI_WwN4iN3L89XOV1lodjrF6wgvgz8x2Hazlbte6wkjBMJHaVLD6IF_WJNH4BzckeDNBKphSbKbWRAbYnlUoElsOE-5CPoerW7fWSAEZmr9mUC9aD757Dqlo_ThhdsY-Qv_XGOWunAcYvHYNHAWpuJXqVO6vzLuMOkNAi0N2UB3L0kdFxqKZ-3ViR_I34To");
-  const [heroImagePreview, setHeroImagePreview] = useState("https://lh3.googleusercontent.com/aida-public/AB6AXuDpMvk0dl6EsGv5KQsJVAzwFsHV3yAHMJyQteyHvOuRny-qcBpNNIeRPgBD2_067WvUPBpX2wctU-j0HS3Bx23zwQ-04fZEdNlIty8MCXZk7VV_eVdOfeyPu5L4xdDeYPfq4F9c90CuDHwsMAfuVEhmS1AmckC8sthTUMAZGGL4FtC1tOaH4AOGIUWzSOhv_OmtHUilm-VhznKaAEIDoIjEell-gLnl-388i1HU6rPuFmnb95UrEZqJ_95osTAzaTtadKN2Ue2Dn8o");
+  const [logoPreview, setLogoPreview] = useState("");
+  const [heroMedia, setHeroMedia] = useState<string[]>([]);
   const [agencyName, setAgencyName] = useState("Ivonne Marin Asesora Inmobiliaria");
   const [whatsapp, setWhatsapp] = useState("+57 300 000 0000");
-  const [address, setAddress] = useState("Pereira, Eje Cafetero, Colombia");
-  const [instagram, setInstagram] = useState("https://instagram.com/");
-  const [facebook, setFacebook] = useState("https://facebook.com/");
+  const [address, setAddress] = useState("Santa Rosa de Cabal, Risaralda, Colombia");
+  const [socialLinks, setSocialLinks] = useState<{platform: string, url: string}[]>([]);
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -23,15 +22,47 @@ export default function SettingsForm() {
       if (res.ok) {
         const data = await res.json();
         if (data.logoUrl) setLogoPreview(data.logoUrl);
-        if (data.heroImage) setHeroImagePreview(data.heroImage);
+        if (data.hero_media) {
+          try {
+            setHeroMedia(JSON.parse(data.hero_media));
+          } catch(e){}
+        } else if (data.heroImage) {
+          setHeroMedia([data.heroImage]);
+        }
         if (data.agencyName) setAgencyName(data.agencyName);
         if (data.whatsapp) setWhatsapp(data.whatsapp);
         if (data.address) setAddress(data.address);
-        if (data.instagram) setInstagram(data.instagram);
-        if (data.facebook) setFacebook(data.facebook);
+        if (data.social_links) {
+          try {
+            setSocialLinks(JSON.parse(data.social_links));
+          } catch(e){}
+        }
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleImageUpload = async (file: File, type: 'logo' | 'hero') => {
+    setLoading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (type === 'logo') setLogoPreview(data.url);
+        if (type === 'hero') setHeroMedia([...heroMedia, data.url]);
+      } else {
+        alert("Error al subir archivo");
+      }
+    } catch (err) {
+      alert("Error de red");
     } finally {
       setLoading(false);
     }
@@ -63,32 +94,7 @@ export default function SettingsForm() {
     }
   };
 
-  const handleHeroChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append("file", file);
-
-      try {
-        const res = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setHeroImagePreview(data.url);
-        } else {
-          alert("Error al subir imagen");
-        }
-      } catch (err) {
-        alert("Error de red");
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
-
+  
   const handleSave = async () => {
     setSaving(true);
     try {
@@ -97,12 +103,11 @@ export default function SettingsForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           logoUrl: logoPreview,
-          heroImage: heroImagePreview,
+          hero_media: JSON.stringify(heroMedia),
           agencyName,
           whatsapp,
           address,
-          instagram,
-          facebook
+          social_links: JSON.stringify(socialLinks)
         })
       });
       if (res.ok) {
@@ -124,7 +129,14 @@ export default function SettingsForm() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
         <div className="bg-surface-container-lowest rounded-xl p-8 border border-secondary-fixed-dim/30 shadow-sm col-span-1 flex flex-col items-center justify-center text-center">
           <div className="w-32 h-32 rounded-full bg-surface-container flex items-center justify-center mb-6 overflow-hidden border-2 border-outline-variant border-dashed relative">
-            <img className="w-full h-full object-cover" src={logoPreview} alt="Logo de empresa" />
+            {logoPreview ? (
+              <img className="w-full h-full object-cover" src={logoPreview} alt="Logo de empresa" />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full p-4 text-center">
+                <span className="material-symbols-outlined text-outline text-3xl mb-1">image_not_supported</span>
+                <span className="text-[10px] text-outline font-bold leading-tight">No hay logo.<br/>Por favor sube uno.</span>
+              </div>
+            )}
             {loading && <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">...</div>}
           </div>
           <h3 className="font-headline-md text-headline-md text-on-background mb-2">Logo Principal</h3>
@@ -136,18 +148,44 @@ export default function SettingsForm() {
             <input type="file" accept="image/*" className="hidden" onChange={handleLogoChange} />
           </label>
 
-          <div className="w-full mt-8 border-t border-outline-variant/30 pt-8 flex flex-col items-center">
-            <h3 className="font-headline-md text-headline-md text-on-background mb-2">Imagen Principal (Inicio)</h3>
-            <div className="w-full h-32 rounded-lg bg-surface-container flex items-center justify-center mb-4 overflow-hidden border-2 border-outline-variant border-dashed relative">
-              <img className="w-full h-full object-cover" src={heroImagePreview} alt="Imagen principal" />
-              {loading && <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">...</div>}
-            </div>
+          <div className="w-full mt-8 border-t border-outline-variant/30 pt-8 flex flex-col">
+            <h3 className="font-headline-md text-headline-md text-on-background mb-2">Imagen/Video Principal (Hero)</h3>
+            <p className="text-[12px] text-on-surface-variant mb-4">Sube imágenes o videos (.mp4) para armar el carrusel de portada.</p>
             
-            <label className="border border-secondary-fixed-dim text-primary font-label-md text-label-md py-2 px-4 rounded-lg hover:bg-surface-container transition-colors w-full flex items-center justify-center gap-2 cursor-pointer">
-              <span className="material-symbols-outlined">upload</span>
-              Cambiar Imagen Hero
-              <input type="file" accept="image/*" className="hidden" onChange={handleHeroChange} />
-            </label>
+            <div className="flex gap-4 overflow-x-auto pb-4">
+              {heroMedia.map((media, idx) => (
+                <div key={idx} className="relative w-40 h-24 shrink-0 rounded-lg overflow-hidden border border-outline-variant group">
+                  {media.match(/\.(mp4|webm|ogg)$/i) || media.includes('video') ? (
+                    <video src={media} className="w-full h-full object-cover" muted />
+                  ) : (
+                    <img src={media} className="w-full h-full object-cover" />
+                  )}
+                  <button 
+                    onClick={() => {
+                      const newMedia = [...heroMedia];
+                      newMedia.splice(idx, 1);
+                      setHeroMedia(newMedia);
+                    }}
+                    type="button"
+                    className="absolute top-1 right-1 bg-error text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <span className="material-symbols-outlined text-[14px]">close</span>
+                  </button>
+                </div>
+              ))}
+              
+              <div className="relative w-40 h-24 shrink-0 rounded-lg border-2 border-dashed border-outline-variant bg-surface-container hover:bg-surface-container-high transition-colors flex flex-col items-center justify-center cursor-pointer">
+                <span className="material-symbols-outlined text-outline">add_photo_alternate</span>
+                <span className="text-[10px] text-outline font-bold mt-1">Agregar</span>
+                {loading && <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white text-xs">...</div>}
+                <input 
+                  type="file" 
+                  accept="image/*,video/*" 
+                  onChange={(e) => { if(e.target.files) handleImageUpload(e.target.files[0], 'hero') }} 
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" 
+                />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -169,14 +207,53 @@ export default function SettingsForm() {
           </div>
           <h4 className="font-headline-md text-headline-md text-on-background border-b border-surface-dim pb-4 mt-8 pt-4">Redes Sociales</h4>
           <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <span className="material-symbols-outlined text-on-surface-variant">link</span>
-              <input value={instagram} onChange={e => setInstagram(e.target.value)} className="flex-1 bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" placeholder="URL de Instagram" type="url" />
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="material-symbols-outlined text-on-surface-variant">link</span>
-              <input value={facebook} onChange={e => setFacebook(e.target.value)} className="flex-1 bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" placeholder="URL de Facebook" type="url" />
-            </div>
+            {socialLinks.map((social, index) => (
+              <div key={index} className="flex items-center gap-4 bg-background border border-outline-variant rounded-lg p-2">
+                <select 
+                  value={social.platform} 
+                  onChange={e => {
+                    const newLinks = [...socialLinks];
+                    newLinks[index].platform = e.target.value;
+                    setSocialLinks(newLinks);
+                  }}
+                  className="bg-transparent border-none focus:outline-none text-on-surface font-label-md max-w-[120px]"
+                >
+                  <option value="facebook">Facebook</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="tiktok">TikTok</option>
+                  <option value="youtube">YouTube</option>
+                  <option value="linkedin">LinkedIn</option>
+                  <option value="whatsapp">WhatsApp</option>
+                </select>
+                <input 
+                  value={social.url} 
+                  onChange={e => {
+                    const newLinks = [...socialLinks];
+                    newLinks[index].url = e.target.value;
+                    setSocialLinks(newLinks);
+                  }}
+                  className="flex-1 bg-transparent border-l border-outline-variant pl-4 focus:outline-none text-body-md text-on-background" 
+                  placeholder="URL de la red social" 
+                  type="url" 
+                />
+                <button 
+                  onClick={() => {
+                    const newLinks = [...socialLinks];
+                    newLinks.splice(index, 1);
+                    setSocialLinks(newLinks);
+                  }}
+                  className="text-error hover:bg-error-container p-2 rounded-md transition-colors flex items-center justify-center"
+                >
+                  <span className="material-symbols-outlined text-sm">delete</span>
+                </button>
+              </div>
+            ))}
+            <button 
+              onClick={() => setSocialLinks([...socialLinks, {platform: 'instagram', url: ''}])}
+              className="text-primary font-label-md flex items-center gap-2 hover:underline p-2"
+            >
+              <span className="material-symbols-outlined">add</span> Agregar Red Social
+            </button>
           </div>
         </div>
       </div>

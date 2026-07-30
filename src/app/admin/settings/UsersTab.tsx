@@ -171,7 +171,7 @@ export default function UsersTab() {
             <thead>
               <tr className="border-b border-outline-variant/30 text-on-surface-variant font-label-md text-[12px] uppercase tracking-wider">
                 <th className="pb-4 font-semibold">Usuario</th>
-                <th className="pb-4 font-semibold">Rol</th>
+                <th className="pb-4 font-semibold hidden md:table-cell">Rol</th>
                 <th className="pb-4 font-semibold">Permisos</th>
                 <th className="pb-4 font-semibold text-right">Acciones</th>
               </tr>

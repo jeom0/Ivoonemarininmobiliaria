@@ -32,52 +32,69 @@ export default function EditProperty({ params }: { params: { id: string } }) {
         try {
             let mainImageUrl = data.mainImage || property.mainImage;
             
-            // Si el usuario seleccionó un archivo de imagen
-            const fileInput = e.currentTarget.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
-            if (fileInput && fileInput.files && fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                const uploadFormData = new FormData();
-                uploadFormData.append("file", file);
-                
-                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (uploadRes.ok) {
-                    const uploadData = await uploadRes.json();
-                    mainImageUrl = uploadData.url;
+            // Multiple images upload
+            let imagesArr = [];
+            try { imagesArr = JSON.parse(property?.images || '[]'); } catch(e){}
+            const imagesInput = e.currentTarget.querySelector('input[name="imagesFiles"]') as HTMLInputElement;
+            if (imagesInput && imagesInput.files && imagesInput.files.length > 0) {
+                const uploadedImages = [];
+                for (let i = 0; i < imagesInput.files.length; i++) {
+                    const file = imagesInput.files[i];
+                    const uploadFormData = new FormData();
+                    uploadFormData.append("file", file);
+                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                    if (uploadRes.ok) {
+                        const uploadData = await uploadRes.json();
+                        uploadedImages.push(uploadData.url);
+                    }
+                }
+                if (uploadedImages.length > 0) {
+                    // Update mainImage if they uploaded new ones
+                    mainImageUrl = uploadedImages[0];
+                    imagesArr = uploadedImages;
                 }
             }
 
-            // Video upload
+            // Multiple video upload
             let videosUrl = property.videos;
-            const videoInput = e.currentTarget.querySelector('input[name="videoFile"]') as HTMLInputElement;
+            const videoInput = e.currentTarget.querySelector('input[name="videoFiles"]') as HTMLInputElement;
             if (videoInput && videoInput.files && videoInput.files.length > 0) {
-                const file = videoInput.files[0];
-                const uploadFormData = new FormData();
-                uploadFormData.append("file", file);
-                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (uploadRes.ok) {
-                    const uploadData = await uploadRes.json();
-                    videosUrl = JSON.stringify([uploadData.url]);
+                const uploadedVideos = [];
+                for (let i = 0; i < videoInput.files.length; i++) {
+                    const file = videoInput.files[i];
+                    const uploadFormData = new FormData();
+                    uploadFormData.append("file", file);
+                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                    if (uploadRes.ok) {
+                        const uploadData = await uploadRes.json();
+                        uploadedVideos.push(uploadData.url);
+                    }
                 }
+                if (uploadedVideos.length > 0) videosUrl = JSON.stringify(uploadedVideos);
             }
 
-            // PDF upload
+            // Multiple PDF upload
             let pdfsUrl = property.documents;
-            const pdfInput = e.currentTarget.querySelector('input[name="pdfFile"]') as HTMLInputElement;
+            const pdfInput = e.currentTarget.querySelector('input[name="pdfFiles"]') as HTMLInputElement;
             if (pdfInput && pdfInput.files && pdfInput.files.length > 0) {
-                const file = pdfInput.files[0];
-                const uploadFormData = new FormData();
-                uploadFormData.append("file", file);
-                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (uploadRes.ok) {
-                    const uploadData = await uploadRes.json();
-                    pdfsUrl = JSON.stringify([uploadData.url]);
+                const uploadedPdfs = [];
+                for (let i = 0; i < pdfInput.files.length; i++) {
+                    const file = pdfInput.files[i];
+                    const uploadFormData = new FormData();
+                    uploadFormData.append("file", file);
+                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                    if (uploadRes.ok) {
+                        const uploadData = await uploadRes.json();
+                        uploadedPdfs.push(uploadData.url);
+                    }
                 }
+                if (uploadedPdfs.length > 0) pdfsUrl = JSON.stringify(uploadedPdfs);
             }
 
-            const propertyData: any = { ...data, mainImage: mainImageUrl, videos: videosUrl, documents: pdfsUrl };
-            delete propertyData.mainImageFile;
-            delete propertyData.videoFile;
-            delete propertyData.pdfFile;
+            const propertyData: any = { ...data, mainImage: mainImageUrl, images: JSON.stringify(imagesArr), videos: videosUrl, documents: pdfsUrl };
+            delete propertyData.imagesFiles;
+            delete propertyData.videoFiles;
+            delete propertyData.pdfFiles;
             
             // Set price to 0 if not provided
             if (!propertyData.price) {
@@ -196,8 +213,8 @@ export default function EditProperty({ params }: { params: { id: string } }) {
                             <div className="space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="font-label-md text-secondary block mb-2">Cambiar Imagen Principal (Subir Archivo)</label>
-                                        <input name="mainImageFile" type="file" accept="image/*" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
+                                        <label className="font-label-md text-secondary block mb-2">Reemplazar Imágenes (Selecciona varias)</label>
+                                        <input name="imagesFiles" type="file" accept="image/*" multiple className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
                                     </div>
                                     <div>
                                         <label className="font-label-md text-secondary block mb-2">O Enlace de Imagen (URL)</label>
@@ -207,13 +224,13 @@ export default function EditProperty({ params }: { params: { id: string } }) {
                                 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-outline-variant/30">
                                     <div>
-                                        <label className="font-label-md text-secondary block mb-2">Cambiar Video (Subir .mp4, etc)</label>
-                                        <input name="videoFile" type="file" accept="video/*" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
+                                        <label className="font-label-md text-secondary block mb-2">Reemplazar Videos (Subir varios)</label>
+                                        <input name="videoFiles" type="file" accept="video/*" multiple className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
                                         {property?.videos && <p className="text-xs text-on-surface-variant mt-1">Ya hay un video guardado.</p>}
                                     </div>
                                     <div>
-                                        <label className="font-label-md text-secondary block mb-2">Cambiar PDF de Información Extendida</label>
-                                        <input name="pdfFile" type="file" accept="application/pdf" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
+                                        <label className="font-label-md text-secondary block mb-2">Reemplazar PDFs de Información (Varios)</label>
+                                        <input name="pdfFiles" type="file" accept="application/pdf" multiple className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
                                         {property?.documents && <p className="text-xs text-on-surface-variant mt-1">Ya hay un PDF guardado.</p>}
                                     </div>
                                 </div>

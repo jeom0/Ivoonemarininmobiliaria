@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import SettingsForm from "./SettingsForm";
 import UsersTab from "./UsersTab";
+import WebsiteTab from "./WebsiteTab";
 
 export default function Page() {
   const [activeTab, setActiveTab] = useState('empresa');
@@ -37,11 +38,7 @@ export default function Page() {
 </div>
 
 {activeTab === 'empresa' && <SettingsForm />}
-{activeTab === 'sitio' && (
-  <div className="p-8 text-center text-on-surface-variant bg-surface-container-lowest border border-outline-variant/30 rounded-xl">
-    <p>Próximamente: Integración SEO y Scripts.</p>
-  </div>
-)}
+{activeTab === 'sitio' && <WebsiteTab />}
 {activeTab === 'usuarios' && <UsersTab />}
 
 </div>

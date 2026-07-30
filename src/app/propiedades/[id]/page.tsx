@@ -174,7 +174,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                   {videoUrl && (
                     <div className="bg-black rounded-2xl overflow-hidden shadow-md aspect-video relative">
                       <video 
-                        controls 
+                        controls autoPlay muted loop playsInline 
                         className="w-full h-full object-cover"
                         src={videoUrl}
                       >
