@@ -28,8 +28,8 @@ model Property {
   title           String
   slug            String   @unique
   internalCode    String?  @unique
-  shortDesc       String?
-  fullDesc        String?
+  shortDesc       String?  @db.Text
+  fullDesc        String?  @db.LongText
   modality        String   // "VENTA" or "ARRIENDO"
   propertyType    String   // e.g., "Apartamento", "Casa"
   status          String   @default("DISPONIBLE") // "DISPONIBLE", "NO_DISPONIBLE"
@@ -48,17 +48,17 @@ model Property {
   stratum         Int?     // Estrato
   antiquity       Int?     // Años
   adminFee        Float?   // Administración
-  amenities       String?  // JSON string or comma separated
-  features        String?  // JSON string or comma separated
+  amenities       String?  @db.Text // JSON string or comma separated
+  features        String?  @db.Text // JSON string or comma separated
   mainImage       String?
-  images          String?  // JSON array
-  videos          String?  // JSON array
-  virtualTour     String?
-  documents       String?  // JSON array
+  images          String?  @db.LongText // JSON array
+  videos          String?  @db.LongText // JSON array
+  virtualTour     String?  @db.Text
+  documents       String?  @db.LongText // JSON array
   isFeatured      Boolean  @default(false)
   isInvestment    Boolean  @default(false)
   seoTitle        String?
-  seoDesc         String?
+  seoDesc         String?  @db.Text
   publishedAt     DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -68,15 +68,15 @@ model BlogPost {
   id          String   @id @default(uuid())
   title       String
   slug        String   @unique
-  summary     String?
-  content     String
+  summary     String?  @db.Text
+  content     String   @db.LongText
   mainImage   String?
   author      String?
   category    String?
   tags        String?  // comma separated
   status      String   @default("DRAFT") // "DRAFT" or "PUBLISHED"
   seoTitle    String?
-  seoDesc     String?
+  seoDesc     String?  @db.Text
   publishedAt DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
