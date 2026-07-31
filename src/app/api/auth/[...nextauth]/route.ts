@@ -23,11 +23,15 @@ export const authOptions: AuthOptions = {
             where: { email: email }
           })
           
-          if (!user) return null
+          if (!user) {
+            throw new Error("USER_NOT_FOUND");
+          }
           
           const isValid = await bcrypt.compare(credentials.password, user.password)
           
-          if (!isValid) return null
+          if (!isValid) {
+            throw new Error("WRONG_PASSWORD");
+          }
           
           return {
             id: user.id,
