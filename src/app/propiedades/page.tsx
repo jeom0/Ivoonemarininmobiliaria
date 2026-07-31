@@ -25,10 +25,18 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   if (bathrooms) where.bathrooms = { gte: bathrooms };
   if (stratum) where.stratum = { gte: stratum };
 
-  const properties = await prisma.property.findMany({ 
-      where,
-      orderBy: { createdAt: sortParam === 'asc' ? 'asc' : 'desc' } 
-  });
+  let properties: any[] = [];
+  let dbError = null;
+
+  try {
+    properties = await prisma.property.findMany({ 
+        where,
+        orderBy: { createdAt: sortParam === 'asc' ? 'asc' : 'desc' } 
+    });
+  } catch (error: any) {
+    dbError = error.message || String(error);
+    console.error("Database Error on /propiedades:", error);
+  }
 
   return (
     <>
@@ -41,6 +49,13 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
 <p className="font-body-lg text-body-lg text-on-surface-variant">Explora propiedades en venta y arriendo en el Eje Cafetero.</p>
 </header>
 <div className="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+
+{dbError && (
+  <div className="lg:col-span-12 bg-red-100 text-red-800 p-6 rounded-xl border border-red-200 mb-8 font-mono text-sm overflow-x-auto">
+    <h3 className="font-bold text-lg mb-2">Error de Base de Datos:</h3>
+    <pre>{dbError}</pre>
+  </div>
+)}
 
 <aside className="lg:col-span-3 space-y-8">
 <form method="GET" action="/propiedades" className="bg-surface-container-low p-6 rounded-xl sticky top-32 border border-outline-variant/30">
