@@ -1,3 +1,5 @@
+process.env.NEXTAUTH_URL = "https://lightgrey-gull-741202.hostingersite.com";
+
 import NextAuth, { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "@/lib/prisma"
