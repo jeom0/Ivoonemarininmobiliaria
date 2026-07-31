@@ -1,16 +1,17 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-export default function EditProperty({ params }: { params: { id: string } }) {
+export default function EditProperty({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
+    const unwrappedParams = use(params);
     const [loading, setLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
     const [property, setProperty] = useState<any>(null);
     
     useEffect(() => {
-        fetch(`/api/properties/${params.id}`)
+        fetch(`/api/properties/${unwrappedParams.id}`)
             .then(res => res.json())
             .then(data => {
                 setProperty(data);
@@ -21,7 +22,7 @@ export default function EditProperty({ params }: { params: { id: string } }) {
                 alert("Error cargando inmueble.");
                 router.push('/admin/properties');
             });
-    }, [params.id, router]);
+    }, [unwrappedParams.id, router]);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -106,7 +107,7 @@ export default function EditProperty({ params }: { params: { id: string } }) {
             propertyData.isFeatured = propertyData.isFeatured === 'true';
             propertyData.isInvestment = propertyData.isInvestment === 'true';
 
-            const res = await fetch(`/api/properties/${params.id}`, {
+            const res = await fetch(`/api/properties/${unwrappedParams.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(propertyData)

@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import fs from "fs";
 
-export async function GET(request: NextRequest, { params }: { params: { filename: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ filename: string }> }) {
   try {
-    const filename = params.filename;
+    const { filename } = await params;
     
     // Safely resolve path to avoid directory traversal
     const uploadDir = path.join(process.cwd(), "public", "uploads");
