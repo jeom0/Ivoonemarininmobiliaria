@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 
 export const authOptions: AuthOptions = {
+  secret: "super-secret-nextauth-key-12345",
   providers: [
     CredentialsProvider({
       name: "Credentials",
