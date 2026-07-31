@@ -102,6 +102,9 @@ export default function EditProperty({ params }: { params: { id: string } }) {
             } else {
                 propertyData.price = parseFloat(propertyData.price as string);
             }
+            
+            propertyData.isFeatured = propertyData.isFeatured === 'true';
+            propertyData.isInvestment = propertyData.isInvestment === 'true';
 
             const res = await fetch(`/api/properties/${params.id}`, {
                 method: 'PUT',
@@ -169,12 +172,14 @@ export default function EditProperty({ params }: { params: { id: string } }) {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="font-label-md text-secondary">Ciudad *</label>
-                                    <select name="city" required defaultValue={property?.city} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary">
-                                        <option value="Pereira">Pereira</option>
-                                        <option value="Dosquebradas">Dosquebradas</option>
-                                        <option value="Armenia">Armenia</option>
-                                        <option value="Manizales">Manizales</option>
-                                    </select>
+                                    <input list="cityOptions" name="city" required defaultValue={property?.city} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Escribe o selecciona..." autoComplete="off" />
+                                    <datalist id="cityOptions">
+                                        <option value="Santa Rosa de Cabal" />
+                                        <option value="Pereira" />
+                                        <option value="Dosquebradas" />
+                                        <option value="Armenia" />
+                                        <option value="Manizales" />
+                                    </datalist>
                                 </div>
                                 <div className="space-y-2">
                                     <label className="font-label-md text-secondary">Estado *</label>
@@ -234,6 +239,21 @@ export default function EditProperty({ params }: { params: { id: string } }) {
                                         {property?.documents && <p className="text-xs text-on-surface-variant mt-1">Ya hay un PDF guardado.</p>}
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Visibilidad */}
+                        <div>
+                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2">Secciones de Inicio</h3>
+                            <div className="flex gap-8">
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="isFeatured" value="true" defaultChecked={property?.isFeatured} className="w-5 h-5 rounded text-primary focus:ring-primary" />
+                                    <span className="font-label-md text-secondary">Destacar en Inicio (Propiedades Destacadas)</span>
+                                </label>
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="isInvestment" value="true" defaultChecked={property?.isInvestment} className="w-5 h-5 rounded text-primary focus:ring-primary" />
+                                    <span className="font-label-md text-secondary">Oportunidad de Inversión</span>
+                                </label>
                             </div>
                         </div>
 

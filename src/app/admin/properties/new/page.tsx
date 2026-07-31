@@ -148,12 +148,14 @@ export default function NewProperty() {
                                 </div>
                                 <div className="space-y-2">
                                     <label className="font-label-md text-secondary">Ciudad *</label>
-                                    <select name="city" required className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary">
-                                        <option value="Pereira">Pereira</option>
-                                        <option value="Dosquebradas">Dosquebradas</option>
-                                        <option value="Armenia">Armenia</option>
-                                        <option value="Manizales">Manizales</option>
-                                    </select>
+                                    <input list="cityOptions" name="city" required className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Escribe o selecciona..." autoComplete="off" />
+                                    <datalist id="cityOptions">
+                                        <option value="Santa Rosa de Cabal" />
+                                        <option value="Pereira" />
+                                        <option value="Dosquebradas" />
+                                        <option value="Armenia" />
+                                        <option value="Manizales" />
+                                    </datalist>
                                 </div>
                             </div>
                         </div>

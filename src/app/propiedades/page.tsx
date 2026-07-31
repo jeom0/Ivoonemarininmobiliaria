@@ -29,15 +29,25 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   let properties: any[] = [];
   let dbError = null;
 
+  let dbCities: string[] = [];
+
   try {
     properties = await prisma.property.findMany({ 
         where,
         orderBy: { createdAt: sortParam === 'asc' ? 'asc' : 'desc' } 
     });
+    const distinctCities = await prisma.property.findMany({
+        select: { city: true },
+        distinct: ['city']
+    });
+    dbCities = distinctCities.map(c => c.city);
   } catch (error: any) {
     dbError = error.message || String(error);
     console.error("Database Error on /propiedades:", error);
   }
+
+  const defaultCities = ["Santa Rosa de Cabal", "Pereira", "Dosquebradas", "Armenia", "Manizales"];
+  const allCities = Array.from(new Set([...defaultCities, ...dbCities])).sort();
 
   return (
     <>
@@ -93,10 +103,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
 <label className="font-label-md text-label-md block mb-3 uppercase tracking-wider text-secondary">Ciudad</label>
 <select name="city" defaultValue={city || "Todas"} className="w-full rounded-lg border-outline-variant bg-surface focus:ring-primary focus:border-primary text-body-md py-3 px-4">
 <option value="Todas">Todas</option>
-<option value="Pereira">Pereira</option>
-<option value="Armenia">Armenia</option>
-<option value="Manizales">Manizales</option>
-<option value="Dosquebradas">Dosquebradas</option>
+{allCities.map(c => (
+  <option key={c} value={c}>{c}</option>
+))}
 </select>
 </div>
 
