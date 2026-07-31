@@ -27,4 +27,4 @@ export default async function Page() {
   return (
     <AgendaCalendar initialVisits={serializedVisits} />
   );
-}
+}export const dynamic = 'force-dynamic';

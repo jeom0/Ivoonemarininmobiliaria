@@ -26,3 +26,4 @@ export default async function EditBlogPage({ params }: { params: Promise<{ id: s
     </div>
   );
 }
+export const dynamic = 'force-dynamic';

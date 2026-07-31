@@ -75,3 +75,4 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     </>
   );
 }
+export const dynamic = 'force-dynamic';

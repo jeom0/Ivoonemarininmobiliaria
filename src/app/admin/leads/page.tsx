@@ -36,4 +36,4 @@ export default async function Page() {
       <LeadsTable initialLeads={serializedLeads} />
     </>
   );
-}
+}export const dynamic = 'force-dynamic';
