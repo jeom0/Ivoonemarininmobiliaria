@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
 import SortSelect from "@/components/SortSelect";
+export const dynamic = 'force-dynamic';
 const prisma = new PrismaClient();
 
 import { Prisma } from '@prisma/client';
