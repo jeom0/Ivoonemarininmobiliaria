@@ -32,6 +32,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [sidebarOpen, isMobile]);
 
 
+  const [settings, setSettings] = useState<any>({});
+  
+  useEffect(() => {
+    fetch('/api/settings')
+      .then(res => res.json())
+      .then(data => setSettings(data))
+      .catch(console.error);
+  }, []);
+
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768)
     handleResize()
@@ -99,10 +108,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         >
           <span className="material-symbols-outlined">menu</span>
         </button>
-        <div className="flex flex-col items-center justify-center">
-          <span className="font-headline-md text-primary font-bold tracking-tighter text-lg leading-none">ivonne</span>
-          <span className="font-headline-md text-primary font-bold tracking-tighter text-lg leading-none -mt-1">marin.</span>
-        </div>
+        <Link href="/" className="flex flex-col items-center justify-center">
+          {settings.logoUrl ? (
+            <img src={settings.logoUrl} alt="Logo" className="h-8 w-auto object-contain" />
+          ) : (
+            <>
+              <span className="font-headline-md text-primary font-bold tracking-tighter text-lg leading-none">{settings.agencyName ? settings.agencyName.split(' ')[0] : 'ivonne'}</span>
+              <span className="font-headline-md text-primary font-bold tracking-tighter text-lg leading-none -mt-1">{settings.agencyName && settings.agencyName.split(' ').length > 1 ? settings.agencyName.split(' ')[1] + '.' : 'marin.'}</span>
+            </>
+          )}
+        </Link>
         <NotificationsDropdown />
       </div>
 
@@ -113,10 +128,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Header/Logo section */}
         <div className={`mb-10 mt-2 flex items-center h-12 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${sidebarOpen ? 'justify-between px-2' : 'justify-center w-full'}`}>
             {/* Desktop Full Logo */}
-            <div className={`flex flex-col overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${!sidebarOpen ? 'w-0 opacity-0' : 'w-24 opacity-100'}`}>
-              <span className="font-headline-md text-primary font-bold tracking-tighter text-2xl">ivonne</span>
-              <span className="font-headline-md text-primary font-bold tracking-tighter text-2xl -mt-2">marin.</span>
-            </div>
+            <Link href="/" className={`flex flex-col overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${!sidebarOpen ? 'w-0 opacity-0' : 'w-24 opacity-100'}`}>
+              {settings.logoUrl ? (
+                <img src={settings.logoUrl} alt="Logo" className="h-10 w-auto object-contain object-left" />
+              ) : (
+                <>
+                  <span className="font-headline-md text-primary font-bold tracking-tighter text-2xl">{settings.agencyName ? settings.agencyName.split(' ')[0] : 'ivonne'}</span>
+                  <span className="font-headline-md text-primary font-bold tracking-tighter text-2xl -mt-2">{settings.agencyName && settings.agencyName.split(' ').length > 1 ? settings.agencyName.split(' ')[1] + '.' : 'marin.'}</span>
+                </>
+              )}
+            </Link>
             
             {/* Desktop Hamburger Toggle (Inside sidebar) */}
             <button 

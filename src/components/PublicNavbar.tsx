@@ -5,9 +5,18 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function PublicNavbar({ settings }: { settings?: any }) {
-  const s = settings || {};
+  const [s, setS] = useState<any>(settings || {});
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!settings || Object.keys(settings).length === 0) {
+      fetch('/api/settings')
+        .then(res => res.json())
+        .then(data => setS(data))
+        .catch(console.error);
+    }
+  }, [settings]);
 
   
   useEffect(() => {
