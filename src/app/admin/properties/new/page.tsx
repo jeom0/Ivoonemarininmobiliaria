@@ -17,7 +17,7 @@ export default function NewProperty() {
             let mainImageUrl = data.mainImage;
             
             // Multiple images upload
-            const imagesInput = e.currentTarget.querySelector('input[name="imagesFiles"]') as HTMLInputElement;
+            const imagesInput = e.currentTarget.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
             if (imagesInput && imagesInput.files && imagesInput.files.length > 0) {
                 const uploadedImages = [];
                 for (let i = 0; i < imagesInput.files.length; i++) {
@@ -39,7 +39,7 @@ export default function NewProperty() {
             }
 
             // Multiple video upload
-            const videoInput = e.currentTarget.querySelector('input[name="videoFiles"]') as HTMLInputElement;
+            const videoInput = e.currentTarget.querySelector('input[name="videoFile"]') as HTMLInputElement;
             if (videoInput && videoInput.files && videoInput.files.length > 0) {
                 const uploadedVideos = [];
                 for (let i = 0; i < videoInput.files.length; i++) {
@@ -56,7 +56,7 @@ export default function NewProperty() {
             }
 
             // Multiple PDF upload
-            const pdfInput = e.currentTarget.querySelector('input[name="pdfFiles"]') as HTMLInputElement;
+            const pdfInput = e.currentTarget.querySelector('input[name="pdfFile"]') as HTMLInputElement;
             if (pdfInput && pdfInput.files && pdfInput.files.length > 0) {
                 const uploadedPdfs = [];
                 for (let i = 0; i < pdfInput.files.length; i++) {
@@ -202,6 +202,21 @@ export default function NewProperty() {
                                         <input name="pdfFile" type="file" accept="application/pdf" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        {/* Visibilidad */}
+                        <div>
+                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2">Secciones de Inicio</h3>
+                            <div className="flex gap-8">
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="isFeatured" value="true" className="w-5 h-5 rounded text-primary focus:ring-primary" />
+                                    <span className="font-label-md text-secondary">Destacar en Inicio (Propiedades Destacadas)</span>
+                                </label>
+                                <label className="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" name="isInvestment" value="true" className="w-5 h-5 rounded text-primary focus:ring-primary" />
+                                    <span className="font-label-md text-secondary">Oportunidad de Inversión</span>
+                                </label>
                             </div>
                         </div>
 
