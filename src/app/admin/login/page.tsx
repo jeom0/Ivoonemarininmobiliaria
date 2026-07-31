@@ -25,7 +25,7 @@ export default function Page() {
       });
 
       if (res?.error) {
-        setError("Credenciales inválidas. Por favor intente de nuevo.");
+        setError(`Error técnico: ${res.error}`);
       } else {
         router.push('/admin');
         router.refresh(); // Refresh to update session state across client
