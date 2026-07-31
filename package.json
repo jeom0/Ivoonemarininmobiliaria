@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx prisma generate && next build",
+    "build": "DATABASE_URL=\"mysql://u351811476_ivonnemarin:O9e44y6fXp@localhost:3306/u351811476_ivonnemarin\" npx prisma generate && DATABASE_URL=\"mysql://u351811476_ivonnemarin:O9e44y6fXp@localhost:3306/u351811476_ivonnemarin\" next build",
     "start": "next start",
     "lint": "eslint",
     "tunnel": "localtunnel --port 3000"
