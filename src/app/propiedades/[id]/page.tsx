@@ -219,4 +219,6 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
       <PublicFooter />
     </>
   );
-}export const dynamic = 'force-dynamic';
+}
+
+export const dynamic = 'force-dynamic';
