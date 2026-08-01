@@ -12,8 +12,8 @@ export async function POST(req: Request) {
     }
     try {
         const contentLength = parseInt(req.headers.get("content-length") || "0");
-        if (contentLength > 2 * 1024 * 1024) { // 2MB limit
-            return NextResponse.json({ error: "Payload Too Large" }, { status: 413 });
+        if (contentLength > 10 * 1024 * 1024) { // 10MB limit
+            return NextResponse.json({ error: "El contenido es demasiado grande (máximo 10MB)" }, { status: 413 });
         }
         
         const data = await req.json();
@@ -40,9 +40,12 @@ export async function POST(req: Request) {
         });
         
         return NextResponse.json(blogPost, { status: 201 });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error creating blog post:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        if (error.code === 'P2002') {
+            return NextResponse.json({ error: "El enlace (slug) ya existe. Por favor cambie el título o el slug manualmente." }, { status: 400 });
+        }
+        return NextResponse.json({ error: "Error en el servidor al crear el artículo" }, { status: 500 });
     }
 }
 

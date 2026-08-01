@@ -29,6 +29,11 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     try {
+        const contentLength = parseInt(req.headers.get("content-length") || "0");
+        if (contentLength > 10 * 1024 * 1024) { // 10MB limit
+            return NextResponse.json({ error: "El contenido es demasiado grande (máximo 10MB)" }, { status: 413 });
+        }
+
         const { id } = await params;
         const data = await req.json();
         
@@ -51,9 +56,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         });
         
         return NextResponse.json(post);
-    } catch (error) {
+    } catch (error: any) {
         console.error("Error updating blog post:", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        if (error.code === 'P2002') {
+            return NextResponse.json({ error: "El enlace (slug) ya existe. Por favor cambie el título o el slug manualmente." }, { status: 400 });
+        }
+        return NextResponse.json({ error: "Error en el servidor al actualizar el artículo" }, { status: 500 });
     }
 }
 

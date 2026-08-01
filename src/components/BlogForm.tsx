@@ -83,14 +83,21 @@ export default function BlogForm({ initialData }: BlogFormProps) {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to save post");
+        let errorMessage = "Ocurrió un error al guardar el artículo.";
+        try {
+          const errorData = await res.json();
+          if (errorData && errorData.error) {
+            errorMessage = errorData.error;
+          }
+        } catch (e) {}
+        throw new Error(errorMessage);
       }
 
       router.push("/admin/blog");
       router.refresh();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      setError("Ocurrió un error al guardar el artículo.");
+      setError(err.message || "Ocurrió un error al guardar el artículo.");
       setSaving(false);
     }
   };
