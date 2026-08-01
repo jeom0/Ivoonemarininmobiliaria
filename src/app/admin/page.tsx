@@ -53,7 +53,7 @@ export default async function Page() {
       </section>
 
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-gutter mb-section-gap">
-        <div className="bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+        <Link href="/admin/properties" className="block bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md cursor-pointer">
         <div className="flex justify-between items-start mb-4">
         <div className="w-10 h-10 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center">
         <span className="material-symbols-outlined">apartment</span>
@@ -63,9 +63,9 @@ export default async function Page() {
         <div className="flex items-end gap-2">
         <h3 className="text-2xl md:text-[32px] font-bold text-primary leading-none">{propertiesCount}</h3>
         </div>
-        </div>
+        </Link>
 
-        <div className="bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+        <Link href="/admin/leads" className="block bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md cursor-pointer">
         <div className="flex justify-between items-start mb-4">
         <div className="w-10 h-10 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center">
         <span className="material-symbols-outlined">group</span>
@@ -75,9 +75,9 @@ export default async function Page() {
         <div className="flex items-end gap-2">
         <h3 className="text-2xl md:text-[32px] font-bold text-primary leading-none">{leadsCount}</h3>
         </div>
-        </div>
+        </Link>
 
-        <div className="bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+        <Link href="/admin/agenda" className="block bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md cursor-pointer">
         <div className="flex justify-between items-start mb-4">
         <div className="w-10 h-10 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
         <span className="material-symbols-outlined">pending_actions</span>
@@ -87,9 +87,9 @@ export default async function Page() {
         <div className="flex items-end gap-2">
         <h3 className="text-2xl md:text-[32px] font-bold text-primary leading-none">{visitsCount}</h3>
         </div>
-        </div>
+        </Link>
 
-        <div className="bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md">
+        <Link href="/admin/properties" className="block bento-card p-6 rounded-xl relative overflow-hidden bg-white border border-outline-variant/30 shadow-sm transition-all hover:-translate-y-1 hover:shadow-md cursor-pointer">
         <div className="flex justify-between items-start mb-4">
         <div className="w-10 h-10 rounded-lg bg-primary-container text-on-primary-container flex items-center justify-center">
         <span className="material-symbols-outlined" style={{"fontVariationSettings":"'FILL' 1"}}>stars</span>
@@ -99,7 +99,7 @@ export default async function Page() {
         <div className="flex items-end gap-2">
         <h3 className="text-2xl md:text-[32px] font-bold text-primary leading-none">{soldCount}</h3>
         </div>
-        </div>
+        </Link>
       </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
