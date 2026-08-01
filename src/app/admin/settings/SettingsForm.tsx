@@ -24,10 +24,19 @@ export default function SettingsForm() {
         if (data.logoUrl) setLogoPreview(data.logoUrl);
         if (data.hero_media) {
           try {
-            setHeroMedia(JSON.parse(data.hero_media));
-          } catch(e){}
+            const parsed = JSON.parse(data.hero_media);
+            if (parsed && parsed.length > 0) {
+              setHeroMedia(parsed);
+            } else {
+              setHeroMedia(["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2500&q=100"]);
+            }
+          } catch(e){
+            setHeroMedia(["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2500&q=100"]);
+          }
         } else if (data.heroImage) {
           setHeroMedia([data.heroImage]);
+        } else {
+          setHeroMedia(["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2500&q=100"]);
         }
         if (data.agencyName) setAgencyName(data.agencyName);
         if (data.whatsapp) setWhatsapp(data.whatsapp);

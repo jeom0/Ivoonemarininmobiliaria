@@ -24,8 +24,9 @@ export default async function Page() {
   // Usar una imagen de alta calidad de Unsplash para el parallax (fachada moderna de lujo)
   const heroImageUrl = settings.heroImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2500&q=100";
   const whatsappNumber = settings.whatsapp || "+573000000000";
-  // Format whatsapp to remove spaces/symbols for the link
-  const cleanWhatsapp = whatsappNumber.replace(/[^0-9]/g, '');
+  // Extract just the first number if user entered multiple (e.g. "3113538193 / 320-7341484")
+  const firstWhatsapp = whatsappNumber.split(/[\/\-\,]/)[0].trim();
+  const cleanWhatsapp = firstWhatsapp.replace(/[^0-9]/g, '');
 
   
   const defaultZones = [

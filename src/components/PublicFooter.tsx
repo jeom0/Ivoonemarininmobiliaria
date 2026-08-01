@@ -19,6 +19,12 @@ export default function PublicFooter({ settings }: { settings?: any }) {
     if (s.social_links) socialLinks = JSON.parse(s.social_links);
   } catch(e){}
 
+  const getValidUrl = (url: string) => {
+    if (!url) return '#';
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    return `https://${url}`;
+  };
+
   return (
     <footer className="full-width py-section-gap bg-primary text-on-primary">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
@@ -27,17 +33,17 @@ export default function PublicFooter({ settings }: { settings?: any }) {
           <p className="font-body-md text-on-primary/80">Asesoría inmobiliaria integral en el Eje Cafetero. Seguridad, confianza y resultados.</p>
           <div className="flex gap-4">
             {socialLinks.map((link, idx) => (
-              <Link key={idx} className="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href={link.url} target="_blank" title={link.platform}>
+              <Link key={idx} className="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href={getValidUrl(link.url)} target="_blank" title={link.platform}>
                 <span className="material-symbols-outlined text-lg">{getIcon(link.platform)}</span>
               </Link>
             ))}
             {socialLinks.length === 0 && s.instagram && (
-              <Link className="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href={s.instagram} target="_blank">
+              <Link className="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href={getValidUrl(s.instagram)} target="_blank">
                 <span className="material-symbols-outlined text-lg">photo_camera</span>
               </Link>
             )}
             {socialLinks.length === 0 && s.facebook && (
-              <Link className="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href={s.facebook} target="_blank">
+              <Link className="w-10 h-10 rounded-full bg-on-primary/10 flex items-center justify-center hover:bg-on-primary/20 transition-all" href={getValidUrl(s.facebook)} target="_blank">
                 <span className="material-symbols-outlined text-lg">public</span>
               </Link>
             )}
