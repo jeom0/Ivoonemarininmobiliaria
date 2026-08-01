@@ -4,7 +4,6 @@ import PublicFooter from "@/components/PublicFooter";
 import HeroCarousel from "@/components/HeroCarousel";
 import { PrismaClient } from '@prisma/client';
 
-export const dynamic = 'force-dynamic';
 
 const prisma = new PrismaClient();
 

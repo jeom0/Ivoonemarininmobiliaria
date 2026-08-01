@@ -38,4 +38,3 @@ export default async function Page() {
   );
 }
 
-export const dynamic = 'force-dynamic';

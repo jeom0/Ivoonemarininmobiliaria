@@ -8,16 +8,22 @@ const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
+import { headers } from "next/headers";
+
 export const metadata: Metadata = {
   title: "Ivonne Marin - Asesora Inmobiliaria",
   description: "Asesora inmobiliaria premium en el Eje Cafetero",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Opt out of static generation for the entire app to prevent build crashes
+  // while ensuring CSS chunks are properly injected in the dynamic response
+  await headers();
+
   return (
     <html lang="es" className={jakarta.className}>
       <head>

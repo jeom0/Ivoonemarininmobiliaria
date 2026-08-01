@@ -2,7 +2,6 @@ import Link from "next/link";
 import { PrismaClient } from '@prisma/client';
 import PropertiesTable from "./PropertiesTable";
 
-export const dynamic = 'force-dynamic';
 
 const prisma = new PrismaClient();
 

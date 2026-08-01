@@ -221,4 +221,3 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
   );
 }
 
-export const dynamic = 'force-dynamic';
