@@ -9,6 +9,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 import { headers } from "next/headers";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "Ivonne Marin - Asesora Inmobiliaria",
@@ -23,11 +24,22 @@ export default async function RootLayout({
   // Opt out of static generation for the entire app to prevent build crashes
   // while ensuring CSS chunks are properly injected in the dynamic response
   await headers();
+  
+  let faviconUrl = "/favicon.ico";
+  try {
+    const admin = await prisma.user.findFirst({ where: { role: "ADMIN" } });
+    if (admin?.image) {
+      faviconUrl = admin.image;
+    }
+  } catch (error) {
+    console.error("Failed to load favicon from admin user");
+  }
 
   return (
     <html lang="es" className={jakarta.className}>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+        <link rel="icon" href={faviconUrl} />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-on-surface">
         <AuthProvider>

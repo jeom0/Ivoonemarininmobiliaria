@@ -274,7 +274,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
             </thead>
             <tbody className="divide-y divide-outline-variant/20 font-body-md text-body-md text-on-surface">
               {paginated.map((lead) => (
-                <tr key={lead.id} className="hover:bg-surface-container-low/50 transition-colors group">
+                <tr key={lead.id} onClick={() => { setSelectedLead(lead); setIsEditingLead(false); }} className="hover:bg-surface-container-low/50 transition-colors group cursor-pointer">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold flex-shrink-0 overflow-hidden">
@@ -326,7 +326,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                       </select>
                     ) : (
                       <button
-                        onClick={() => setEditingStatusId(lead.id)}
+                        onClick={(e) => { e.stopPropagation(); setEditingStatusId(lead.id); }}
                         className={`inline-flex items-center px-2.5 py-1 rounded-full font-label-md text-xs hover:opacity-80 transition-opacity cursor-pointer ${STATUS_STYLES[lead.status] || "bg-surface-container text-on-surface"}`}
                         title="Clic para cambiar estado"
                       >
@@ -337,7 +337,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                   <td className="py-4 px-6 text-right">
                     <div className="flex justify-end gap-2 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                       <button
-                        onClick={() => setSelectedLead(lead)}
+                        onClick={(e) => { e.stopPropagation(); setSelectedLead(lead); }}
                         className="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-colors"
                         title="Ver detalle"
                       >
@@ -345,6 +345,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                       </button>
                       {lead.phone && (
                         <a
+                          onClick={(e) => e.stopPropagation()}
                           href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}?text=Hola ${lead.name}, te escribo de parte de Ivonne Marin Inmobiliaria.`}
                           target="_blank"
                           rel="noreferrer"
@@ -355,14 +356,14 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                         </a>
                       )}
                       <button
-                        onClick={() => setEditingStatusId(lead.id)}
+                        onClick={(e) => { e.stopPropagation(); setSelectedLead(lead); setEditLeadData(lead); setIsEditingLead(true); }}
                         className="p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-primary/10 transition-colors"
-                        title="Cambiar estado"
+                        title="Editar lead"
                       >
                         <span className="material-symbols-outlined text-[20px]">edit</span>
                       </button>
                       <button
-                        onClick={() => handleDelete(lead.id)}
+                        onClick={(e) => { e.stopPropagation(); handleDelete(lead.id); }}
                         className="p-2 rounded-lg text-on-surface-variant hover:text-error hover:bg-error/10 transition-colors"
                         title="Eliminar"
                       >
