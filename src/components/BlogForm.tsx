@@ -48,8 +48,8 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleAction = async (actionStatus: string, e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     setSaving(true);
     setError("");
 
@@ -60,8 +60,7 @@ export default function BlogForm({ initialData }: BlogFormProps) {
       let finalMainImage = formData.mainImage;
       
       // Handle file upload if present
-      const formElement = e.currentTarget as HTMLFormElement;
-      const fileInput = formElement.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
+      const fileInput = document.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
       if (fileInput && fileInput.files && fileInput.files.length > 0) {
         const file = fileInput.files[0];
         const uploadFormData = new FormData();
@@ -74,7 +73,7 @@ export default function BlogForm({ initialData }: BlogFormProps) {
         }
       }
 
-      const payload = { ...formData, mainImage: finalMainImage };
+      const payload = { ...formData, mainImage: finalMainImage, status: actionStatus };
 
       const res = await fetch(url, {
         method,
@@ -102,8 +101,26 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     }
   };
 
+  const handleDelete = async () => {
+    if (!initialData) return;
+    if (!confirm("¿Estás seguro de que deseas eliminar este artículo permanentemente?")) return;
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/blog/${initialData.id}`, { method: "DELETE" });
+      if (res.ok) {
+        router.push("/admin/blog");
+        router.refresh();
+      } else {
+        throw new Error("Error al eliminar");
+      }
+    } catch(err) {
+      alert("Error al eliminar el artículo");
+      setSaving(false);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-4xl">
+    <form onSubmit={(e) => handleAction("PUBLISHED", e)} className="space-y-6 max-w-4xl">
       {error && (
         <div className="bg-error-container text-on-error-container p-4 rounded-lg font-body-md">
           {error}
@@ -200,34 +217,39 @@ export default function BlogForm({ initialData }: BlogFormProps) {
         </div>
       </div>
 
-      <div className="bg-surface-bright rounded-xl border border-outline-variant/50 p-6 flex flex-col md:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <label className="font-label-md text-on-surface-variant">Estado:</label>
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="bg-surface border border-outline-variant rounded-lg px-4 py-2 font-body-md focus:border-primary outline-none"
-          >
-            <option value="DRAFT">Borrador</option>
-            <option value="PUBLISHED">Publicado</option>
-          </select>
+      <div className="bg-surface-bright rounded-xl border border-outline-variant/50 p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm mt-8">
+        <div className="flex w-full md:w-auto">
+          {initialData && (
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={saving}
+              className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 border border-error/30 text-error rounded-xl font-label-md hover:bg-error-container transition-colors disabled:opacity-50"
+            >
+              <span className="material-symbols-outlined text-[18px]">delete</span>
+              Eliminar Artículo
+            </button>
+          )}
         </div>
         
-        <div className="flex gap-4 w-full md:w-auto">
+        <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
           <button
             type="button"
-            onClick={() => router.push("/admin/blog")}
-            className="w-full md:w-auto px-6 py-2 border border-outline-variant rounded-lg font-label-md hover:bg-surface-container transition-colors"
+            onClick={(e) => handleAction("DRAFT", e as any)}
+            disabled={saving}
+            className="w-full sm:w-auto px-6 py-3 bg-surface-container-high text-on-surface rounded-xl font-label-md hover:bg-surface-container-highest transition-colors disabled:opacity-50 flex items-center justify-center gap-2 border border-outline-variant/30"
           >
-            Cancelar
+            <span className="material-symbols-outlined text-[18px]">edit_document</span>
+            Guardar como Borrador
           </button>
           <button
-            type="submit"
+            type="button"
+            onClick={(e) => handleAction("PUBLISHED", e as any)}
             disabled={saving}
-            className="w-full md:w-auto px-6 py-2 bg-primary text-on-primary rounded-lg font-label-md hover:bg-surface-tint transition-colors disabled:opacity-50"
+            className="w-full sm:w-auto px-8 py-3 bg-primary text-on-primary rounded-xl font-label-md hover:opacity-90 shadow-sm transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
           >
-            {saving ? "Guardando..." : "Guardar Artículo"}
+            <span className="material-symbols-outlined text-[18px]">publish</span>
+            {initialData && initialData.status === "PUBLISHED" ? "Actualizar Publicación" : "Publicar Ahora"}
           </button>
         </div>
       </div>
