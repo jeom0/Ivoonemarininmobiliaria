@@ -57,11 +57,11 @@ export async function POST(req: Request) {
                               <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; color: #666;"><strong>Teléfono:</strong></td>
                               <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; color: #222;">${data.phone || 'No especificado'}</td>
                             </tr>
-                            ${data.propertyId ? \`
+                            ${data.propertyId ? `
                             <tr>
                               <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; color: #666;"><strong>ID Inmueble:</strong></td>
                               <td style="padding: 12px 0; border-bottom: 1px solid #f0f0f0; color: #222;">${data.propertyId}</td>
-                            </tr>\` : ''}
+                            </tr>` : ''}
                           </table>
                           <div style="margin-top: 25px;">
                             <strong style="color: #666; display: block; margin-bottom: 8px;">Mensaje del cliente:</strong>
