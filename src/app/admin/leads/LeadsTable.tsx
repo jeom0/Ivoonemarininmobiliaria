@@ -480,12 +480,12 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                         <span className="material-symbols-outlined text-[14px]">edit</span>
                       </button>
                       {showAvatarSelector && (
-                        <div className="absolute top-16 left-0 bg-surface rounded-xl shadow-xl border border-outline-variant p-3 w-48 z-50 flex flex-wrap gap-2">
+                        <div className="absolute top-16 left-0 bg-surface rounded-xl shadow-xl border border-outline-variant p-3 w-64 z-50 flex flex-wrap gap-2">
                           <p className="w-full text-xs font-label-sm text-on-surface-variant mb-1">Elige un avatar o sube foto</p>
                           {AVATARS.map(av => (
-                            <img key={av} src={av} onClick={() => { setEditLeadData({...editLeadData, avatar: av}); setShowAvatarSelector(false); }} className="w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
+                            <img key={av} src={av} onClick={() => { setEditLeadData({...editLeadData, avatar: av}); setShowAvatarSelector(false); }} className="w-14 h-14 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
                           ))}
-                          <label className="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors">
+                          <label className="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors">
                             <span className="material-symbols-outlined text-sm">upload</span>
                             <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
                               if(e.target.files) {
@@ -634,7 +634,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                 </div>
                 <div className="flex flex-wrap justify-center gap-2">
                   {AVATARS.map(av => (
-                    <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover ${newLeadData.avatar === av ? 'ring-2 ring-primary' : ''}`} />
+                    <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-14 h-14 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover ${newLeadData.avatar === av ? 'ring-2 ring-primary' : ''}`} />
                   ))}
                 </div>
               </div>
