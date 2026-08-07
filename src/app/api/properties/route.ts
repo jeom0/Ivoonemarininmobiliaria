@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         const data = await req.json();
         
         // Basic validation
-        if (!data.title || !data.price || !data.city || !data.propertyType || !data.modality) {
+        if (!data.title || data.price === undefined || data.price === null || !data.city || !data.propertyType || !data.modality) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
         
