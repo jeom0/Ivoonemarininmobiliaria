@@ -150,7 +150,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
         const lead = await res.json();
         setLeads([lead, ...leads]);
         setIsCreating(false);
-        setNewLeadData({ name: '', email: '', phone: '', message: '', type: 'CONTACT' });
+        setNewLeadData({ name: '', email: '', phone: '', message: '', type: 'CONTACT', avatar: '' });
       } else {
         alert('Error al crear lead');
       }
