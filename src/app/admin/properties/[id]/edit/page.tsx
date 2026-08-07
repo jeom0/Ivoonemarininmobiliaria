@@ -2,6 +2,7 @@
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import imageCompression from 'browser-image-compression';
 
 export default function EditProperty({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
@@ -41,9 +42,13 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
             if (imagesInput && imagesInput.files && imagesInput.files.length > 0) {
                 const uploadedImages = [];
                 for (let i = 0; i < imagesInput.files.length; i++) {
-                    const file = imagesInput.files[i];
+                    const originalFile = imagesInput.files[i];
+                    let file = originalFile;
+                    try {
+                        file = await imageCompression(originalFile, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
+                    } catch (e) { console.error('Error compressing', e); }
                     const uploadFormData = new FormData();
-                    uploadFormData.append("file", file);
+                    uploadFormData.append("file", file, originalFile.name);
                     const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
                     if (uploadRes.ok) {
                         const uploadData = await uploadRes.json();
