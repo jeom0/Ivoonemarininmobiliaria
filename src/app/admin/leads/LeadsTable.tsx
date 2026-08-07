@@ -56,6 +56,20 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
   const [isCreating, setIsCreating] = useState(false);
   const [newLeadData, setNewLeadData] = useState({ name: '', email: '', phone: '', message: '', type: 'CONTACT', avatar: '' });
 
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  
+  const handleBulkDelete = async () => {
+    if (!confirm(`¿Estás seguro de que deseas eliminar ${selectedIds.length} leads?`)) return;
+    try {
+      await Promise.all(selectedIds.map(id => fetch(`/api/leads/${id}`, { method: 'DELETE' })));
+      setLeads(prev => prev.filter(l => !selectedIds.includes(l.id)));
+      setSelectedIds([]);
+      router.refresh();
+    } catch (e) {
+      alert('Error eliminando leads');
+    }
+  };
+
   // Editing status inline
   const [editingStatusId, setEditingStatusId] = useState<string | null>(null);
 
@@ -258,12 +272,27 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
         </div>
       </div>
 
+      
+      {selectedIds.length > 0 && (
+        <div className="bg-surface-container-high rounded-xl p-4 flex items-center justify-between shadow-sm border border-outline-variant/30 mt-4 mb-4">
+          <span className="font-label-md text-on-surface">{selectedIds.length} leads seleccionados</span>
+          <button onClick={handleBulkDelete} className="px-4 py-2 bg-error text-white rounded-lg flex items-center gap-2 hover:opacity-90 transition-opacity">
+            <span className="material-symbols-outlined text-[18px]">delete</span> Eliminar Seleccionados
+          </button>
+        </div>
+      )}
       {/* Table */}
       <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/20 overflow-hidden flex flex-col">
         <div className="overflow-x-auto flex-1">
           <table className="w-full text-left border-collapse min-w-full md:min-w-[800px]">
             <thead className="bg-surface-container-low border-b border-outline-variant/30 sticky top-0 z-10">
-              <tr>
+                            <tr>
+                <th className="py-4 px-6 w-12 text-center">
+                  <input type="checkbox" checked={selectedIds.length === paginated.length && paginated.length > 0} onChange={(e) => {
+                    if (e.target.checked) setSelectedIds(paginated.map(l => l.id));
+                    else setSelectedIds([]);
+                  }} className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer accent-primary" />
+                </th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Cliente</th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Contacto</th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant hidden md:table-cell">Mensaje</th>
@@ -275,6 +304,12 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
             <tbody className="divide-y divide-outline-variant/20 font-body-md text-body-md text-on-surface">
               {paginated.map((lead) => (
                 <tr key={lead.id} onClick={() => { setSelectedLead(lead); setIsEditingLead(false); }} className="hover:bg-surface-container-low/50 transition-colors group cursor-pointer">
+                  <td className="py-4 px-6 text-center" onClick={(e) => e.stopPropagation()}>
+                    <input type="checkbox" checked={selectedIds.includes(lead.id)} onChange={(e) => {
+                      if (e.target.checked) setSelectedIds([...selectedIds, lead.id]);
+                      else setSelectedIds(selectedIds.filter(id => id !== lead.id));
+                    }} className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer accent-primary" />
+                  </td>
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold flex-shrink-0 overflow-hidden">
