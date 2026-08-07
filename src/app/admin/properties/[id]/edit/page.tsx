@@ -26,8 +26,9 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        const form = e.currentTarget;
         setLoading(true);
-        const formData = new FormData(e.currentTarget);
+        const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
         try {
@@ -36,7 +37,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
             // Multiple images upload
             let imagesArr = [];
             try { imagesArr = JSON.parse(property?.images || '[]'); } catch(e){}
-            const imagesInput = e.currentTarget.querySelector('input[name="imagesFiles"]') as HTMLInputElement;
+            const imagesInput = form.querySelector('input[name="imagesFiles"]') as HTMLInputElement;
             if (imagesInput && imagesInput.files && imagesInput.files.length > 0) {
                 const uploadedImages = [];
                 for (let i = 0; i < imagesInput.files.length; i++) {
@@ -58,7 +59,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
 
             // Multiple video upload
             let videosUrl = property.videos;
-            const videoInput = e.currentTarget.querySelector('input[name="videoFiles"]') as HTMLInputElement;
+            const videoInput = form.querySelector('input[name="videoFiles"]') as HTMLInputElement;
             if (videoInput && videoInput.files && videoInput.files.length > 0) {
                 const uploadedVideos = [];
                 for (let i = 0; i < videoInput.files.length; i++) {
@@ -76,7 +77,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
 
             // Multiple PDF upload
             let pdfsUrl = property.documents;
-            const pdfInput = e.currentTarget.querySelector('input[name="pdfFiles"]') as HTMLInputElement;
+            const pdfInput = form.querySelector('input[name="pdfFiles"]') as HTMLInputElement;
             if (pdfInput && pdfInput.files && pdfInput.files.length > 0) {
                 const uploadedPdfs = [];
                 for (let i = 0; i < pdfInput.files.length; i++) {

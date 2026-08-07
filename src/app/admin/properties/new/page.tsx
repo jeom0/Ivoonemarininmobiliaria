@@ -9,15 +9,16 @@ export default function NewProperty() {
     
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        const form = e.currentTarget;
         setLoading(true);
-        const formData = new FormData(e.currentTarget);
+        const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
         
         try {
             let mainImageUrl = data.mainImage;
             
             // Multiple images upload
-            const imagesInput = e.currentTarget.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
+            const imagesInput = form.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
             if (imagesInput && imagesInput.files && imagesInput.files.length > 0) {
                 const uploadedImages = [];
                 for (let i = 0; i < imagesInput.files.length; i++) {
@@ -39,7 +40,7 @@ export default function NewProperty() {
             }
 
             // Multiple video upload
-            const videoInput = e.currentTarget.querySelector('input[name="videoFile"]') as HTMLInputElement;
+            const videoInput = form.querySelector('input[name="videoFile"]') as HTMLInputElement;
             if (videoInput && videoInput.files && videoInput.files.length > 0) {
                 const uploadedVideos = [];
                 for (let i = 0; i < videoInput.files.length; i++) {
@@ -56,7 +57,7 @@ export default function NewProperty() {
             }
 
             // Multiple PDF upload
-            const pdfInput = e.currentTarget.querySelector('input[name="pdfFile"]') as HTMLInputElement;
+            const pdfInput = form.querySelector('input[name="pdfFile"]') as HTMLInputElement;
             if (pdfInput && pdfInput.files && pdfInput.files.length > 0) {
                 const uploadedPdfs = [];
                 for (let i = 0; i < pdfInput.files.length; i++) {
