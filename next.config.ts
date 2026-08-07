@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins: ["breezy-grasshopper-83.loca.lt", "ivonnemarin-app.loca.lt", "loca.lt", "web-task-secretariat-upgrade.trycloudflare.com"],
+  allowedDevOrigins: ["ivonnemarininmobiliaria.com", "breezy-grasshopper-83.loca.lt", "ivonnemarin-app.loca.lt", "loca.lt", "web-task-secretariat-upgrade.trycloudflare.com"],
   async headers() {
     return [
       {

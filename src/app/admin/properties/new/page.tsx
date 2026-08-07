@@ -94,11 +94,12 @@ export default function NewProperty() {
                 router.push('/admin/properties');
                 router.refresh();
             } else {
-                alert("Error al subir inmueble. Por favor revisa los campos.");
+                const errorData = await res.json().catch(() => ({}));
+                alert(`Error del servidor al guardar: ${errorData.error || res.statusText}`);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            alert("Error del servidor.");
+            alert(`Error de red o conexión: ${error.message}. Si subiste imágenes, asegúrate de que pesen menos de 2MB.`);
         }
         setLoading(false);
     }

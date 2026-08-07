@@ -117,11 +117,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                 router.push('/admin/properties');
                 router.refresh();
             } else {
-                alert("Error al editar inmueble.");
+                const errorData = await res.json().catch(() => ({}));
+                alert(`Error del servidor al editar: ${errorData.error || res.statusText}`);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
-            alert("Error del servidor.");
+            alert(`Error de red o conexión: ${error.message}. Si subiste imágenes, asegúrate de que pesen menos de 2MB.`);
         }
         setLoading(false);
     }
