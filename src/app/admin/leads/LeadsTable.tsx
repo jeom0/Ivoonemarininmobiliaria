@@ -12,6 +12,7 @@ type Lead = {
   type: string;
   status: string;
   propertyId: string | null;
+  avatar: string | null;
   createdAt: string; // ISO string
 };
 
@@ -126,6 +127,32 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
     }
   };
 
+  const handleAvatarUpload = async (id: string, file: File) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      if (res.ok) {
+        const data = await res.json();
+        const avatarUrl = data.url;
+        await fetch(`/api/leads/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ avatar: avatarUrl }),
+        });
+        setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, avatar: avatarUrl } : l)));
+        if (selectedLead?.id === id) {
+          setSelectedLead({ ...selectedLead, avatar: avatarUrl });
+        }
+        router.refresh();
+      } else {
+        alert("Error al subir imagen");
+      }
+    } catch {
+      alert("Error de red");
+    }
+  };
+
   // KPIs
   const totalLeads = leads.length;
   const newLeads = leads.filter((l) => l.status === "NEW").length;
@@ -214,8 +241,8 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                 <tr key={lead.id} className="hover:bg-surface-container-low/50 transition-colors group">
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold flex-shrink-0">
-                        {lead.name.substring(0, 2).toUpperCase()}
+                      <div className="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold flex-shrink-0 overflow-hidden">
+                        {lead.avatar ? <img src={lead.avatar} className="w-full h-full object-cover" alt="avatar" /> : lead.name.substring(0, 2).toUpperCase()}
                       </div>
                       <div>
                         <div className="font-medium text-on-surface">{lead.name}</div>
@@ -365,8 +392,12 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xl font-bold">
-                  {selectedLead.name.substring(0, 2).toUpperCase()}
+                <div className="w-14 h-14 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xl font-bold relative group overflow-hidden">
+                  {selectedLead.avatar ? <img src={selectedLead.avatar} className="w-full h-full object-cover" alt="avatar" /> : selectedLead.name.substring(0, 2).toUpperCase()}
+                  <label className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity" title="Cambiar foto">
+                    <span className="material-symbols-outlined text-white text-sm">upload</span>
+                    <input type="file" className="hidden" accept="image/*" onChange={(e) => { if(e.target.files) handleAvatarUpload(selectedLead.id, e.target.files[0]) }} />
+                  </label>
                 </div>
                 <div>
                   <h3 className="font-headline-md text-headline-md text-primary">{selectedLead.name}</h3>

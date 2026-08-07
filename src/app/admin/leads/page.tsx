@@ -15,6 +15,7 @@ export default async function Page() {
       type: true,
       status: true,
       propertyId: true,
+      avatar: true,
       createdAt: true
     }
   });
