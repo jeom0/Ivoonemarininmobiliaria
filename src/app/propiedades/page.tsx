@@ -156,13 +156,13 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
     </div>
 ) : (
     properties.map(p => (
-        <div key={p.id} className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 card-hover transition-all duration-300">
-            <div className="relative h-64">
+        <Link href={`/propiedades/${p.id}`} key={p.id} className="block bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 card-hover transition-all duration-300 group">
+            <div className="relative h-64 overflow-hidden">
                 <div className="absolute top-4 left-4 z-10 flex gap-2">
                     <span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">{p.modality}</span>
                     {p.status === 'NUEVO' && <span className="bg-secondary-fixed text-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">Nuevo</span>}
                 </div>
-                <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: `url('${p.mainImage}')` }}></div>
+                <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} />
             </div>
             <div className="p-6">
                 <div className="flex justify-between items-start mb-2">
@@ -188,7 +188,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     ))
 )}
 

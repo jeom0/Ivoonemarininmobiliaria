@@ -83,7 +83,7 @@ export default async function Page() {
     </div>
   ) : (
     featuredProperties.map((p) => (
-      <div key={p.id} className="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2">
+      <Link href={`/propiedades/${p.id}`} key={p.id} className="block group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2">
         <div className="relative h-64 overflow-hidden">
         <div className="absolute top-4 left-4 z-10">
         <span className={`${p.modality === 'VENTA' ? 'bg-primary' : 'bg-secondary'} text-white text-[10px] font-bold px-3 py-1 rounded-full`}>{p.modality}</span>
@@ -91,7 +91,7 @@ export default async function Page() {
         <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}/>
         </div>
         <div className="p-6">
-        <Link href={`/propiedades/${p.id}`}><h3 className="font-headline-md text-headline-md mb-2 text-on-surface hover:text-primary transition-colors line-clamp-1">{p.title}</h3></Link>
+        <h3 className="font-headline-md text-headline-md mb-2 text-on-surface hover:text-primary transition-colors line-clamp-1">{p.title}</h3>
         <div className="flex items-center gap-1 text-on-surface-variant mb-4">
         <span className="material-symbols-outlined text-sm">location_on</span>
         <span className="font-body-md text-body-md">{p.city}</span>
@@ -114,7 +114,8 @@ export default async function Page() {
         <p className="font-bold text-primary text-lg whitespace-nowrap">${p.price.toLocaleString("es-CO")}{p.modality === 'ARRIENDO' ? '/mes' : ''}</p>
         </div>
         </div>
-      </div>
+        </div>
+      </Link>
     ))
   )}
 </div>
@@ -188,7 +189,7 @@ export default async function Page() {
             </div>
         ) : (
             properties.map(p => (
-                <div key={p.id} className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 shadow-md">
+                <Link href={`/propiedades/${p.id}`} key={p.id} className="block bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 shadow-md group">
                     <div className="relative h-64 overflow-hidden">
                         <div className="absolute top-4 left-4 z-10 flex gap-2">
                             <span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">{p.modality}</span>
@@ -215,7 +216,7 @@ export default async function Page() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </Link>
             ))
         )}
     </div>
@@ -242,7 +243,7 @@ export default async function Page() {
     </div>
   ) : (
     investmentProperties.map((p) => (
-      <div key={p.id} className="group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2 relative">
+      <Link href={`/propiedades/${p.id}`} key={p.id} className="block group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2 relative">
         <div className="relative h-64 overflow-hidden">
         <div className="absolute top-4 left-4 z-10 flex gap-2">
         <span className={`${p.modality === 'VENTA' ? 'bg-primary' : 'bg-secondary'} text-white text-[10px] font-bold px-3 py-1 rounded-full`}>{p.modality}</span>
@@ -251,7 +252,7 @@ export default async function Page() {
         <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}/>
         </div>
         <div className="p-6">
-        <Link href={`/propiedades/${p.id}`}><h3 className="font-headline-md text-headline-md mb-2 text-on-surface hover:text-primary transition-colors line-clamp-1">{p.title}</h3></Link>
+        <h3 className="font-headline-md text-headline-md mb-2 text-on-surface hover:text-primary transition-colors line-clamp-1">{p.title}</h3>
         <div className="flex items-center gap-1 text-on-surface-variant mb-4">
         <span className="material-symbols-outlined text-sm">location_on</span>
         <span className="font-body-md text-body-md">{p.city}</span>
@@ -274,7 +275,8 @@ export default async function Page() {
         <p className="font-bold text-primary text-lg whitespace-nowrap">${p.price.toLocaleString("es-CO")}{p.modality === 'ARRIENDO' ? '/mes' : ''}</p>
         </div>
         </div>
-      </div>
+        </div>
+      </Link>
     ))
   )}
 </div>
