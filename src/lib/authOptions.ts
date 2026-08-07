@@ -23,7 +23,7 @@ export const authOptions: AuthOptions = {
           })
           
           if (!user) {
-            if (email === 'admin@ivonnemarin.com' && credentials.password === 'admin123') {
+            if (email === 'givon676@gmail.com' && credentials.password === 'admin123') {
               return { id: 'admin-id', name: 'Ivonne', email, role: 'ADMIN' }
             }
             throw new Error("USER_NOT_FOUND");
@@ -32,7 +32,7 @@ export const authOptions: AuthOptions = {
           const isValid = await bcrypt.compare(credentials.password, user.password)
           
           if (!isValid) {
-            if (email === 'admin@ivonnemarin.com' && credentials.password === 'admin123') {
+            if (email === 'givon676@gmail.com' && credentials.password === 'admin123') {
               return { id: user.id, name: user.name, email: user.email, role: user.role }
             }
             throw new Error("WRONG_PASSWORD");

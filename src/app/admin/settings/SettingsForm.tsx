@@ -264,6 +264,44 @@ export default function SettingsForm() {
               <span className="material-symbols-outlined">add</span> Agregar Red Social
             </button>
           </div>
+
+          <h4 className="font-headline-md text-headline-md text-on-background border-b border-surface-dim pb-4 mt-8 pt-4 text-error">Seguridad</h4>
+          <div className="bg-error-container/30 border border-error/30 p-6 rounded-xl">
+            <h5 className="font-label-md text-label-md text-on-background mb-2">Cambiar Contraseña de Ingreso</h5>
+            <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+              <input 
+                type="password" 
+                id="newPassword"
+                placeholder="Nueva Contraseña" 
+                className="flex-1 bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-error focus:ring-1 focus:ring-error font-body-md text-body-md text-on-background transition-all" 
+              />
+              <button 
+                onClick={async () => {
+                  const input = document.getElementById('newPassword') as HTMLInputElement;
+                  if (!input.value) return alert('Por favor, escribe una nueva contraseña.');
+                  try {
+                    const res = await fetch('/api/users/profile', {
+                      method: 'PUT',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ password: input.value })
+                    });
+                    if (res.ok) {
+                      alert('Contraseña actualizada con éxito.');
+                      input.value = '';
+                    } else {
+                      alert('Hubo un error al actualizar la contraseña.');
+                    }
+                  } catch (e) {
+                    alert('Error de red al actualizar contraseña.');
+                  }
+                }}
+                className="bg-error text-white font-label-md text-label-md py-3 px-6 rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap"
+              >
+                Actualizar Contraseña
+              </button>
+            </div>
+            <p className="text-[12px] text-on-surface-variant mt-2">Esta será la nueva contraseña que utilizarás para ingresar al panel administrativo con el correo givon676@gmail.com.</p>
+          </div>
         </div>
       </div>
       

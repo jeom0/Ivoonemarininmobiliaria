@@ -43,10 +43,28 @@ export async function POST(request: Request) {
       newEmail,
       "Código de Verificación - Cambio de Correo",
       `
-      <h2>Cambio de Correo Electrónico</h2>
-      <p>Has solicitado cambiar tu correo de acceso en la plataforma inmobiliaria.</p>
-      <p>Tu código de verificación es: <strong>${code}</strong></p>
-      <p>Este código expirará en 15 minutos.</p>
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 30px 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
+        <div style="text-align: center; margin-bottom: 25px;">
+          <h2 style="color: #1a1a1a; margin: 0; font-size: 24px;">Ivonne Marin Inmobiliaria</h2>
+          <p style="color: #666; margin-top: 8px; font-size: 16px; font-weight: bold;">Verificación de Seguridad</p>
+        </div>
+        <div style="background-color: #ffffff; padding: 30px; border-radius: 8px; border: 1px solid #eeeeee; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center;">
+          <h3 style="color: #333; margin-top: 0;">Cambio de Correo Electrónico</h3>
+          <p style="color: #555; line-height: 1.6;">Has solicitado cambiar tu correo de acceso en la plataforma inmobiliaria. Para confirmar que eres tú, ingresa el siguiente código de seguridad:</p>
+          
+          <div style="background-color: #f8f9fa; padding: 25px; border-radius: 8px; margin: 25px 0; border: 1px dashed #d1b06b;">
+            <div style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #1a1a1a;">
+              ${code}
+            </div>
+          </div>
+          
+          <p style="color: #error; font-size: 14px;"><em>Este código expirará en 15 minutos. Si no solicitaste este cambio, puedes ignorar este correo.</em></p>
+        </div>
+        <div style="text-align: center; margin-top: 30px; color: #999; font-size: 13px;">
+          <p style="margin: 5px 0;">Este correo fue generado automáticamente.</p>
+          <p style="margin: 5px 0;">© ${new Date().getFullYear()} Ivonne Marin Inmobiliaria.</p>
+        </div>
+      </div>
       `
     );
 

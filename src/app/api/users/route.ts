@@ -79,11 +79,32 @@ export async function POST(request: Request) {
         email,
         "Bienvenido a Ivonne Marin Inmobiliaria",
         `
-        <h2>¡Hola ${name}!</h2>
-        <p>Tu cuenta como Asesor Inmobiliario ha sido creada exitosamente.</p>
-        <p><strong>Correo de acceso:</strong> ${email}</p>
-        <p><strong>Contraseña:</strong> ${password}</p>
-        <p>Por favor, no compartas estas credenciales con nadie.</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 30px 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
+          <div style="text-align: center; margin-bottom: 25px;">
+            <h2 style="color: #1a1a1a; margin: 0; font-size: 24px;">Ivonne Marin Inmobiliaria</h2>
+            <p style="color: #666; margin-top: 8px; font-size: 16px; font-weight: bold;">¡Bienvenido a la plataforma!</p>
+          </div>
+          <div style="background-color: #ffffff; padding: 30px; border-radius: 8px; border: 1px solid #eeeeee; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <h3 style="color: #333; margin-top: 0;">¡Hola ${name}!</h3>
+            <p style="color: #555; line-height: 1.6;">Tu cuenta como Asesor Inmobiliario ha sido creada exitosamente. A partir de ahora podrás ingresar al panel administrativo para gestionar inmuebles y prospectos.</p>
+            
+            <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #d1b06b;">
+              <h4 style="margin-top: 0; color: #333; margin-bottom: 15px;">Tus credenciales de acceso:</h4>
+              <p style="margin: 8px 0; color: #555;"><strong>Correo:</strong> <span style="color: #1a1a1a;">${email}</span></p>
+              <p style="margin: 8px 0; color: #555;"><strong>Contraseña:</strong> <span style="background-color: #e9ecef; padding: 4px 8px; border-radius: 4px; font-family: monospace; color: #1a1a1a;">${password}</span></p>
+            </div>
+            
+            <p style="color: #777; font-size: 14px;"><em>Nota de seguridad: Por favor, no compartas estas credenciales con nadie y te recomendamos cambiarlas desde la configuración de tu perfil al ingresar.</em></p>
+            
+            <div style="text-align: center; margin-top: 30px;">
+              <a href="${process.env.NEXTAUTH_URL || 'https://ivonnemarininmobiliaria.com'}/admin/login" style="background-color: #1a1a1a; color: #ffffff; text-decoration: none; padding: 12px 25px; border-radius: 6px; font-weight: bold; display: inline-block;">Ingresar al Panel</a>
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 30px; color: #999; font-size: 13px;">
+            <p style="margin: 5px 0;">Este correo fue generado automáticamente.</p>
+            <p style="margin: 5px 0;">© ${new Date().getFullYear()} Ivonne Marin Inmobiliaria.</p>
+          </div>
+        </div>
         `
       ).catch(console.error);
     });
