@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   allowedDevOrigins: ["ivonnemarininmobiliaria.com", "breezy-grasshopper-83.loca.lt", "ivonnemarin-app.loca.lt", "loca.lt", "web-task-secretariat-upgrade.trycloudflare.com"],
   async headers() {
     return [
