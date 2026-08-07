@@ -54,7 +54,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [currentPage, setCurrentPage] = useState(1);
   const [isCreating, setIsCreating] = useState(false);
-  const [newLeadData, setNewLeadData] = useState({ name: '', email: '', phone: '', message: '', type: 'CONTACT' });
+  const [newLeadData, setNewLeadData] = useState({ name: '', email: '', phone: '', message: '', type: 'CONTACT', avatar: '' });
 
   // Editing status inline
   const [editingStatusId, setEditingStatusId] = useState<string | null>(null);
@@ -589,21 +589,36 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
               <button onClick={() => setIsCreating(false)} className="p-2 hover:bg-surface-container rounded-full"><span className="material-symbols-outlined">close</span></button>
             </div>
             <form onSubmit={handleCreateLead} className="space-y-4">
+              <div className="flex flex-col items-center mb-6">
+                <div className="w-20 h-20 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-2xl font-bold relative mb-3 overflow-hidden">
+                  {newLeadData.avatar ? (
+                    <img src={newLeadData.avatar} className="w-full h-full object-cover" alt="avatar" />
+                  ) : (
+                    <span className="material-symbols-outlined text-3xl">person</span>
+                  )}
+                </div>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {AVATARS.map(av => (
+                    <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-10 h-10 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover ${newLeadData.avatar === av ? 'ring-2 ring-primary' : ''}`} />
+                  ))}
+                </div>
+              </div>
+
               <div>
                 <label className="block text-sm font-label-md mb-1">Nombre Completo</label>
-                <input required type="text" value={newLeadData.name} onChange={e => setNewLeadData({...newLeadData, name: e.target.value})} className="w-full rounded-lg border border-outline-variant p-3 focus:outline-none focus:border-primary" />
+                <input required type="text" value={newLeadData.name} onChange={e => setNewLeadData({...newLeadData, name: e.target.value})} className="w-full rounded-lg border-2 border-outline-variant bg-surface-container-low p-3 focus:outline-none focus:border-primary text-on-surface" />
               </div>
               <div>
                 <label className="block text-sm font-label-md mb-1">Correo Electrónico</label>
-                <input required type="email" value={newLeadData.email} onChange={e => setNewLeadData({...newLeadData, email: e.target.value})} className="w-full rounded-lg border border-outline-variant p-3 focus:outline-none focus:border-primary" />
+                <input required type="email" value={newLeadData.email} onChange={e => setNewLeadData({...newLeadData, email: e.target.value})} className="w-full rounded-lg border-2 border-outline-variant bg-surface-container-low p-3 focus:outline-none focus:border-primary text-on-surface" />
               </div>
               <div>
                 <label className="block text-sm font-label-md mb-1">Teléfono</label>
-                <input type="tel" value={newLeadData.phone} onChange={e => setNewLeadData({...newLeadData, phone: e.target.value})} className="w-full rounded-lg border border-outline-variant p-3 focus:outline-none focus:border-primary" />
+                <input type="tel" value={newLeadData.phone} onChange={e => setNewLeadData({...newLeadData, phone: e.target.value})} className="w-full rounded-lg border-2 border-outline-variant bg-surface-container-low p-3 focus:outline-none focus:border-primary text-on-surface" />
               </div>
               <div>
                 <label className="block text-sm font-label-md mb-1">Tipo</label>
-                <select value={newLeadData.type} onChange={e => setNewLeadData({...newLeadData, type: e.target.value})} className="w-full rounded-lg border border-outline-variant p-3 focus:outline-none focus:border-primary">
+                <select value={newLeadData.type} onChange={e => setNewLeadData({...newLeadData, type: e.target.value})} className="w-full rounded-lg border-2 border-outline-variant bg-surface-container-low p-3 focus:outline-none focus:border-primary text-on-surface">
                   <option value="CONTACT">Contacto General</option>
                   <option value="VISIT">Solicitud de Visita</option>
                 </select>
