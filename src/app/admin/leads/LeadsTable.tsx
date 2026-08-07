@@ -438,19 +438,19 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
             <form onSubmit={handleCreateLead} className="space-y-4">
               <div>
                 <label className="block text-sm font-label-md mb-1">Nombre Completo</label>
-                <input required type="text" value={newLeadData.name} onChange={e => setNewLeadData({...newLeadData, name: e.target.value})} className="w-full rounded-lg border-outline-variant p-3" />
+                <input required type="text" value={newLeadData.name} onChange={e => setNewLeadData({...newLeadData, name: e.target.value})} className="w-full rounded-lg border border-outline-variant p-3 focus:outline-none focus:border-primary" />
               </div>
               <div>
                 <label className="block text-sm font-label-md mb-1">Correo Electrónico</label>
-                <input required type="email" value={newLeadData.email} onChange={e => setNewLeadData({...newLeadData, email: e.target.value})} className="w-full rounded-lg border-outline-variant p-3" />
+                <input required type="email" value={newLeadData.email} onChange={e => setNewLeadData({...newLeadData, email: e.target.value})} className="w-full rounded-lg border border-outline-variant p-3 focus:outline-none focus:border-primary" />
               </div>
               <div>
                 <label className="block text-sm font-label-md mb-1">Teléfono</label>
-                <input type="tel" value={newLeadData.phone} onChange={e => setNewLeadData({...newLeadData, phone: e.target.value})} className="w-full rounded-lg border-outline-variant p-3" />
+                <input type="tel" value={newLeadData.phone} onChange={e => setNewLeadData({...newLeadData, phone: e.target.value})} className="w-full rounded-lg border border-outline-variant p-3 focus:outline-none focus:border-primary" />
               </div>
               <div>
                 <label className="block text-sm font-label-md mb-1">Tipo</label>
-                <select value={newLeadData.type} onChange={e => setNewLeadData({...newLeadData, type: e.target.value})} className="w-full rounded-lg border-outline-variant p-3">
+                <select value={newLeadData.type} onChange={e => setNewLeadData({...newLeadData, type: e.target.value})} className="w-full rounded-lg border border-outline-variant p-3 focus:outline-none focus:border-primary">
                   <option value="CONTACT">Contacto General</option>
                   <option value="VISIT">Solicitud de Visita</option>
                 </select>

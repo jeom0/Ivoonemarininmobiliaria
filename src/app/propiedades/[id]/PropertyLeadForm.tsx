@@ -82,7 +82,7 @@ export default function PropertyLeadForm({ propertyId, propertyCode, propertyNam
             <input
               name="name"
               required
-              className="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary"
+              className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary focus:outline-none"
               placeholder="Ej. Juan Perez"
               type="text"
             />
@@ -92,7 +92,7 @@ export default function PropertyLeadForm({ propertyId, propertyCode, propertyNam
             <input
               name="email"
               required
-              className="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary"
+              className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary focus:outline-none"
               placeholder="email@ejemplo.com"
               type="email"
             />
@@ -102,7 +102,7 @@ export default function PropertyLeadForm({ propertyId, propertyCode, propertyNam
             <input
               name="phone"
               required
-              className="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary"
+              className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary focus:outline-none"
               placeholder="+57 300 000 0000"
               type="tel"
             />
@@ -112,7 +112,7 @@ export default function PropertyLeadForm({ propertyId, propertyCode, propertyNam
             <textarea
               name="message"
               required
-              className="w-full bg-surface-container-low border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary"
+              className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary focus:outline-none"
               rows={4}
               defaultValue={`Hola, estoy interesado en ${propertyName} (Cód: IM-${propertyCode}). ¿Podrían darme más información?`}
             />
