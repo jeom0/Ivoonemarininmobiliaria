@@ -157,16 +157,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         
         <div className="mb-6 px-2">
             <Link href="/admin/profile" title={!sidebarOpen ? "Mi Perfil" : undefined} className={`flex items-center transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${sidebarOpen ? 'gap-3 hover:bg-surface-container-high py-2 rounded-xl' : 'justify-center'} w-full group cursor-pointer`}>
-                <div className="w-14 h-14 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center overflow-hidden border-2 border-primary-fixed shrink-0 group-hover:border-primary transition-colors">
-                    {session.user?.image ? (
-                        <img className="w-full h-full object-cover" src={session.user.image as string} alt={session.user.name || "Usuario"} />
+                <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center overflow-hidden border-2 border-primary-fixed shrink-0 group-hover:border-primary transition-colors">
+                    {session.user?.image || settings.logoUrl ? (
+                        <img className="w-full h-full object-cover" src={(session.user?.image || settings.logoUrl) as string} alt={session.user?.name || "Usuario"} />
                     ) : (
                         <span className="font-bold text-lg">{session.user?.name ? session.user.name.substring(0, 2).toUpperCase() : "AD"}</span>
                     )}
                 </div>
                 <div className={`flex flex-col text-left overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${!sidebarOpen ? 'opacity-0 w-0' : 'opacity-100 w-[140px]'}`}>
                     <span className="font-label-md text-on-surface font-bold truncate w-full group-hover:text-primary transition-colors">{session.user?.name || "Administrador"}</span>
-                    <span className="text-[12px] text-on-surface-variant truncate w-full">{session.user?.email}</span>
+                    <span className="text-[12px] text-on-surface-variant truncate w-full">{session.user?.email || settings.agencyEmail}</span>
                 </div>
             </Link>
         </div>
