@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SettingsForm() {
   const [logoPreview, setLogoPreview] = useState("");
@@ -11,6 +12,13 @@ export default function SettingsForm() {
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const router = useRouter();
+  const [toastMessage, setToastMessage] = useState<{title: string, type: 'success' | 'error'} | null>(null);
+
+  const showToast = (title: string, type: 'success' | 'error') => {
+    setToastMessage({title, type});
+    setTimeout(() => setToastMessage(null), 3500);
+  };
 
   useEffect(() => {
     fetchSettings();
@@ -68,10 +76,10 @@ export default function SettingsForm() {
         if (type === 'logo') setLogoPreview(data.url);
         if (type === 'hero') setHeroMedia([...heroMedia, data.url]);
       } else {
-        alert("Error al subir archivo");
+        showToast("Error al subir archivo", 'error');
       }
     } catch (err) {
-      alert("Error de red");
+      showToast("Error de red", 'error');
     } finally {
       setLoading(false);
     }
@@ -93,10 +101,10 @@ export default function SettingsForm() {
           const data = await res.json();
           setLogoPreview(data.url);
         } else {
-          alert("Error al subir logo");
+          showToast("Error al subir logo", 'error');
         }
       } catch (err) {
-        alert("Error de red");
+        showToast("Error de red", 'error');
       } finally {
         setLoading(false);
       }
@@ -120,12 +128,13 @@ export default function SettingsForm() {
         })
       });
       if (res.ok) {
-        alert("Configuración de empresa guardada con éxito.");
+        showToast("Configuración de empresa guardada con éxito.", 'success');
+        router.refresh();
       } else {
-        alert("Error al guardar la configuración");
+        showToast("Error al guardar la configuración", 'error');
       }
     } catch (err) {
-      alert("Error de red");
+      showToast("Error de red", 'error');
     } finally {
       setSaving(false);
     }
@@ -271,14 +280,14 @@ export default function SettingsForm() {
             <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
               <input 
                 type="password" 
-                id="newPassword"
+                id="new-password"
                 placeholder="Nueva Contraseña" 
                 className="flex-1 bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-error focus:ring-1 focus:ring-error font-body-md text-body-md text-on-background transition-all" 
               />
               <button 
                 onClick={async () => {
-                  const input = document.getElementById('newPassword') as HTMLInputElement;
-                  if (!input.value) return alert('Por favor, escribe una nueva contraseña.');
+                  const input = document.getElementById('new-password') as HTMLInputElement;
+                  if (!input.value) return showToast('Por favor, escribe una nueva contraseña.', 'error');
                   try {
                     const res = await fetch('/api/users/profile', {
                       method: 'PUT',
@@ -286,13 +295,13 @@ export default function SettingsForm() {
                       body: JSON.stringify({ password: input.value })
                     });
                     if (res.ok) {
-                      alert('Contraseña actualizada con éxito.');
+                      showToast('Contraseña actualizada con éxito.', 'success');
                       input.value = '';
                     } else {
-                      alert('Hubo un error al actualizar la contraseña.');
+                      showToast('Hubo un error al actualizar la contraseña.', 'error');
                     }
                   } catch (e) {
-                    alert('Error de red al actualizar contraseña.');
+                    showToast('Error de red al actualizar contraseña.', 'error');
                   }
                 }}
                 className="bg-error text-white font-label-md text-label-md py-3 px-6 rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap"
@@ -310,6 +319,32 @@ export default function SettingsForm() {
           {saving ? 'Guardando...' : 'Guardar Cambios'}
         </button>
       </div>
+
+      {/* Toast Notification */}
+      {toastMessage && (
+        <>
+          <style>{`
+            @keyframes slideUpFade {
+              from { opacity: 0; transform: translate(-50%, 30px) scale(0.95); }
+              to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+            }
+            .animate-toast { animation: slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+          `}</style>
+          <div className="fixed bottom-10 left-1/2 z-[100] animate-toast pointer-events-none">
+            <div className={`flex items-center gap-4 px-6 py-4 rounded-2xl shadow-2xl border ${toastMessage.type === 'success' ? 'bg-primary text-on-primary border-primary/20' : 'bg-error text-on-error border-error/20'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${toastMessage.type === 'success' ? 'bg-white/20' : 'bg-white/20'}`}>
+                <span className="material-symbols-outlined text-2xl">
+                  {toastMessage.type === 'success' ? 'check_circle' : 'error'}
+                </span>
+              </div>
+              <div>
+                <p className="font-label-lg font-bold tracking-wide">{toastMessage.type === 'success' ? '¡Éxito!' : 'Oops...'}</p>
+                <p className="font-body-md opacity-90">{toastMessage.title}</p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
