@@ -58,7 +58,7 @@ export default function PropertyGallery({ mainImage, imagesString }: { mainImage
         
         {allImages.length > 1 ? (
           <div 
-            className="relative overflow-hidden cursor-pointer group hidden md:block"
+            className="relative overflow-hidden cursor-pointer group"
             onClick={() => openLightbox(1)}
           >
             <img
@@ -68,14 +68,14 @@ export default function PropertyGallery({ mainImage, imagesString }: { mainImage
             />
           </div>
         ) : (
-          <div className="relative bg-surface-container-high hidden md:flex items-center justify-center">
+          <div className="relative bg-surface-container-high flex items-center justify-center">
              <span className="text-on-surface-variant font-label-md">Sin más fotos</span>
           </div>
         )}
 
         {allImages.length > 2 ? (
           <div 
-            className="relative overflow-hidden cursor-pointer group hidden md:block"
+            className="relative overflow-hidden cursor-pointer group"
             onClick={() => openLightbox(2)}
           >
             <img
@@ -90,7 +90,7 @@ export default function PropertyGallery({ mainImage, imagesString }: { mainImage
             )}
           </div>
         ) : (
-          <div className="relative bg-surface-container-high hidden md:flex items-center justify-center">
+          <div className="relative bg-surface-container-high flex items-center justify-center">
              <span className="text-on-surface-variant font-label-md">Sin más fotos</span>
           </div>
         )}
