@@ -124,7 +124,9 @@ export default async function Page() {
         <tr key={lead.id} className="group hover:bg-surface-container-low transition-colors">
         <td className="py-4 border-b border-outline-variant/10">
         <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold">{lead.name.substring(0,2).toUpperCase()}</div>
+        <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold overflow-hidden">
+          {lead.avatar ? <img src={lead.avatar} className="w-full h-full object-cover" alt="avatar" /> : lead.name.substring(0,2).toUpperCase()}
+        </div>
         <div>
         <p className="font-semibold text-primary">{lead.name}</p>
         <p className="text-xs text-on-surface-variant">{lead.phone || lead.email}</p>
@@ -133,7 +135,7 @@ export default async function Page() {
         </td>
         <td className="py-4 border-b border-outline-variant/10 text-on-surface-variant">{lead.message ? lead.message.substring(0,30) + '...' : 'General'}</td>
         <td className="py-4 border-b border-outline-variant/10">
-        <span className={`px-3 py-1 text-[10px] font-bold uppercase rounded-full ${lead.status === 'NEW' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}>{lead.status}</span>
+        <span className={`px-3 py-1 text-[10px] font-bold uppercase rounded-full ${lead.status === 'NEW' ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'}`}>{lead.status === 'NEW' ? 'NUEVO' : (lead.status === 'CONTACTED' ? 'CONTACTADO' : (lead.status === 'CLOSED' ? 'CERRADO' : 'EN NEGOCIACIÓN'))}</span>
         </td>
         <td className="py-4 border-b border-outline-variant/10 text-on-surface-variant text-sm">{new Date(lead.createdAt).toLocaleDateString()}</td>
         <td className="py-4 border-b border-outline-variant/10 text-right">
