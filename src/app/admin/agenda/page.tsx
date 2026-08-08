@@ -4,9 +4,9 @@ import AgendaCalendar from './AgendaCalendar';
 const prisma = new PrismaClient();
 
 export default async function Page() {
-  let appointments = [];
-  let leads = [];
-  let properties = [];
+  let appointments: any[] = [];
+  let leads: any[] = [];
+  let properties: any[] = [];
 
   try {
     // We wrap this in try-catch in case the user hasn't run prisma db push yet
