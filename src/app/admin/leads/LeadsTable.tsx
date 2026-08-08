@@ -564,7 +564,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                     {AVATARS.map(av => (
                       <img key={av} src={av} onClick={() => handleSelectPredefinedAvatar(selectedLead.id, av)} className="w-20 h-20 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
                     ))}
-                    <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark">
+                    <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark" title="Subir foto">
                       <span className="material-symbols-outlined text-3xl">upload</span>
                       <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
                         if(e.target.files) {
@@ -576,10 +576,10 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                       type="button" 
                       disabled={isGeneratingAi}
                       onClick={() => handleGenerateAIAvatar(selectedLead.id)} 
-                      className="w-full py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg shadow-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center cursor-pointer shadow-md hover:opacity-90 transition-opacity text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                      title="Generar con IA (Límite: 2/día)"
                     >
-                      <span className="material-symbols-outlined">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
-                      {isGeneratingAi ? 'Generando...' : 'Generar con IA (Límite: 2/día)'}
+                      <span className="material-symbols-outlined text-3xl">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
                     </button>
                   </div>
                 )}
@@ -715,7 +715,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                   {AVATARS.map(av => (
                     <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-20 h-20 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover transition-all ${newLeadData.avatar === av ? 'ring-2 ring-primary scale-110' : ''}`} />
                   ))}
-                  <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark">
+                  <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark" title="Subir foto">
                     <span className="material-symbols-outlined text-3xl">upload</span>
                     <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
                       if(e.target.files) {
@@ -725,17 +725,16 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                       }
                     }} />
                   </label>
+                  <button 
+                    type="button" 
+                    disabled={isGeneratingAi}
+                    onClick={() => handleGenerateAIAvatar("new")} 
+                    className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center cursor-pointer shadow-md hover:opacity-90 transition-opacity text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Generar con IA ✨"
+                  >
+                    <span className="material-symbols-outlined text-3xl">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
+                  </button>
                 </div>
-                <button 
-                  type="button" 
-                  disabled={isGeneratingAi}
-                  onClick={() => handleGenerateAIAvatar("new")} 
-                  className="mt-4 px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full shadow-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed w-full max-w-xs"
-                >
-                  <span className="material-symbols-outlined">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
-                  {isGeneratingAi ? 'Generando...' : 'Generar con IA ✨'}
-                </button>
-              </div>
 
               <div>
                 <label className="block text-sm font-label-md mb-1">Nombre Completo</label>
