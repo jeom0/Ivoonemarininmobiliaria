@@ -197,6 +197,31 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
     }
   };
 
+  const handleSelectPredefinedAvatar = async (id: string, av: string) => {
+    if (id === "new") {
+      setNewLeadData({ ...newLeadData, avatar: av });
+    } else if (isEditingLead) {
+      setEditLeadData({ ...editLeadData, avatar: av });
+    } else {
+      try {
+        await fetch(`/api/leads/${id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ avatar: av }),
+        });
+        setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, avatar: av } : l)));
+        if (selectedLead?.id === id) {
+          setSelectedLead({ ...selectedLead, avatar: av });
+        }
+        router.refresh();
+      } catch (error) {
+        console.error(error);
+        alert("Error al actualizar avatar");
+      }
+    }
+    setShowAvatarSelector(false);
+  };
+
   const openLeadDetail = (lead: Lead) => {
     setSelectedLead(lead);
     setIsEditingLead(false);
@@ -526,45 +551,37 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                   selectedLead.avatar ? <img src={selectedLead.avatar} className="w-full h-full object-cover rounded-full" alt="avatar" /> : selectedLead.name.substring(0, 2).toUpperCase()
                 )}
                 
-                {isEditingLead ? (
-                  <>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); setShowAvatarSelector(!showAvatarSelector); }}
+                  className="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-2.5 shadow-md hover:bg-primary/90 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[20px]">edit</span>
+                </button>
+
+                {showAvatarSelector && (
+                  <div className="absolute top-36 bg-surface rounded-xl shadow-xl border border-outline-variant p-4 w-[340px] z-50 flex flex-wrap gap-4 justify-center">
+                    <p className="w-full text-base font-label-md text-on-surface-variant text-center mb-1">Elige un avatar o sube foto</p>
+                    {AVATARS.map(av => (
+                      <img key={av} src={av} onClick={() => handleSelectPredefinedAvatar(selectedLead.id, av)} className="w-20 h-20 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
+                    ))}
+                    <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark">
+                      <span className="material-symbols-outlined text-3xl">upload</span>
+                      <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
+                        if(e.target.files) {
+                          handleAvatarUpload(selectedLead.id, e.target.files[0]).then(() => setShowAvatarSelector(false));
+                        }
+                      }} />
+                    </label>
                     <button 
-                      onClick={(e) => { e.stopPropagation(); setShowAvatarSelector(!showAvatarSelector); }}
-                      className="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-2.5 shadow-md hover:bg-primary/90 transition-colors"
+                      type="button" 
+                      disabled={isGeneratingAi}
+                      onClick={() => handleGenerateAIAvatar(selectedLead.id)} 
+                      className="w-full py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg shadow-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <span className="material-symbols-outlined text-[20px]">edit</span>
+                      <span className="material-symbols-outlined">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
+                      {isGeneratingAi ? 'Generando...' : 'Generar con IA (Límite: 2/día)'}
                     </button>
-                    {showAvatarSelector && (
-                      <div className="absolute top-36 bg-surface rounded-xl shadow-xl border border-outline-variant p-4 w-[340px] z-50 flex flex-wrap gap-4 justify-center">
-                        <p className="w-full text-base font-label-md text-on-surface-variant text-center mb-1">Elige un avatar o sube foto</p>
-                        {AVATARS.map(av => (
-                          <img key={av} src={av} onClick={() => { setEditLeadData({...editLeadData, avatar: av}); setShowAvatarSelector(false); }} className="w-20 h-20 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
-                        ))}
-                        <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark">
-                          <span className="material-symbols-outlined text-3xl">upload</span>
-                          <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
-                            if(e.target.files) {
-                              handleAvatarUpload(selectedLead.id, e.target.files[0]).then(() => setShowAvatarSelector(false));
-                            }
-                          }} />
-                        </label>
-                        <button 
-                          type="button" 
-                          disabled={isGeneratingAi}
-                          onClick={() => handleGenerateAIAvatar(selectedLead.id)} 
-                          className="w-full py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg shadow-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <span className="material-symbols-outlined">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
-                          {isGeneratingAi ? 'Generando...' : 'Generar con IA (Límite: 2/día)'}
-                        </button>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <label className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity" title="Cambiar foto">
-                    <span className="material-symbols-outlined text-white text-2xl">upload</span>
-                    <input type="file" className="hidden" accept="image/*" onChange={(e) => { if(e.target.files) handleAvatarUpload(selectedLead.id, e.target.files[0]) }} />
-                  </label>
+                  </div>
                 )}
               </div>
               
