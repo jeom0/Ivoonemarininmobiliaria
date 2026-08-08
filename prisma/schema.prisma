@@ -19,6 +19,8 @@ model User {
   isActive            Boolean  @default(true)
   verificationCode    String?
   verificationExpiry  DateTime?
+  avatarGenerationsCount Int @default(0)
+  lastAvatarGeneration   DateTime?
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }
@@ -62,6 +64,8 @@ model Property {
   publishedAt     DateTime?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  
+  appointments    Appointment[]
 }
 
 model BlogPost {
@@ -94,6 +98,22 @@ model Lead {
   avatar      String?  // URL of the uploaded image or selected avatar
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  appointments Appointment[]
+}
+
+model Appointment {
+  id          String   @id @default(uuid())
+  leadId      String
+  propertyId  String?
+  date        DateTime
+  coverImage  String?
+  status      String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  lead        Lead     @relation(fields: [leadId], references: [id])
+  property    Property? @relation(fields: [propertyId], references: [id])
 }
 
 model Testimonial {

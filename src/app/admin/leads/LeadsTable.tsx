@@ -78,6 +78,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
   const [isEditingLead, setIsEditingLead] = useState(false);
   const [editLeadData, setEditLeadData] = useState<Partial<Lead>>({});
   const [showAvatarSelector, setShowAvatarSelector] = useState(false);
+  const [isGeneratingAi, setIsGeneratingAi] = useState(false);
   
   const AVATARS = [
     '/avatars/avatar1.png',
@@ -156,8 +157,49 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
       }
     } catch (error) {
       console.error(error);
-      alert('Error de red');
+      alert("Error de red");
     }
+  };
+
+  const handleGenerateAIAvatar = async (id: string) => {
+    setIsGeneratingAi(true);
+    try {
+      const res = await fetch("/api/generate-avatar", { method: "POST" });
+      const data = await res.json();
+      if (res.ok) {
+        if (id === "new") {
+          setNewLeadData({ ...newLeadData, avatar: data.url });
+        } else {
+          await fetch(`/api/leads/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ avatar: data.url }),
+          });
+          setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, avatar: data.url } : l)));
+          if (selectedLead?.id === id) {
+            setSelectedLead({ ...selectedLead, avatar: data.url });
+          }
+          if (editLeadData.id === id) {
+             setEditLeadData({ ...editLeadData, avatar: data.url });
+          }
+          router.refresh();
+        }
+        alert(`¡Avatar generado con éxito! Te quedan ${data.remainingGenerations} generaciones hoy.`);
+      } else {
+        alert(data.message || "Error al generar avatar con IA");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error de red al intentar generar con IA");
+    } finally {
+      setIsGeneratingAi(false);
+      setShowAvatarSelector(false);
+    }
+  };
+
+  const openLeadDetail = (lead: Lead) => {
+    setSelectedLead(lead);
+    setIsEditingLead(false);
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
@@ -506,6 +548,15 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                             }
                           }} />
                         </label>
+                        <button 
+                          type="button" 
+                          disabled={isGeneratingAi}
+                          onClick={() => handleGenerateAIAvatar(selectedLead.id)} 
+                          className="w-full py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-lg shadow-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <span className="material-symbols-outlined">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
+                          {isGeneratingAi ? 'Generando...' : 'Generar con IA (Límite: 2/día)'}
+                        </button>
                       </div>
                     )}
                   </>
@@ -658,6 +709,15 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                     }} />
                   </label>
                 </div>
+                <button 
+                  type="button" 
+                  disabled={isGeneratingAi}
+                  onClick={() => handleGenerateAIAvatar("new")} 
+                  className="mt-4 px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold rounded-full shadow-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed w-full max-w-xs"
+                >
+                  <span className="material-symbols-outlined">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
+                  {isGeneratingAi ? 'Generando...' : 'Generar con IA ✨'}
+                </button>
               </div>
 
               <div>
