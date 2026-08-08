@@ -286,7 +286,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
         <div className="overflow-x-auto flex-1">
           <table className="w-full text-left border-collapse min-w-full md:min-w-[800px]">
             <thead className="bg-surface-container-low border-b border-outline-variant/30 sticky top-0 z-10">
-                            <tr>
+              <tr>
                 <th className="py-4 px-6 w-12 text-center">
                   <input type="checkbox" checked={selectedIds.length === paginated.length && paginated.length > 0} onChange={(e) => {
                     if (e.target.checked) setSelectedIds(paginated.map(l => l.id));
@@ -294,8 +294,9 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                   }} className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer accent-primary" />
                 </th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Cliente</th>
-                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Contacto</th>
-                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant hidden md:table-cell">Mensaje</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Teléfono</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Correo Electrónico</th>
+                <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant hidden lg:table-cell">Mensaje</th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant hidden md:table-cell">Tipo</th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant">Estado</th>
                 <th className="py-4 px-6 font-label-md text-label-md text-on-surface-variant text-right">Acciones</th>
@@ -311,33 +312,35 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                     }} className="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary cursor-pointer accent-primary" />
                   </td>
                   <td className="py-4 px-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs font-bold flex-shrink-0 overflow-hidden">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-sm font-bold flex-shrink-0 overflow-hidden shadow-sm">
                         {lead.avatar ? <img src={lead.avatar} className="w-full h-full object-cover" alt="avatar" /> : lead.name.substring(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <div className="font-medium text-on-surface">{lead.name}</div>
-                        <div className="text-sm text-on-surface-variant mt-0.5">{timeAgo(lead.createdAt)}</div>
+                        <div className="font-bold text-on-surface text-[15px]">{lead.name}</div>
+                        <div className="text-xs text-on-surface-variant mt-1">{timeAgo(lead.createdAt)}</div>
                       </div>
                     </div>
                   </td>
                   <td className="py-4 px-6">
-                    <div className="flex flex-col gap-1">
-                      {lead.phone && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="material-symbols-outlined text-sm text-on-surface-variant">call</span>
-                          {lead.phone}
-                        </div>
-                      )}
-                      <div className="flex items-center gap-2 text-sm">
-                        <span className="material-symbols-outlined text-sm text-on-surface-variant">mail</span>
-                        <span className="truncate max-w-[160px]">{lead.email}</span>
+                    {lead.phone ? (
+                      <div className="flex items-center gap-2 text-[14px]">
+                        <span className="material-symbols-outlined text-[16px] text-secondary">call</span>
+                        {lead.phone}
                       </div>
+                    ) : (
+                      <span className="text-on-surface-variant text-sm italic">Sin teléfono</span>
+                    )}
+                  </td>
+                  <td className="py-4 px-6">
+                    <div className="flex items-center gap-2 text-[14px]">
+                      <span className="material-symbols-outlined text-[16px] text-secondary">mail</span>
+                      <span className="truncate max-w-[200px]" title={lead.email}>{lead.email}</span>
                     </div>
                   </td>
-                  <td className="py-4 px-6 hidden md:table-cell">
-                    <span className="text-[14px] text-on-surface-variant line-clamp-2 max-w-[200px]">
-                      {lead.message ? lead.message.substring(0, 60) + (lead.message.length > 60 ? '...' : '') : 'Sin mensaje'}
+                  <td className="py-4 px-6 hidden lg:table-cell">
+                    <span className="text-[13px] text-on-surface-variant line-clamp-2 max-w-[220px]" title={lead.message || ''}>
+                      {lead.message || 'Sin mensaje'}
                     </span>
                   </td>
                   <td className="py-4 px-6 hidden md:table-cell">
