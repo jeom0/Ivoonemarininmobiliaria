@@ -114,7 +114,6 @@ export default async function Page() {
         <p className="font-bold text-primary text-lg whitespace-nowrap">${p.price.toLocaleString("es-CO")}{p.modality === 'ARRIENDO' ? '/mes' : ''}</p>
         </div>
         </div>
-        </div>
       </Link>
     ))
   )}
@@ -273,7 +272,6 @@ export default async function Page() {
         </div>
         </div>
         <p className="font-bold text-primary text-lg whitespace-nowrap">${p.price.toLocaleString("es-CO")}{p.modality === 'ARRIENDO' ? '/mes' : ''}</p>
-        </div>
         </div>
         </div>
       </Link>
