@@ -465,64 +465,68 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
             className="bg-surface w-full max-w-lg rounded-2xl shadow-2xl p-8 space-y-6"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xl font-bold relative group overflow-visible">
-                  {isEditingLead ? (
-                    editLeadData.avatar ? <img src={editLeadData.avatar} className="w-full h-full object-cover rounded-full" alt="avatar" /> : selectedLead.name.substring(0, 2).toUpperCase()
-                  ) : (
-                    selectedLead.avatar ? <img src={selectedLead.avatar} className="w-full h-full object-cover rounded-full" alt="avatar" /> : selectedLead.name.substring(0, 2).toUpperCase()
-                  )}
-                  
-                  {isEditingLead ? (
-                    <>
-                      <button 
-                        onClick={(e) => { e.stopPropagation(); setShowAvatarSelector(!showAvatarSelector); }}
-                        className="absolute -bottom-2 -right-2 bg-primary text-on-primary rounded-full p-1 shadow-md hover:bg-primary/90"
-                      >
-                        <span className="material-symbols-outlined text-[14px]">edit</span>
-                      </button>
-                      {showAvatarSelector && (
-                        <div className="absolute top-16 left-0 bg-surface rounded-xl shadow-xl border border-outline-variant p-3 w-64 z-50 flex flex-wrap gap-2">
-                          <p className="w-full text-xs font-label-sm text-on-surface-variant mb-1">Elige un avatar o sube foto</p>
-                          {AVATARS.map(av => (
-                            <img key={av} src={av} onClick={() => { setEditLeadData({...editLeadData, avatar: av}); setShowAvatarSelector(false); }} className="w-14 h-14 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
-                          ))}
-                          <label className="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors">
-                            <span className="material-symbols-outlined text-sm">upload</span>
-                            <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
-                              if(e.target.files) {
-                                handleAvatarUpload(selectedLead.id, e.target.files[0]).then(() => setShowAvatarSelector(false));
-                              }
-                            }} />
-                          </label>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <label className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity" title="Cambiar foto">
-                      <span className="material-symbols-outlined text-white text-sm">upload</span>
-                      <input type="file" className="hidden" accept="image/*" onChange={(e) => { if(e.target.files) handleAvatarUpload(selectedLead.id, e.target.files[0]) }} />
-                    </label>
-                  )}
-                </div>
-                <div>
-                  {isEditingLead ? (
-                    <input 
-                      type="text" 
-                      value={editLeadData.name || ""} 
-                      onChange={e => setEditLeadData({...editLeadData, name: e.target.value})}
-                      className="font-headline-md text-headline-md text-primary bg-surface-container-low border border-outline-variant rounded px-2 py-1 outline-none w-full max-w-[200px]"
-                    />
-                  ) : (
-                    <h3 className="font-headline-md text-headline-md text-primary">{selectedLead.name}</h3>
-                  )}
-                  <p className="text-[12px] text-on-surface-variant mt-1">{timeAgo(selectedLead.createdAt)}</p>
-                </div>
-              </div>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-headline-md text-headline-md text-primary">{isEditingLead ? "Editar Lead" : "Detalles del Lead"}</h3>
               <button onClick={() => { setSelectedLead(null); setIsEditingLead(false); }} className="p-2 hover:bg-surface-container rounded-full text-on-surface-variant">
                 <span className="material-symbols-outlined">close</span>
               </button>
+            </div>
+
+            <div className="flex flex-col items-center mb-6">
+              <div className="w-24 h-24 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-3xl font-bold relative group overflow-visible mb-4 shadow-sm border-2 border-surface-container-high">
+                {isEditingLead ? (
+                  editLeadData.avatar ? <img src={editLeadData.avatar} className="w-full h-full object-cover rounded-full" alt="avatar" /> : selectedLead.name.substring(0, 2).toUpperCase()
+                ) : (
+                  selectedLead.avatar ? <img src={selectedLead.avatar} className="w-full h-full object-cover rounded-full" alt="avatar" /> : selectedLead.name.substring(0, 2).toUpperCase()
+                )}
+                
+                {isEditingLead ? (
+                  <>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setShowAvatarSelector(!showAvatarSelector); }}
+                      className="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-2 shadow-md hover:bg-primary/90 transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[16px]">edit</span>
+                    </button>
+                    {showAvatarSelector && (
+                      <div className="absolute top-28 bg-surface rounded-xl shadow-xl border border-outline-variant p-4 w-72 z-50 flex flex-wrap gap-3 justify-center">
+                        <p className="w-full text-sm font-label-md text-on-surface-variant text-center mb-1">Elige un avatar o sube foto</p>
+                        {AVATARS.map(av => (
+                          <img key={av} src={av} onClick={() => { setEditLeadData({...editLeadData, avatar: av}); setShowAvatarSelector(false); }} className="w-16 h-16 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
+                        ))}
+                        <label className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark">
+                          <span className="material-symbols-outlined text-2xl">upload</span>
+                          <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
+                            if(e.target.files) {
+                              handleAvatarUpload(selectedLead.id, e.target.files[0]).then(() => setShowAvatarSelector(false));
+                            }
+                          }} />
+                        </label>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <label className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity" title="Cambiar foto">
+                    <span className="material-symbols-outlined text-white text-xl">upload</span>
+                    <input type="file" className="hidden" accept="image/*" onChange={(e) => { if(e.target.files) handleAvatarUpload(selectedLead.id, e.target.files[0]) }} />
+                  </label>
+                )}
+              </div>
+              
+              <div className="text-center">
+                {isEditingLead ? (
+                  <input 
+                    type="text" 
+                    value={editLeadData.name || ""} 
+                    onChange={e => setEditLeadData({...editLeadData, name: e.target.value})}
+                    className="font-headline-md text-[22px] text-primary bg-surface-container-low border border-outline-variant rounded px-3 py-2 outline-none w-full max-w-[250px] text-center mb-1"
+                    placeholder="Nombre Completo"
+                  />
+                ) : (
+                  <h3 className="font-headline-lg text-[24px] text-primary">{selectedLead.name}</h3>
+                )}
+                <p className="text-sm text-on-surface-variant mt-1">Registrado {timeAgo(selectedLead.createdAt)}</p>
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -628,16 +632,16 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
             </div>
             <form onSubmit={handleCreateLead} className="space-y-4">
               <div className="flex flex-col items-center mb-6">
-                <div className="w-20 h-20 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-2xl font-bold relative mb-3 overflow-hidden">
+                <div className="w-24 h-24 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-4xl font-bold relative mb-4 overflow-hidden shadow-sm border-2 border-surface-container-high">
                   {newLeadData.avatar ? (
                     <img src={newLeadData.avatar} className="w-full h-full object-cover" alt="avatar" />
                   ) : (
-                    <span className="material-symbols-outlined text-3xl">person</span>
+                    <span className="material-symbols-outlined text-[40px]">person</span>
                   )}
                 </div>
-                <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-wrap justify-center gap-3">
                   {AVATARS.map(av => (
-                    <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-14 h-14 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover ${newLeadData.avatar === av ? 'ring-2 ring-primary' : ''}`} />
+                    <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-16 h-16 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover transition-all ${newLeadData.avatar === av ? 'ring-2 ring-primary scale-110' : ''}`} />
                   ))}
                 </div>
               </div>

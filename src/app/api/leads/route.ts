@@ -19,6 +19,16 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
         }
         
+        const AVATARS = [
+            '/avatars/avatar1.png',
+            '/avatars/avatar2.png',
+            '/avatars/avatar3.png',
+            '/avatars/avatar4.png',
+            '/avatars/avatar5.png',
+        ];
+        
+        const avatar = data.avatar || AVATARS[Math.floor(Math.random() * AVATARS.length)];
+        
         const lead = await prisma.lead.create({
             data: {
                 type: data.type, // 'CONTACT' or 'VISIT'
@@ -27,6 +37,7 @@ export async function POST(req: Request) {
                 phone: data.phone || null,
                 message: data.message || null,
                 propertyId: data.propertyId || null,
+                avatar: avatar,
                 status: "NEW"
             }
         });
