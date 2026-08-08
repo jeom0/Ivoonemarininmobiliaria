@@ -8,6 +8,8 @@ export default function SettingsForm() {
   const [agencyName, setAgencyName] = useState("Ivonne Marin Asesora Inmobiliaria");
   const [whatsapp, setWhatsapp] = useState("+57 300 000 0000");
   const [address, setAddress] = useState("Santa Rosa de Cabal, Risaralda, Colombia");
+  const [contactEmail, setContactEmail] = useState("contacto@ivonnemarin.com");
+  const [logoSize, setLogoSize] = useState("48");
   const [socialLinks, setSocialLinks] = useState<{platform: string, url: string}[]>([]);
   
   const [loading, setLoading] = useState(true);
@@ -49,6 +51,8 @@ export default function SettingsForm() {
         if (data.agencyName) setAgencyName(data.agencyName);
         if (data.whatsapp) setWhatsapp(data.whatsapp);
         if (data.address) setAddress(data.address);
+        if (data.contactEmail) setContactEmail(data.contactEmail);
+        if (data.logoSize) setLogoSize(data.logoSize);
         if (data.social_links) {
           try {
             setSocialLinks(JSON.parse(data.social_links));
@@ -124,6 +128,8 @@ export default function SettingsForm() {
           agencyName,
           whatsapp,
           address,
+          contactEmail,
+          logoSize,
           social_links: JSON.stringify(socialLinks)
         })
       });
@@ -160,11 +166,26 @@ export default function SettingsForm() {
           <h3 className="font-headline-md text-headline-md text-on-background mb-2">Logo Principal</h3>
           <p className="font-body-md text-body-md text-on-surface-variant mb-6">Formato recomendado: PNG transparente, 500x500px.</p>
           
-          <label className="border border-secondary-fixed-dim text-primary font-label-md text-label-md py-2 px-4 rounded-lg hover:bg-surface-container transition-colors w-full flex items-center justify-center gap-2 cursor-pointer">
+          <label className="border border-secondary-fixed-dim text-primary font-label-md text-label-md py-2 px-4 rounded-lg hover:bg-surface-container transition-colors w-full flex items-center justify-center gap-2 cursor-pointer mb-6">
             <span className="material-symbols-outlined">upload</span>
             Subir Nuevo Logo
             <input type="file" accept="image/*" className="hidden" onChange={handleLogoChange} />
           </label>
+
+          <div className="w-full text-left">
+            <label className="block font-label-md text-label-md text-on-background mb-2 flex justify-between">
+              <span>Tamaño del Logo (Navbar)</span>
+              <span className="text-primary font-bold">{logoSize}px</span>
+            </label>
+            <input 
+              type="range" 
+              min="32" 
+              max="120" 
+              value={logoSize} 
+              onChange={e => setLogoSize(e.target.value)} 
+              className="w-full accent-primary" 
+            />
+          </div>
 
           <div className="w-full mt-8 border-t border-outline-variant/30 pt-8 flex flex-col">
             <h3 className="font-headline-md text-headline-md text-on-background mb-2">Imagen/Video Principal (Hero)</h3>
@@ -218,7 +239,11 @@ export default function SettingsForm() {
               <label className="block font-label-md text-label-md text-on-background mb-2">Número WhatsApp Principal</label>
               <input value={whatsapp} onChange={e => setWhatsapp(e.target.value)} className="w-full bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" type="tel" />
             </div>
-            <div className="md:col-span-2">
+            <div>
+              <label className="block font-label-md text-label-md text-on-background mb-2">Correo Electrónico (Público)</label>
+              <input value={contactEmail} onChange={e => setContactEmail(e.target.value)} className="w-full bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" type="email" />
+            </div>
+            <div>
               <label className="block font-label-md text-label-md text-on-background mb-2">Dirección de Oficina</label>
               <input value={address} onChange={e => setAddress(e.target.value)} className="w-full bg-background border border-outline-variant rounded-lg px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-background transition-all" type="text" />
             </div>

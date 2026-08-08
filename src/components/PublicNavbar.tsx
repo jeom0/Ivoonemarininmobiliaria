@@ -61,7 +61,7 @@ export default function PublicNavbar({ settings }: { settings?: any }) {
         <div className="flex items-center gap-2">
           <Link href="/">
             {s.logoUrl ? (
-              <img src={s.logoUrl} alt={s.agencyName || "Logo"} className="h-12 w-auto object-contain" />
+              <img src={s.logoUrl} alt={s.agencyName || "Logo"} className="w-auto object-contain" style={{ height: s.logoSize ? `${s.logoSize}px` : '48px', maxHeight: '80px' }} />
             ) : (
               <span className="text-headline-md font-headline-lg text-primary tracking-tight cursor-pointer">
                 {s.agencyName || "Ivonne Marin"}

@@ -157,7 +157,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         
         <div className="mb-6 px-2">
             <Link href="/admin/profile" title={!sidebarOpen ? "Mi Perfil" : undefined} className={`flex items-center transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${sidebarOpen ? 'gap-3 hover:bg-surface-container-high py-2 rounded-xl' : 'justify-center'} w-full group cursor-pointer`}>
-                <div className="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center overflow-hidden border-2 border-primary-fixed shrink-0 group-hover:border-primary transition-colors">
+                <div className="w-14 h-14 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center overflow-hidden border-2 border-primary-fixed shrink-0 group-hover:border-primary transition-colors">
                     {session.user?.image ? (
                         <img className="w-full h-full object-cover" src={session.user.image as string} alt={session.user.name || "Usuario"} />
                     ) : (

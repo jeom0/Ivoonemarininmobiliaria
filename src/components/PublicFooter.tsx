@@ -78,7 +78,7 @@ export default function PublicFooter({ settings }: { settings?: any }) {
             </li>
             <li className="flex items-center gap-3 text-on-primary/80">
               <span className="material-symbols-outlined">mail</span>
-              <span className="font-body-md">contacto@ivonnemarin.com</span>
+              <span className="font-body-md">{s.contactEmail || "contacto@ivonnemarin.com"}</span>
             </li>
             <li className="flex items-center gap-3 text-on-primary/80">
               <span className="material-symbols-outlined">location_on</span>
