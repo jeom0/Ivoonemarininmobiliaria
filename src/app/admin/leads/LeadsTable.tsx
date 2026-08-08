@@ -577,10 +577,11 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                       disabled={isGeneratingAi}
                       onClick={() => handleGenerateAIAvatar(selectedLead.id)} 
                       className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center cursor-pointer shadow-md hover:opacity-90 transition-opacity text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                      title="Generar con IA (Límite: 2/día)"
+                      title="Generar con IA"
                     >
                       <span className="material-symbols-outlined text-3xl">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
                     </button>
+                    <p className="w-full text-[11px] text-on-surface-variant/70 text-center mt-2 leading-tight">Generador Mágico de Avatares con Inteligencia Artificial<br/>(Límite: 2 generaciones por día)</p>
                   </div>
                 )}
               </div>
@@ -730,10 +731,11 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                     disabled={isGeneratingAi}
                     onClick={() => handleGenerateAIAvatar("new")} 
                     className="w-20 h-20 rounded-full bg-gradient-to-tr from-purple-500 via-pink-500 to-orange-400 flex items-center justify-center cursor-pointer shadow-md hover:opacity-90 transition-opacity text-white disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Generar con IA ✨"
+                    title="Generar con IA"
                   >
                     <span className="material-symbols-outlined text-3xl">{isGeneratingAi ? 'hourglass_empty' : 'auto_awesome'}</span>
                   </button>
+                  <p className="w-full text-[11px] text-on-surface-variant/70 text-center mt-2 leading-tight">Generador Mágico de Avatares con Inteligencia Artificial<br/>(Límite: 2 generaciones por día)</p>
                 </div>
 
               <div>
