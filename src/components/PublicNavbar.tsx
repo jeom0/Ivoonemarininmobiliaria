@@ -59,7 +59,7 @@ export default function PublicNavbar({ settings }: { settings?: any }) {
       <div className="flex justify-between items-center w-full px-base md:px-margin-desktop max-w-container-max mx-auto h-full">
         {/* Brand */}
         <div className="flex items-center">
-          <Link href="/" className="block flex items-center">
+          <Link href="/" className="flex items-center">
             {s.logoUrl ? (
               <img src={s.logoUrl.replace('/api/uploads/', '/uploads/') + '?v=2'} alt={s.agencyName || "Logo"} className="w-auto object-contain" style={{ height: s.logoSize ? `${s.logoSize}px` : '48px', maxHeight: '80px' }} />
             ) : (
