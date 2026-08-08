@@ -177,7 +177,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
     }
   };
 
-  const handleAvatarUpload = async (id: string, file: File) => {
+  const handleAvatarUpload = async (id: string, file: File): Promise<string | undefined> => {
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -185,20 +185,24 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
       if (res.ok) {
         const data = await res.json();
         const avatarUrl = data.url;
-        await fetch(`/api/leads/${id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ avatar: avatarUrl }),
-        });
-        setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, avatar: avatarUrl } : l)));
-        if (selectedLead?.id === id) {
-          setSelectedLead({ ...selectedLead, avatar: avatarUrl });
+        if (id !== "new") {
+          await fetch(`/api/leads/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ avatar: avatarUrl }),
+          });
+          setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, avatar: avatarUrl } : l)));
+          if (selectedLead?.id === id) {
+            setSelectedLead({ ...selectedLead, avatar: avatarUrl });
+          }
+          router.refresh();
         }
-        router.refresh();
+        return avatarUrl;
       } else {
         alert("Error al subir imagen");
       }
-    } catch {
+    } catch (error) {
+      console.error(error);
       alert("Error de red");
     }
   };
@@ -473,7 +477,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
             </div>
 
             <div className="flex flex-col items-center mb-6">
-              <div className="w-24 h-24 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-3xl font-bold relative group overflow-visible mb-4 shadow-sm border-2 border-surface-container-high">
+              <div className="w-32 h-32 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-4xl font-bold relative group overflow-visible mb-4 shadow-sm border-2 border-surface-container-high">
                 {isEditingLead ? (
                   editLeadData.avatar ? <img src={editLeadData.avatar} className="w-full h-full object-cover rounded-full" alt="avatar" /> : selectedLead.name.substring(0, 2).toUpperCase()
                 ) : (
@@ -484,18 +488,18 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                   <>
                     <button 
                       onClick={(e) => { e.stopPropagation(); setShowAvatarSelector(!showAvatarSelector); }}
-                      className="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-2 shadow-md hover:bg-primary/90 transition-colors"
+                      className="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-2.5 shadow-md hover:bg-primary/90 transition-colors"
                     >
-                      <span className="material-symbols-outlined text-[16px]">edit</span>
+                      <span className="material-symbols-outlined text-[20px]">edit</span>
                     </button>
                     {showAvatarSelector && (
-                      <div className="absolute top-28 bg-surface rounded-xl shadow-xl border border-outline-variant p-4 w-72 z-50 flex flex-wrap gap-3 justify-center">
-                        <p className="w-full text-sm font-label-md text-on-surface-variant text-center mb-1">Elige un avatar o sube foto</p>
+                      <div className="absolute top-36 bg-surface rounded-xl shadow-xl border border-outline-variant p-4 w-[340px] z-50 flex flex-wrap gap-4 justify-center">
+                        <p className="w-full text-base font-label-md text-on-surface-variant text-center mb-1">Elige un avatar o sube foto</p>
                         {AVATARS.map(av => (
-                          <img key={av} src={av} onClick={() => { setEditLeadData({...editLeadData, avatar: av}); setShowAvatarSelector(false); }} className="w-16 h-16 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
+                          <img key={av} src={av} onClick={() => { setEditLeadData({...editLeadData, avatar: av}); setShowAvatarSelector(false); }} className="w-20 h-20 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
                         ))}
-                        <label className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark">
-                          <span className="material-symbols-outlined text-2xl">upload</span>
+                        <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark">
+                          <span className="material-symbols-outlined text-3xl">upload</span>
                           <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
                             if(e.target.files) {
                               handleAvatarUpload(selectedLead.id, e.target.files[0]).then(() => setShowAvatarSelector(false));
@@ -507,7 +511,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                   </>
                 ) : (
                   <label className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity" title="Cambiar foto">
-                    <span className="material-symbols-outlined text-white text-xl">upload</span>
+                    <span className="material-symbols-outlined text-white text-2xl">upload</span>
                     <input type="file" className="hidden" accept="image/*" onChange={(e) => { if(e.target.files) handleAvatarUpload(selectedLead.id, e.target.files[0]) }} />
                   </label>
                 )}
@@ -632,17 +636,27 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
             </div>
             <form onSubmit={handleCreateLead} className="space-y-4">
               <div className="flex flex-col items-center mb-6">
-                <div className="w-24 h-24 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-4xl font-bold relative mb-4 overflow-hidden shadow-sm border-2 border-surface-container-high">
+                <div className="w-32 h-32 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-5xl font-bold relative mb-4 overflow-hidden shadow-sm border-2 border-surface-container-high">
                   {newLeadData.avatar ? (
                     <img src={newLeadData.avatar} className="w-full h-full object-cover" alt="avatar" />
                   ) : (
-                    <span className="material-symbols-outlined text-[40px]">person</span>
+                    <span className="material-symbols-outlined text-[60px]">person</span>
                   )}
                 </div>
-                <div className="flex flex-wrap justify-center gap-3">
+                <div className="flex flex-wrap justify-center gap-4">
                   {AVATARS.map(av => (
-                    <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-16 h-16 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover transition-all ${newLeadData.avatar === av ? 'ring-2 ring-primary scale-110' : ''}`} />
+                    <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-20 h-20 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover transition-all ${newLeadData.avatar === av ? 'ring-2 ring-primary scale-110' : ''}`} />
                   ))}
+                  <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark">
+                    <span className="material-symbols-outlined text-3xl">upload</span>
+                    <input type="file" className="hidden" accept="image/*" onChange={(e) => { 
+                      if(e.target.files) {
+                        handleAvatarUpload("new", e.target.files[0]).then(url => {
+                          if (url) setNewLeadData({...newLeadData, avatar: url});
+                        });
+                      }
+                    }} />
+                  </label>
                 </div>
               </div>
 
