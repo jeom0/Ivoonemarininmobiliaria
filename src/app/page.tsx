@@ -88,7 +88,7 @@ export default async function Page() {
         <div className="absolute top-4 left-4 z-10">
         <span className={`${p.modality === 'VENTA' ? 'bg-primary' : 'bg-secondary'} text-white text-[10px] font-bold px-3 py-1 rounded-full`}>{p.modality}</span>
         </div>
-        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}/>
+        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={(p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80") + "?v=2"}/>
         </div>
         <div className="p-6">
         <h3 className="font-headline-md text-headline-md mb-2 text-on-surface hover:text-primary transition-colors line-clamp-1">{p.title}</h3>
@@ -193,7 +193,7 @@ export default async function Page() {
                         <div className="absolute top-4 left-4 z-10 flex gap-2">
                             <span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">{p.modality}</span>
                         </div>
-                        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} />
+                        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={(p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80") + "?v=2"} />
                     </div>
                     <div className="p-6">
                         <div className="flex justify-between items-start mb-2">
@@ -248,7 +248,7 @@ export default async function Page() {
         <span className={`${p.modality === 'VENTA' ? 'bg-primary' : 'bg-secondary'} text-white text-[10px] font-bold px-3 py-1 rounded-full`}>{p.modality}</span>
         <span className="bg-[#D4AF37] text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">trending_up</span> Inversión</span>
         </div>
-        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}/>
+        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={(p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80") + "?v=2"}/>
         </div>
         <div className="p-6">
         <h3 className="font-headline-md text-headline-md mb-2 text-on-surface hover:text-primary transition-colors line-clamp-1">{p.title}</h3>
