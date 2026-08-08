@@ -27,12 +27,17 @@ export default async function RootLayout({
   
   let faviconUrl = "/favicon.ico";
   try {
-    const admin = await prisma.user.findFirst({ where: { role: "ADMIN" } });
-    if (admin?.image) {
+    const [admin, logoSetting] = await Promise.all([
+      prisma.user.findFirst({ where: { role: "ADMIN" } }),
+      prisma.setting.findUnique({ where: { key: "logoUrl" } })
+    ]);
+    if (logoSetting?.value) {
+      faviconUrl = logoSetting.value;
+    } else if (admin?.image) {
       faviconUrl = admin.image;
     }
   } catch (error) {
-    console.error("Failed to load favicon from admin user");
+    console.error("Failed to load favicon from database");
   }
 
   return (
