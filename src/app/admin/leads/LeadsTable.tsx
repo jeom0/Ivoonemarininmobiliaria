@@ -80,13 +80,26 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
   const [showAvatarSelector, setShowAvatarSelector] = useState(false);
   const [isGeneratingAi, setIsGeneratingAi] = useState(false);
   
-  const AVATARS = [
+  const DEFAULT_AVATARS = [
     '/avatars/avatar1.png',
     '/avatars/avatar2.png',
     '/avatars/avatar3.png',
     '/avatars/avatar4.png',
     '/avatars/avatar5.png',
   ];
+
+  const [dynamicAvatars, setDynamicAvatars] = useState<string[]>([]);
+  
+  useEffect(() => {
+    fetch('/api/avatars')
+      .then(res => res.json())
+      .then(data => {
+        if (data.avatars) setDynamicAvatars(data.avatars);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  const ALL_AVATARS = [...DEFAULT_AVATARS, ...dynamicAvatars];
 
   const handleEditClick = () => {
     setEditLeadData(selectedLead!);
@@ -182,6 +195,8 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
           if (editLeadData.id === id) {
              setEditLeadData({ ...editLeadData, avatar: data.url });
           }
+          // Also add to the dynamic avatars list instantly
+          setDynamicAvatars(prev => [data.url, ...prev]);
           router.refresh();
         }
         alert(`¡Avatar generado con éxito! Te quedan ${data.remainingGenerations} generaciones hoy.`);
@@ -561,7 +576,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                 {showAvatarSelector && (
                   <div className="absolute top-36 bg-surface rounded-xl shadow-xl border border-outline-variant p-4 w-[340px] z-50 flex flex-wrap gap-4 justify-center">
                     <p className="w-full text-base font-label-md text-on-surface-variant text-center mb-1">Elige un avatar o sube foto</p>
-                    {AVATARS.map(av => (
+                    {ALL_AVATARS.map(av => (
                       <img key={av} src={av} onClick={() => handleSelectPredefinedAvatar(selectedLead.id, av)} className="w-20 h-20 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover" />
                     ))}
                     <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark" title="Subir foto">
@@ -713,7 +728,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                   )}
                 </div>
                 <div className="flex flex-wrap justify-center gap-4">
-                  {AVATARS.map(av => (
+                  {ALL_AVATARS.map(av => (
                     <img key={av} src={av} onClick={() => setNewLeadData({...newLeadData, avatar: av})} className={`w-20 h-20 rounded-full cursor-pointer hover:ring-2 hover:ring-primary object-cover transition-all ${newLeadData.avatar === av ? 'ring-2 ring-primary scale-110' : ''}`} />
                   ))}
                   <label className="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center cursor-pointer hover:bg-surface-container-high transition-colors text-primary hover:text-primary-dark" title="Subir foto">

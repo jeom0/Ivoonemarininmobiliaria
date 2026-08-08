@@ -2,9 +2,32 @@ import { PrismaClient } from "@prisma/client";
 import Link from "next/link";
 import ExportReportsButton from "./ExportReportsButton";
 
+import ReportsFilter from "./ReportsFilter";
+
 const prisma = new PrismaClient();
 
-export default async function Page() {
+export default async function Page({ searchParams }: { searchParams: Promise<{ filter?: string, range?: string }> }) {
+  const { filter = 'all', range = 'all' } = await searchParams;
+
+  // ---- Date Range Logic ----
+  const now = new Date();
+  let dateFilter = {};
+  
+  if (range === '7d') {
+    const d = new Date(); d.setDate(now.getDate() - 7);
+    dateFilter = { gte: d };
+  } else if (range === '30d') {
+    const d = new Date(); d.setDate(now.getDate() - 30);
+    dateFilter = { gte: d };
+  } else if (range === 'this_month') {
+    const d = new Date(now.getFullYear(), now.getMonth(), 1);
+    dateFilter = { gte: d };
+  }
+
+  // Base where clauses
+  const leadWhere = range !== 'all' ? { createdAt: dateFilter } : {};
+  const propertyWhere = range !== 'all' ? { createdAt: dateFilter } : {};
+
   // ---- Real DB queries ----
   const [
     totalLeads,
@@ -15,11 +38,11 @@ export default async function Page() {
     allLeads,
     allProperties,
   ] = await Promise.all([
-    prisma.lead.count({ where: { type: "CONTACT" } }),
-    prisma.lead.count({ where: { type: "VISIT" } }),
-    prisma.property.count(),
-    prisma.property.count({ where: { status: "DISPONIBLE" } }),
-    prisma.property.count({ where: { status: "VENDIDO" } }),
+    prisma.lead.count({ where: { ...leadWhere, type: "CONTACT" } }),
+    prisma.lead.count({ where: { ...leadWhere, type: "VISIT" } }),
+    prisma.property.count({ where: propertyWhere }),
+    prisma.property.count({ where: { ...propertyWhere, status: "DISPONIBLE" } }),
+    prisma.property.count({ where: { ...propertyWhere, status: "VENDIDO" } }),
     prisma.lead.findMany({ orderBy: { createdAt: "asc" }, select: { createdAt: true, type: true } }),
     prisma.property.findMany({
       orderBy: { price: "desc" },
@@ -96,64 +119,75 @@ export default async function Page() {
         />
       </header>
 
+      <ReportsFilter />
+
       {/* KPI Grid - Real Data */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-8">
-        <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm transition-transform hover:-translate-y-1">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-primary-container/10 rounded-lg">
-              <span className="material-symbols-outlined text-primary">person_add</span>
+        {(filter === 'all' || filter === 'leads') && (
+          <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm transition-transform hover:-translate-y-1">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-2 bg-primary-container/10 rounded-lg">
+                <span className="material-symbols-outlined text-primary">person_add</span>
+              </div>
+              <span className="flex items-center text-sm font-semibold text-green-700 bg-green-50 px-2 py-1 rounded-full">
+                <span className="material-symbols-outlined text-sm mr-1">trending_up</span>Activo
+              </span>
             </div>
-            <span className="flex items-center text-sm font-semibold text-green-700 bg-green-50 px-2 py-1 rounded-full">
-              <span className="material-symbols-outlined text-sm mr-1">trending_up</span>Activo
-            </span>
+            <h3 className="font-label-md text-label-md text-on-surface-variant mb-1">Leads Totales</h3>
+            <p className="font-headline-lg text-headline-lg text-on-surface font-bold">{(totalLeads + totalVisits).toLocaleString("es-CO")}</p>
           </div>
-          <h3 className="font-label-md text-label-md text-on-surface-variant mb-1">Leads Totales</h3>
-          <p className="font-headline-lg text-headline-lg text-on-surface font-bold">{(totalLeads + totalVisits).toLocaleString("es-CO")}</p>
-        </div>
+        )}
 
-        <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm transition-transform hover:-translate-y-1">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-primary-container/10 rounded-lg">
-              <span className="material-symbols-outlined text-primary">sell</span>
+        {(filter === 'all' || filter === 'properties') && (
+          <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm transition-transform hover:-translate-y-1">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-2 bg-primary-container/10 rounded-lg">
+                <span className="material-symbols-outlined text-primary">sell</span>
+              </div>
+              <span className="flex items-center text-sm font-semibold text-green-700 bg-green-50 px-2 py-1 rounded-full">
+                <span className="material-symbols-outlined text-sm mr-1">trending_up</span>Total
+              </span>
             </div>
-            <span className="flex items-center text-sm font-semibold text-green-700 bg-green-50 px-2 py-1 rounded-full">
-              <span className="material-symbols-outlined text-sm mr-1">trending_up</span>Total
-            </span>
+            <h3 className="font-label-md text-label-md text-on-surface-variant mb-1">Vendidos / Cerrados</h3>
+            <p className="font-headline-lg text-headline-lg text-on-surface font-bold">{soldProperties}</p>
           </div>
-          <h3 className="font-label-md text-label-md text-on-surface-variant mb-1">Vendidos / Cerrados</h3>
-          <p className="font-headline-lg text-headline-lg text-on-surface font-bold">{soldProperties}</p>
-        </div>
+        )}
 
-        <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm transition-transform hover:-translate-y-1">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-primary-container/10 rounded-lg">
-              <span className="material-symbols-outlined text-primary">visibility</span>
+        {(filter === 'all' || filter === 'visits') && (
+          <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm transition-transform hover:-translate-y-1">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-2 bg-primary-container/10 rounded-lg">
+                <span className="material-symbols-outlined text-primary">visibility</span>
+              </div>
+              <span className="flex items-center text-sm font-semibold text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">
+                <span className="material-symbols-outlined text-sm mr-1">remove</span>Histórico
+              </span>
             </div>
-            <span className="flex items-center text-sm font-semibold text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">
-              <span className="material-symbols-outlined text-sm mr-1">remove</span>Histórico
-            </span>
+            <h3 className="font-label-md text-label-md text-on-surface-variant mb-1">Visitas Agendadas</h3>
+            <p className="font-headline-lg text-headline-lg text-on-surface font-bold">{totalVisits}</p>
           </div>
-          <h3 className="font-label-md text-label-md text-on-surface-variant mb-1">Visitas Agendadas</h3>
-          <p className="font-headline-lg text-headline-lg text-on-surface font-bold">{totalVisits}</p>
-        </div>
+        )}
 
-        <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm transition-transform hover:-translate-y-1">
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-2 bg-primary-container/10 rounded-lg">
-              <span className="material-symbols-outlined text-primary">real_estate_agent</span>
+        {(filter === 'all' || filter === 'properties') && (
+          <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm transition-transform hover:-translate-y-1">
+            <div className="flex justify-between items-start mb-4">
+              <div className="p-2 bg-primary-container/10 rounded-lg">
+                <span className="material-symbols-outlined text-primary">real_estate_agent</span>
+              </div>
+              <span className="flex items-center text-sm font-semibold text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">
+                <span className="material-symbols-outlined text-sm mr-1">remove</span>Disponibles
+              </span>
             </div>
-            <span className="flex items-center text-sm font-semibold text-on-surface-variant bg-surface-variant px-2 py-1 rounded-full">
-              <span className="material-symbols-outlined text-sm mr-1">remove</span>Disponibles
-            </span>
+            <h3 className="font-label-md text-label-md text-on-surface-variant mb-1">Inmuebles Activos</h3>
+            <p className="font-headline-lg text-headline-lg text-on-surface font-bold">{activeProperties}</p>
           </div>
-          <h3 className="font-label-md text-label-md text-on-surface-variant mb-1">Inmuebles Activos</h3>
-          <p className="font-headline-lg text-headline-lg text-on-surface font-bold">{activeProperties}</p>
-        </div>
+        )}
       </div>
 
       {/* Charts + Top Properties */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
         {/* Bar Chart: Monthly Leads */}
+        {(filter === 'all' || filter === 'leads' || filter === 'visits') && (
         <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm lg:col-span-2 flex flex-col min-h-[400px]">
           <div className="flex justify-between items-center mb-6">
             <h2 className="font-headline-md text-headline-md text-on-surface">Leads por Mes (Últimos 6)</h2>
@@ -198,8 +232,10 @@ export default async function Page() {
             </div>
           </div>
         </div>
+        )}
 
         {/* Donut: Lead types */}
+        {(filter === 'all' || filter === 'leads' || filter === 'visits') && (
         <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm flex flex-col min-h-[400px]">
           <h2 className="font-headline-md text-headline-md text-on-surface mb-6">Tipo de Leads</h2>
           <div className="flex-1 flex flex-col items-center justify-center">
@@ -228,8 +264,10 @@ export default async function Page() {
             ))}
           </div>
         </div>
+        )}
 
         {/* Top Properties from DB */}
+        {(filter === 'all' || filter === 'properties') && (
         <div className="bg-[rgba(239,246,237,0.9)] backdrop-blur-md border border-[rgba(232,195,158,0.3)] rounded-xl p-6 shadow-sm lg:col-span-3">
           <div className="flex justify-between items-center mb-6">
             <h2 className="font-headline-md text-headline-md text-on-surface">Inmuebles en Portafolio</h2>
@@ -303,6 +341,7 @@ export default async function Page() {
             </div>
           )}
         </div>
+        )}
       </div>
     </>
   );

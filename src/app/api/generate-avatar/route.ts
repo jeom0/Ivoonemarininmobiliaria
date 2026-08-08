@@ -6,7 +6,7 @@ import fs from "fs";
 import path from "path";
 import { writeFile } from "fs/promises";
 
-const ANIMALS = ["fox", "panda", "cat", "dog", "owl", "bear", "lion", "tiger", "rabbit", "elephant", "penguin", "koala", "monkey", "deer", "raccoon"];
+const MONSTERS = ["monster", "alien", "cyclops", "friendly beast", "fluffy creature", "horned goblin", "one-eyed blob"];
 const COLORS = ["blue", "purple", "pink", "green", "orange", "yellow", "teal", "red"];
 
 export async function POST(request: NextRequest) {
@@ -47,11 +47,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate prompt
-    const randomAnimal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
+    const randomMonster = MONSTERS[Math.floor(Math.random() * MONSTERS.length)];
     const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
     
     // Pollinations AI URL (free, no API key required)
-    const prompt = `A cute extremely high quality 3D Pixar style avatar of a ${randomAnimal} wearing professional clothes, solid ${randomColor} background, soft studio lighting, vibrant colors, minimalist`;
+    const prompt = `A cute extremely high quality 3D Pixar style avatar of a friendly little ${randomMonster} wearing professional clothes, solid ${randomColor} background, soft studio lighting, vibrant colors, minimalist`;
     const encodedPrompt = encodeURIComponent(prompt);
     // Add random seed to avoid caching
     const seed = Math.floor(Math.random() * 1000000);
