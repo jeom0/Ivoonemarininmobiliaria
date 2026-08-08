@@ -11,19 +11,29 @@ export default async function Page() {
   const session = await getServerSession(authOptions);
   const propertiesCount = await prisma.property.count();
   const leadsCount = await prisma.lead.count({ where: { type: 'CONTACT' } });
-  const visitsCount = await prisma.lead.count({ where: { type: 'VISIT', status: 'NEW' } });
   const soldCount = await prisma.property.count({ where: { status: 'VENDIDO' } });
   
   const latestLeads = await prisma.lead.findMany({
     take: 3,
     orderBy: { createdAt: 'desc' }
   });
+
+  let visitsCount = 0;
+  let upcomingVisits: any[] = [];
   
-  const upcomingVisits = await prisma.lead.findMany({
-    where: { type: 'VISIT' },
-    take: 3,
-    orderBy: { createdAt: 'asc' } // Assuming we want upcoming, ideally we filter by date >= now
-  });
+  try {
+    // @ts-ignore
+    visitsCount = await prisma.appointment.count({ where: { status: 'PENDING' } });
+    // @ts-ignore
+    upcomingVisits = await prisma.appointment.findMany({
+      where: { date: { gte: new Date() } },
+      take: 3,
+      orderBy: { date: 'asc' },
+      include: { lead: true, property: true }
+    });
+  } catch (e) {
+    // Fallback if db push hasn't run
+  }
 
   return (
     <>
@@ -170,14 +180,14 @@ export default async function Page() {
         {upcomingVisits.map((v, idx) => (
         <div key={v.id} className={`flex gap-4 p-4 rounded-xl shadow-sm ${idx === 0 ? 'bg-white border-l-4 border-primary' : 'bg-white/60 border-l-4 border-outline-variant'}`}>
         <div className={`flex-shrink-0 flex flex-col items-center justify-center bg-surface-container w-14 h-14 rounded-lg ${idx !== 0 ? 'opacity-60' : ''}`}>
-        <span className="text-xs font-bold text-primary">{new Date(v.createdAt).toLocaleString('es-CO', { month: 'short' }).toUpperCase()}</span>
-        <span className="text-lg font-bold text-primary">{new Date(v.createdAt).getDate()}</span>
+        <span className="text-xs font-bold text-primary">{new Date(v.date).toLocaleString('es-CO', { month: 'short' }).toUpperCase()}</span>
+        <span className="text-lg font-bold text-primary">{new Date(v.date).getDate()}</span>
         </div>
         <div className="flex-1">
-        <p className="font-label-md text-label-md text-primary">{v.name}</p>
+        <p className="font-label-md text-label-md text-primary">{v.lead?.name || 'Cita'}</p>
         <p className="text-xs text-on-surface-variant flex items-center gap-1 mb-2">
         <span className="material-symbols-outlined text-[14px]">location_on</span>
-                                        {v.message ? v.message.substring(0, 20) : 'Consulta'}
+                                        {v.property?.title ? v.property.title.substring(0, 20) : 'Reunión General'}
                                     </p>
         <div className="flex items-center justify-between">
         <button className="text-xs text-primary font-bold hover:underline">Ver detalle</button>

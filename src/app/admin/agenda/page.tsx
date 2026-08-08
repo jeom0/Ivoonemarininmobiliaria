@@ -4,28 +4,51 @@ import AgendaCalendar from './AgendaCalendar';
 const prisma = new PrismaClient();
 
 export default async function Page() {
-  const visits = await prisma.lead.findMany({ 
-    where: { type: 'VISIT' },
-    orderBy: { createdAt: 'desc' },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      phone: true,
-      message: true,
-      status: true,
-      createdAt: true
-    }
-  });
+  let appointments = [];
+  let leads = [];
+  let properties = [];
 
-  // Convert Date objects to ISO strings for Client Component serialization
-  const serializedVisits = visits.map(v => ({
-    ...v,
-    createdAt: v.createdAt.toISOString()
+  try {
+    // We wrap this in try-catch in case the user hasn't run prisma db push yet
+    // @ts-ignore
+    appointments = await prisma.appointment.findMany({
+      orderBy: { date: 'asc' },
+      include: {
+        lead: true,
+        property: {
+          select: { title: true, mainImage: true }
+        }
+      }
+    });
+  } catch (error) {
+    console.warn("Appointment model not found. Please run npx prisma db push.");
+  }
+
+  try {
+    leads = await prisma.lead.findMany({
+      orderBy: { name: 'asc' },
+      select: { id: true, name: true, email: true, phone: true, avatar: true }
+    });
+    properties = await prisma.property.findMany({
+      where: { status: 'DISPONIBLE' },
+      select: { id: true, title: true, price: true, currency: true, mainImage: true }
+    });
+  } catch (error) {
+    console.error(error);
+  }
+
+  const serializedAppointments = appointments.map((a: any) => ({
+    ...a,
+    date: a.date.toISOString(),
+    createdAt: a.createdAt.toISOString(),
+    updatedAt: a.updatedAt.toISOString(),
   }));
 
   return (
-    <AgendaCalendar initialVisits={serializedVisits} />
+    <AgendaCalendar 
+      initialAppointments={serializedAppointments} 
+      leads={leads}
+      properties={properties}
+    />
   );
 }
-
