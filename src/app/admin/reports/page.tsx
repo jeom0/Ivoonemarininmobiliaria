@@ -52,7 +52,6 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ f
   ]);
 
   // ---- Monthly chart data (last 6 months) ----
-  const now = new Date();
   const monthlyData = Array.from({ length: 6 }, (_, i) => {
     const d = new Date(now.getFullYear(), now.getMonth() - 5 + i, 1);
     const nextD = new Date(d.getFullYear(), d.getMonth() + 1, 1);

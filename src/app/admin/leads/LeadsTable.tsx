@@ -752,6 +752,7 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
                   </button>
                   <p className="w-full text-[11px] text-on-surface-variant/70 text-center mt-2 leading-tight">Generador Mágico de Avatares con Inteligencia Artificial<br/>(Límite: 2 generaciones por día)</p>
                 </div>
+              </div>
 
               <div>
                 <label className="block text-sm font-label-md mb-1">Nombre Completo</label>
