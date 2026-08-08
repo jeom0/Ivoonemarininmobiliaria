@@ -195,7 +195,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     <span className="material-symbols-outlined shrink-0">help</span>
                     <span className={`font-label-md text-label-md whitespace-nowrap overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${!sidebarOpen ? 'opacity-0 w-0' : 'opacity-100 w-full'}`}>Ayuda</span>
                 </a>
-                <button onClick={() => signOut()} title={!sidebarOpen ? "Cerrar Sesión" : undefined} className={`w-full flex items-center ${sidebarOpen ? 'gap-3 px-4' : 'justify-center px-0'} py-2 text-error hover:bg-error-container/20 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] rounded-lg`}>
+                <button onClick={() => signOut({ callbackUrl: '/' })} title={!sidebarOpen ? "Cerrar Sesión" : undefined} className={`w-full flex items-center ${sidebarOpen ? 'gap-3 px-4' : 'justify-center px-0'} py-2 text-error hover:bg-error-container/20 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] rounded-lg`}>
                     <span className="material-symbols-outlined shrink-0">logout</span>
                     <span className={`font-label-md text-label-md whitespace-nowrap overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${!sidebarOpen ? 'opacity-0 w-0' : 'opacity-100 w-full'}`}>Cerrar Sesión</span>
                 </button>

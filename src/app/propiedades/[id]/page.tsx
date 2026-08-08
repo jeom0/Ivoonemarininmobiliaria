@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
 import PropertyLeadForm from "./PropertyLeadForm";
+import PropertyGallery from "./PropertyGallery";
 
 const prisma = new PrismaClient();
 
@@ -24,6 +25,14 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
     currency: "COP",
     maximumFractionDigits: 0,
   }).format(property.price) : "Consultar precio";
+  
+  // Get admin info and settings
+  const adminUser = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
+  const settingsRecords = await prisma.setting.findMany();
+  const settings = settingsRecords.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
+  
+  const agentImage = adminUser?.image || settings.logoUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBgZcfdPi_n0TAneC3N3wNfETdI8oO_G8QIPcsWa34_-98wnMr-m5RZQHICFsdciNAf2VLZZL3RkumToH7vrXWuozf0hInLZaGyF6lGXKOYDqmSjwITTmLqO7oLzDv_NqBTEzGBIEC-293iwhGjLJ6l22s1Hh9BxY-bjG8CudzkuWoKZkN2746Z-94jtta0xzNY9iv7o2Y7c-mWcOqmJCUpbG7QFOIoHu_kpCloGebH6kRR3hPJAX2d6QR6g-LUlCdd1kSrRt6Qj0w";
+  const whatsappNumber = settings.whatsapp || "573000000000";
 
   // Parse Multimedia
   let videoUrl = null;
@@ -57,35 +66,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
           <div className="lg:col-span-2 space-y-10">
             {/* Gallery */}
-            <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-4 h-[400px] md:h-[600px] rounded-2xl overflow-hidden shadow-sm">
-              <div className="md:col-span-1 md:row-span-2 relative group cursor-pointer overflow-hidden h-[200px] md:h-full">
-                <img
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  alt={property.title}
-                  src={property.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-                  <span className="text-white font-label-md">Ver foto principal</span>
-                </div>
-              </div>
-              <div className="relative overflow-hidden cursor-pointer group hidden md:block">
-                <img
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  alt="Interior"
-                  src="https://images.unsplash.com/photo-1600607687931-cebf004f560c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                />
-              </div>
-              <div className="relative overflow-hidden cursor-pointer group hidden md:block">
-                <img
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  alt="Habitación"
-                  src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                />
-                <div className="absolute inset-0 bg-primary/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="text-on-primary font-headline-md">+ Fotos</span>
-                </div>
-              </div>
-            </div>
+            <PropertyGallery mainImage={property.mainImage} imagesString={property.images} />
 
             {/* Header Info */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-outline-variant pb-8">
@@ -186,16 +167,40 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
               </div>
             )}
 
-            {/* Map Location Placeholder */}
+            {/* Map Location */}
             <div className="space-y-6">
               <h2 className="font-headline-md text-headline-md text-primary">Ubicación</h2>
-              <div className="w-full h-80 bg-surface-container rounded-2xl overflow-hidden shadow-inner relative flex items-center justify-center bg-[url('https://lh3.googleusercontent.com/aida-public/AB6AXuBgLW5kfd0pSAmOJDmTvWaCzVkhZUy5-Oeno5aFRjGKOTbkMJY6e7n078utxKW94p_IU4DGRxi4L0rH4kTwQhgU4ez2n2TmaD_TagyibUGuXPoMxHpphwXZsgvkWTNhHrmH0CuYRhPdQkBAH7V-c2qQP9sIuQ6dBdwNlBsWP2iYU6WgcWeJKBxF13JD5geuxUR02PygHTtgp6QM71KTdmdMjfFApmBKRWFWyKvsTQI-27X2El4FyGT3Af8Z9zPDb1QenbSH3ieW7XQ')] bg-cover bg-center">
-                <div className="absolute inset-0 bg-black/10 hover:bg-black/20 transition-colors flex items-center justify-center">
-                  <span className="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md flex items-center gap-2">
-                    <span className="material-symbols-outlined">zoom_in</span> Ampliar Mapa
-                  </span>
+              {property.lat && property.lng ? (
+                <div className="w-full h-80 rounded-2xl overflow-hidden shadow-inner relative flex items-center justify-center bg-surface-container">
+                  <iframe 
+                    width="100%" 
+                    height="100%" 
+                    frameBorder="0" 
+                    scrolling="no" 
+                    marginHeight={0} 
+                    marginWidth={0} 
+                    src={`https://maps.google.com/maps?q=${property.lat},${property.lng}&hl=es&z=15&output=embed`}
+                  ></iframe>
                 </div>
-              </div>
+              ) : property.address ? (
+                <div className="w-full h-40 rounded-2xl overflow-hidden shadow-inner relative flex flex-col items-center justify-center bg-surface-container gap-4">
+                  <span className="material-symbols-outlined text-4xl text-primary">location_on</span>
+                  <p className="font-body-lg">{property.address}</p>
+                </div>
+              ) : (
+                <div className="w-full h-64 rounded-2xl overflow-hidden shadow-inner relative flex flex-col items-center justify-center bg-surface-container-high border-2 border-dashed border-outline-variant gap-4">
+                  <span className="material-symbols-outlined text-4xl text-primary">map</span>
+                  <p className="font-label-md text-on-surface-variant max-w-sm text-center">La ubicación exacta no está publicada. Contáctanos para consultar la ubicación.</p>
+                  <a 
+                    className="flex items-center gap-2 bg-[#25D366] text-white px-6 py-2 rounded-xl font-label-md hover:opacity-90 transition-opacity"
+                    href={`https://wa.me/573000000000?text=Hola,%20quisiera%20saber%20la%20ubicación%20exacta%20de%20la%20propiedad%20${property.title}%20(Cód:%20IM-${property.id.substring(0,4).toUpperCase()})`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span className="material-symbols-outlined text-lg">location_on</span> Consultar Ubicación
+                  </a>
+                </div>
+              )}
             </div>
           </div>
 
@@ -205,6 +210,8 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
               propertyId={property.id} 
               propertyCode={property.id.substring(0, 4).toUpperCase()} 
               propertyName={property.title} 
+              agentImage={agentImage}
+              whatsappNumber={whatsappNumber}
             />
 
             <div className="bg-primary p-6 rounded-2xl text-on-primary space-y-4">

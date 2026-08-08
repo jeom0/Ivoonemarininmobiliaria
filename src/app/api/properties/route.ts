@@ -38,6 +38,9 @@ export async function POST(req: Request) {
                 bedrooms: parseInt(data.bedrooms) || 0,
                 bathrooms: parseInt(data.bathrooms) || 0,
                 builtArea: parseFloat(data.builtArea) || 0,
+                address: data.address || null,
+                lat: data.lat ? parseFloat(data.lat) : null,
+                lng: data.lng ? parseFloat(data.lng) : null,
                 isFeatured: data.isFeatured === 'true' || data.isFeatured === true,
                 isInvestment: data.isInvestment === 'true' || data.isInvestment === true,
                 status: "DISPONIBLE"

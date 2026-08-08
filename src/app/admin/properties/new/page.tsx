@@ -165,6 +165,20 @@ export default function NewProperty() {
                                     </datalist>
                                 </div>
                             </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+                                <div className="space-y-2 md:col-span-1">
+                                    <label className="font-label-md text-secondary">Dirección / Sector (Opcional)</label>
+                                    <input name="address" type="text" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: Condominio Las Palmas" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="font-label-md text-secondary">Latitud (Mapa)</label>
+                                    <input name="lat" type="number" step="any" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 4.8690" />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="font-label-md text-secondary">Longitud (Mapa)</label>
+                                    <input name="lng" type="number" step="any" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: -75.6231" />
+                                </div>
+                            </div>
                         </div>
 
                         {/* Detalles */}
