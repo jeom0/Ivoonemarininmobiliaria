@@ -16,9 +16,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+    let user = await prisma.user.findUnique({ where: { email: session.user.email } });
     if (!user) {
-      return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
+      // Si el usuario usa las credenciales de respaldo (fallback), lo creamos en la base de datos
+      // para poder llevar el conteo de avatares.
+      user = await prisma.user.create({
+        data: {
+          email: session.user.email,
+          name: session.user.name || "Usuario",
+          password: "fallback-generated-password", // Se ignora por el authOptions de respaldo
+          role: "ADMIN"
+        }
+      });
     }
 
     // Rate Limiting Logic: 2 per day
@@ -77,7 +86,7 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    const finalUrl = `/api/uploads/${filename}`;
+    const finalUrl = `/uploads/${filename}`;
 
     return NextResponse.json({ 
       success: true, 
