@@ -2,8 +2,29 @@ import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
 import ContactoForm from "@/components/ContactoForm";
 import Link from "next/link";
+import { PrismaClient } from '@prisma/client';
 
-export default function ContactoPage() {
+export const dynamic = 'force-dynamic';
+
+const prisma = new PrismaClient();
+
+export default async function ContactoPage() {
+  const settingsDb = await prisma.setting.findMany();
+  const settings = settingsDb.reduce((acc: any, s) => {
+    acc[s.key] = s.value;
+    return acc;
+  }, {});
+
+  const address = settings.address || "Pereira, Risaralda, Colombia";
+  const whatsapp = settings.whatsapp || "+57 300 000 0000";
+  const email = settings.email || "contacto@ivonnemarininmobiliaria.com";
+
+  let socialLinks = [];
+  try {
+    if (settings.social_links) {
+      socialLinks = JSON.parse(settings.social_links);
+    }
+  } catch (e) {}
   return (
     <>
       <PublicNavbar />
@@ -26,7 +47,7 @@ export default function ContactoPage() {
                   </div>
                   <div>
                     <h4 className="font-headline-md text-[18px] text-on-surface mb-1">Oficina Principal</h4>
-                    <p className="font-body-md text-on-surface-variant">Pereira, Risaralda<br/>Colombia</p>
+                    <p className="font-body-md text-on-surface-variant whitespace-pre-line">{address}</p>
                   </div>
                 </div>
                 
@@ -35,8 +56,8 @@ export default function ContactoPage() {
                     <span className="material-symbols-outlined">call</span>
                   </div>
                   <div>
-                    <h4 className="font-headline-md text-[18px] text-on-surface mb-1">Teléfono</h4>
-                    <p className="font-body-md text-on-surface-variant">+57 300 000 0000</p>
+                    <h4 className="font-headline-md text-[18px] text-on-surface mb-1">Teléfono / WhatsApp</h4>
+                    <p className="font-body-md text-on-surface-variant">{whatsapp}</p>
                   </div>
                 </div>
                 
@@ -46,19 +67,19 @@ export default function ContactoPage() {
                   </div>
                   <div>
                     <h4 className="font-headline-md text-[18px] text-on-surface mb-1">Correo Electrónico</h4>
-                    <p className="font-body-md text-on-surface-variant">contacto@ivonnemarin.com</p>
+                    <a href={`mailto:${email}`} className="font-body-md text-on-surface-variant hover:text-primary transition-colors">{email}</a>
                   </div>
                 </div>
               </div>
-              
-              <div className="mt-12 flex gap-4">
-                <Link className="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary hover:border-primary transition-all" href="#">
-                  <span className="material-symbols-outlined">public</span>
-                </Link>
-                <Link className="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary hover:border-primary transition-all" href="#">
-                  <span className="material-symbols-outlined">share</span>
-                </Link>
-              </div>
+              {socialLinks.length > 0 && (
+                <div className="mt-12 flex gap-4">
+                  {socialLinks.map((link: any, index: number) => (
+                    <a key={index} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary hover:border-primary transition-all" href={link.url} title={link.platform}>
+                      <span className="material-symbols-outlined">{link.platform.toLowerCase() === 'facebook' ? 'public' : link.platform.toLowerCase() === 'instagram' ? 'photo_camera' : link.platform.toLowerCase() === 'linkedin' ? 'work' : 'share'}</span>
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
             
             <div className="mt-12 lg:mt-0 p-8 md:p-12 bg-surface-container-lowest rounded-2xl ambient-shadow border border-outline-variant/30">
