@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    const finalUrl = `/uploads/${filename}`;
+    const finalUrl = `/api/uploads/${filename}`;
 
     return NextResponse.json({ 
       success: true, 
