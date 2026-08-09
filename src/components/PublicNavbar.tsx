@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export default function PublicNavbar({ settings }: { settings?: any }) {
   const [s, setS] = useState<any>(settings || {});
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
     if (!settings || Object.keys(settings).length === 0) {
@@ -101,8 +103,9 @@ export default function PublicNavbar({ settings }: { settings?: any }) {
               Publicar
             </button>
           </Link>
-          <Link href="/admin/login" className="hidden lg:flex items-center justify-center w-10 h-10 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary transition-all" title="Acceso Administrativo">
-            <span className="material-symbols-outlined text-[20px]">person</span>
+          <Link href={session ? "/admin" : "/admin/login"} className="hidden lg:flex items-center justify-center w-auto px-4 h-10 rounded-full border border-outline-variant text-on-surface-variant hover:text-primary hover:border-primary transition-all gap-2" title={session ? "Ir al Dashboard" : "Acceso Administrativo"}>
+            <span className="material-symbols-outlined text-[20px]">{session ? "dashboard" : "person"}</span>
+            {session && <span className="font-label-md text-[13px]">Dashboard</span>}
           </Link>
 
           {/* Mobile Menu Toggle */}
@@ -141,12 +144,12 @@ export default function PublicNavbar({ settings }: { settings?: any }) {
           })}
           <div className="border-t border-outline-variant/30 pt-4 flex flex-col gap-3">
             <Link 
-              href="/admin/login"
+              href={session ? "/admin" : "/admin/login"}
               onClick={() => setIsMenuOpen(false)}
               className="font-label-md text-label-md text-center py-3 border border-outline rounded-lg text-primary hover:bg-surface-container-low transition-colors flex items-center justify-center gap-2"
             >
-              <span className="material-symbols-outlined text-[20px]">person</span>
-              Acceso Admin
+              <span className="material-symbols-outlined text-[20px]">{session ? "dashboard" : "person"}</span>
+              {session ? "Dashboard" : "Acceso Admin"}
             </Link>
             <Link 
               href="/contacto"
