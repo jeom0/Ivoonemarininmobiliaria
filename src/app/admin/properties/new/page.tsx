@@ -7,6 +7,72 @@ import imageCompression from 'browser-image-compression';
 export default function NewProperty() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [uploadingFiles, setUploadingFiles] = useState(false);
+    const [gallery, setGallery] = useState<string[]>([]);
+    const [mainImage, setMainImage] = useState<string>('');
+    const [newImageUrl, setNewImageUrl] = useState<string>('');
+
+    // Direct file upload via + card
+    const handleDirectFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files || e.target.files.length === 0) return;
+        setUploadingFiles(true);
+        const files = Array.from(e.target.files);
+        const newUploaded: string[] = [];
+
+        for (const originalFile of files) {
+            let file = originalFile;
+            try {
+                file = await imageCompression(originalFile, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
+            } catch (err) {
+                console.error("Error compressing image", err);
+            }
+            const uploadFormData = new FormData();
+            uploadFormData.append("file", file, originalFile.name);
+            try {
+                const res = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                if (res.ok) {
+                    const uploadData = await res.json();
+                    newUploaded.push(uploadData.url);
+                }
+            } catch (err) {
+                console.error("Error uploading file", err);
+            }
+        }
+
+        if (newUploaded.length > 0) {
+            setGallery(prev => {
+                const updated = [...prev, ...newUploaded];
+                if (!mainImage && updated.length > 0) {
+                    setMainImage(updated[0]);
+                }
+                return updated;
+            });
+        }
+        setUploadingFiles(false);
+        e.target.value = '';
+    };
+
+    // Add image by URL
+    const handleAddImageUrl = () => {
+        if (!newImageUrl.trim()) return;
+        const url = newImageUrl.trim();
+        if (!gallery.includes(url)) {
+            const updated = [...gallery, url];
+            setGallery(updated);
+            if (!mainImage) setMainImage(url);
+        }
+        setNewImageUrl('');
+    };
+
+    const handleSetMain = (url: string) => setMainImage(url);
+
+    const handleRemoveImage = (url: string) => {
+        const updated = gallery.filter(img => img !== url);
+        setGallery(updated);
+        if (mainImage === url) {
+            setMainImage(updated.length > 0 ? updated[0] : '');
+        }
+    };
     
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -16,9 +82,9 @@ export default function NewProperty() {
         const data = Object.fromEntries(formData.entries());
         
         try {
-            let mainImageUrl = data.mainImage;
+            let currentGallery = [...gallery];
             
-            // Multiple images upload
+            // Multiple images upload fallback if any selected via traditional input
             const imagesInput = form.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
             if (imagesInput && imagesInput.files && imagesInput.files.length > 0) {
                 const uploadedImages = [];
@@ -37,11 +103,13 @@ export default function NewProperty() {
                     }
                 }
                 if (uploadedImages.length > 0) {
-                    mainImageUrl = uploadedImages[0];
-                    data.images = JSON.stringify(uploadedImages);
-                } else {
-                    alert("Error al subir las imágenes. Procediendo sin imágenes.");
+                    currentGallery = [...currentGallery, ...uploadedImages];
                 }
+            }
+
+            let primaryImage = mainImage || data.mainImage as string;
+            if (!primaryImage && currentGallery.length > 0) {
+                primaryImage = currentGallery[0];
             }
 
             // Multiple video upload
@@ -78,11 +146,14 @@ export default function NewProperty() {
                 if (uploadedPdfs.length > 0) data.documents = JSON.stringify(uploadedPdfs);
             }
 
-            // Actualizar la data con la URL de la imagen
-            const propertyData: any = { ...data, mainImage: mainImageUrl };
-            delete propertyData.imagesFiles;
-            delete propertyData.videoFiles;
-            delete propertyData.pdfFiles;
+            const propertyData: any = {
+                ...data,
+                mainImage: primaryImage || null,
+                images: currentGallery.length > 0 ? JSON.stringify(currentGallery) : null,
+            };
+            delete propertyData.mainImageFile;
+            delete propertyData.videoFile;
+            delete propertyData.pdfFile;
             
             // Set price to 0 if not provided
             if (!propertyData.price) {
@@ -105,7 +176,7 @@ export default function NewProperty() {
             }
         } catch (error: any) {
             console.error(error);
-            alert(`Error de red o conexión: ${error.message}. Si subiste imágenes, asegúrate de que pesen menos de 2MB.`);
+            alert(`Error de red o conexión: ${error.message}`);
         }
         setLoading(false);
     }
@@ -202,43 +273,162 @@ export default function NewProperty() {
 
                         {/* Multimedia */}
                         <div>
-                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2">Multimedia</h3>
-                            <div className="space-y-6">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="font-label-md text-secondary block mb-2">Imagen Principal (Subir Archivo)</label>
-                                        <input name="mainImageFile" type="file" accept="image/*" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
-                                    </div>
-                                    <div>
-                                        <label className="font-label-md text-secondary block mb-2">O Enlace de Imagen (URL)</label>
-                                        <input name="mainImage" type="url" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="https://..." />
-                                    </div>
+                            <h3 className="font-headline-md text-primary mb-2 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary">photo_library</span>
+                                Galería e Imagen Principal ({gallery.length})
+                            </h3>
+                            <p className="text-xs text-on-surface-variant mb-4">
+                                Haz clic en **"Hacer Principal"** para definir la portada del inmueble. Las imágenes se cargarán y optimizarán de forma inmediata.
+                            </p>
+
+                            {/* Grid de imágenes y botón + */}
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
+                                {gallery.map((url, idx) => {
+                                    const isMain = url === mainImage;
+                                    return (
+                                        <div key={idx} className={`relative group rounded-xl overflow-hidden border-2 transition-all shadow-sm ${isMain ? 'border-primary ring-2 ring-primary/30' : 'border-outline-variant/50 hover:border-primary/50'}`}>
+                                            <img src={url} alt={`Foto ${idx + 1}`} className="w-full h-32 object-cover" />
+                                            
+                                            {isMain && (
+                                                <span className="absolute top-2 left-2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                                                    Principal
+                                                </span>
+                                            )}
+
+                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 gap-2">
+                                                {!isMain && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleSetMain(url)}
+                                                        className="bg-surface text-primary text-xs font-semibold px-2 py-1 rounded shadow hover:bg-primary hover:text-on-primary transition-colors"
+                                                    >
+                                                        Hacer Principal
+                                                    </button>
+                                                )}
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleRemoveImage(url)}
+                                                    className="bg-error/90 text-white p-1.5 rounded-full hover:bg-error transition-colors"
+                                                    title="Eliminar foto"
+                                                >
+                                                    <span className="material-symbols-outlined text-[18px]">delete</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+
+                                {/* Cuadro con icono + */}
+                                <div className="relative group rounded-xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all flex flex-col items-center justify-center p-4 cursor-pointer h-32 text-center">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        disabled={uploadingFiles}
+                                        onChange={handleDirectFileUpload}
+                                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10 disabled:cursor-not-allowed"
+                                        title="Agregar foto"
+                                    />
+                                    {uploadingFiles ? (
+                                        <div className="flex flex-col items-center gap-1 text-primary">
+                                            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                            <span className="text-[11px] font-semibold">Subiendo...</span>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
+                                                <span className="material-symbols-outlined text-[24px]">add</span>
+                                            </div>
+                                            <span className="text-xs font-bold text-primary">Agregar Foto</span>
+                                            <span className="text-[10px] text-on-surface-variant">Clic o arrastra aquí</span>
+                                        </>
+                                    )}
                                 </div>
+                            </div>
+
+                            {/* O opción enlace URL */}
+                            <div className="bg-surface p-4 rounded-xl border border-outline-variant/30">
+                                <label className="font-label-md text-secondary block mb-1">O Agregar Foto por Enlace URL</label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="url"
+                                        value={newImageUrl}
+                                        onChange={e => setNewImageUrl(e.target.value)}
+                                        placeholder="https://..."
+                                        className="flex-1 border border-outline-variant rounded-lg p-2.5 bg-surface text-sm focus:ring-primary focus:border-primary"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleAddImageUrl}
+                                        className="bg-secondary hover:bg-secondary/90 text-on-secondary font-bold px-4 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-1"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">add</span>
+                                        Añadir
+                                    </button>
+                                </div>
+                            </div>
                                 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-outline-variant/30">
-                                    <div>
-                                        <label className="font-label-md text-secondary block mb-2">Video del Inmueble (Subir .mp4, etc)</label>
-                                        <input name="videoFile" type="file" accept="video/*" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
-                                    </div>
-                                    <div>
-                                        <label className="font-label-md text-secondary block mb-2">PDF de Información Extendida (Brochure)</label>
-                                        <input name="pdfFile" type="file" accept="application/pdf" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
-                                    </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-outline-variant/30">
+                                <div>
+                                    <label className="font-label-md text-secondary block mb-2">Video del Inmueble (Subir .mp4, etc)</label>
+                                    <input name="videoFile" type="file" accept="video/*" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
+                                </div>
+                                <div>
+                                    <label className="font-label-md text-secondary block mb-2">PDF de Información Extendida (Brochure)</label>
+                                    <input name="pdfFile" type="file" accept="application/pdf" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
                                 </div>
                             </div>
                         </div>
 
-                        {/* Visibilidad */}
-                        <div>
-                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2">Secciones de Inicio</h3>
-                            <div className="flex gap-8">
-                                <label className="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" name="isFeatured" value="true" className="w-5 h-5 rounded text-primary focus:ring-primary" />
-                                    <span className="font-label-md text-secondary">Destacar en Inicio (Propiedades Destacadas)</span>
+                        {/* Visibilidad y Secciones del Inicio / Hero */}
+                        <div className="bg-surface-container/30 p-6 rounded-2xl border border-outline-variant/40 space-y-4">
+                            <div>
+                                <h3 className="font-headline-md text-primary mb-1 flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-primary">auto_awesome</span>
+                                    Visibilidad en Secciones del Inicio (Portada / Hero)
+                                </h3>
+                                <p className="text-xs text-on-surface-variant leading-relaxed">
+                                    Configura en qué partes de la página principal (Home) aparecerá este inmueble para que los visitantes lo vean de inmediato.
+                                </p>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                                {/* Destacar en Inicio / Hero */}
+                                <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-primary/30 bg-primary/5 hover:border-primary/60 transition-all cursor-pointer group shadow-sm">
+                                    <input
+                                        type="checkbox"
+                                        name="isFeatured"
+                                        value="true"
+                                        className="w-5 h-5 rounded text-primary focus:ring-primary accent-primary mt-0.5"
+                                    />
+                                    <div>
+                                        <div className="font-label-lg text-primary font-bold flex items-center gap-1.5">
+                                            <span className="material-symbols-outlined text-[18px]">star</span>
+                                            Destacar en Inicio (Hero / Carrusel Principal)
+                                        </div>
+                                        <p className="text-xs text-on-surface-variant mt-1 leading-snug">
+                                            💡 <strong>¿Para qué sirve?</strong> Al marcar esta casilla, el inmueble aparecerá en el <strong>Hero principal (portada de la web)</strong> y en el catálogo destacado del inicio.
+                                        </p>
+                                    </div>
                                 </label>
-                                <label className="flex items-center gap-2 cursor-pointer">
-                                    <input type="checkbox" name="isInvestment" value="true" className="w-5 h-5 rounded text-primary focus:ring-primary" />
-                                    <span className="font-label-md text-secondary">Oportunidad de Inversión</span>
+
+                                {/* Oportunidad de Inversión */}
+                                <label className="flex items-start gap-3 p-4 rounded-xl border-2 border-outline-variant/50 bg-surface hover:border-secondary/50 transition-all cursor-pointer group shadow-sm">
+                                    <input
+                                        type="checkbox"
+                                        name="isInvestment"
+                                        value="true"
+                                        className="w-5 h-5 rounded text-secondary focus:ring-secondary accent-secondary mt-0.5"
+                                    />
+                                    <div>
+                                        <div className="font-label-lg text-secondary font-bold flex items-center gap-1.5">
+                                            <span className="material-symbols-outlined text-[18px]">trending_up</span>
+                                            Oportunidad de Inversión
+                                        </div>
+                                        <p className="text-xs text-on-surface-variant mt-1 leading-snug">
+                                            💡 <strong>¿Para qué sirve?</strong> Clasifica la propiedad en la sección especial de <strong>Inmuebles de Alta Rentabilidad e Inversiones</strong>.
+                                        </p>
+                                    </div>
                                 </label>
                             </div>
                         </div>

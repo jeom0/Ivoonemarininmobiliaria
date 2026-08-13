@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BlogPost } from "@prisma/client";
+import imageCompression from "browser-image-compression";
 
 interface BlogFormProps {
   initialData?: BlogPost;
@@ -20,6 +21,7 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     status: "DRAFT",
   });
   const [saving, setSaving] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -48,6 +50,36 @@ export default function BlogForm({ initialData }: BlogFormProps) {
     });
   };
 
+  const handleDirectFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+    setUploadingImage(true);
+    setError("");
+    const originalFile = e.target.files[0];
+    let file = originalFile;
+    try {
+      file = await imageCompression(originalFile, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
+    } catch (err) {
+      console.error("Error compressing image", err);
+    }
+    const uploadFormData = new FormData();
+    uploadFormData.append("file", file, originalFile.name);
+    try {
+      const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+      if (uploadRes.ok) {
+        const uploadData = await uploadRes.json();
+        setFormData(prev => ({ ...prev, mainImage: uploadData.url }));
+      } else {
+        setError("Error al subir la imagen. Por favor intenta con otra.");
+      }
+    } catch (err: any) {
+      console.error("Error uploading image", err);
+      setError("Error de red al subir la imagen.");
+    } finally {
+      setUploadingImage(false);
+      e.target.value = '';
+    }
+  };
+
   const handleAction = async (actionStatus: string, e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setSaving(true);
@@ -62,9 +94,12 @@ export default function BlogForm({ initialData }: BlogFormProps) {
       // Handle file upload if present
       const fileInput = document.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
       if (fileInput && fileInput.files && fileInput.files.length > 0) {
-        const file = fileInput.files[0];
+        let file = fileInput.files[0];
+        try {
+          file = await imageCompression(file, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
+        } catch (e) {}
         const uploadFormData = new FormData();
-        uploadFormData.append("file", file);
+        uploadFormData.append("file", file, file.name);
         
         const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
         if (uploadRes.ok) {
@@ -178,23 +213,59 @@ export default function BlogForm({ initialData }: BlogFormProps) {
           ></textarea>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block font-label-md text-on-surface-variant mb-1">Subir Imagen Principal</label>
-            <input
-              name="mainImageFile"
-              type="file"
-              accept="image/*"
-              className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 font-body-md focus:border-primary outline-none"
-            />
+        <div>
+          <label className="block font-label-md text-on-surface-variant mb-2">Imagen Principal del Artículo</label>
+          <div className="flex flex-wrap gap-4 items-center mb-4">
+            {formData.mainImage && (
+              <div className="relative group rounded-xl overflow-hidden border-2 border-primary/50 shadow-sm w-40 h-32">
+                <img src={formData.mainImage} alt="Portada" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-2">
+                  <button
+                    type="button"
+                    onClick={() => setFormData(prev => ({ ...prev, mainImage: "" }))}
+                    className="bg-error/90 text-white p-1.5 rounded-full hover:bg-error transition-colors"
+                    title="Quitar foto"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">delete</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Cuadro interactivo con icono + */}
+            <div className="relative group rounded-xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all flex flex-col items-center justify-center p-4 cursor-pointer w-40 h-32 text-center">
+              <input
+                type="file"
+                accept="image/*"
+                disabled={uploadingImage}
+                onChange={handleDirectFileUpload}
+                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10 disabled:cursor-not-allowed"
+                title="Subir foto principal"
+              />
+              {uploadingImage ? (
+                <div className="flex flex-col items-center gap-1 text-primary">
+                  <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                  <span className="text-[11px] font-semibold">Subiendo...</span>
+                </div>
+              ) : (
+                <>
+                  <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
+                    <span className="material-symbols-outlined text-[24px]">add</span>
+                  </div>
+                  <span className="text-xs font-bold text-primary">{formData.mainImage ? "Cambiar Foto" : "Subir Foto"}</span>
+                  <span className="text-[10px] text-on-surface-variant">Clic o arrastra</span>
+                </>
+              )}
+            </div>
           </div>
+
           <div>
-            <label className="block font-label-md text-on-surface-variant mb-1">O usar URL de Imagen</label>
+            <label className="block font-label-sm text-on-surface-variant mb-1">O usar Enlace de Imagen (URL)</label>
             <input
               name="mainImage"
               value={formData.mainImage}
               onChange={handleChange}
-              className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 font-body-md focus:border-primary outline-none"
+              className="w-full bg-surface border border-outline-variant rounded-lg px-4 py-2 font-body-md focus:border-primary outline-none text-sm"
               type="url"
               placeholder="https://..."
             />

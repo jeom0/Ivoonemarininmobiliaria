@@ -35,21 +35,33 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         const { id } = await params;
         const data = await req.json();
         
+        const existing = await prisma.blogPost.findUnique({ where: { id } });
+        if (!existing) {
+            return NextResponse.json({ error: "Artículo no encontrado" }, { status: 404 });
+        }
+
+        let publishedAt = existing.publishedAt;
+        if (data.status === "PUBLISHED" && !publishedAt) {
+            publishedAt = new Date();
+        } else if (data.status === "DRAFT") {
+            publishedAt = null;
+        }
+
         const post = await prisma.blogPost.update({
             where: { id },
             data: {
-                title: data.title,
-                slug: data.slug,
-                summary: data.summary,
-                content: data.content,
-                mainImage: data.mainImage,
-                author: data.author,
-                category: data.category,
-                tags: data.tags,
-                status: data.status,
-                seoTitle: data.seoTitle,
-                seoDesc: data.seoDesc,
-                publishedAt: data.status === "PUBLISHED" ? new Date() : null,
+                title: data.title !== undefined ? String(data.title) : existing.title,
+                slug: data.slug !== undefined ? String(data.slug) : existing.slug,
+                summary: data.summary !== undefined ? (data.summary ? String(data.summary) : null) : existing.summary,
+                content: data.content !== undefined ? String(data.content) : existing.content,
+                mainImage: data.mainImage !== undefined ? (data.mainImage ? String(data.mainImage) : null) : existing.mainImage,
+                author: data.author !== undefined ? (data.author ? String(data.author) : null) : existing.author,
+                category: data.category !== undefined ? (data.category ? String(data.category) : null) : existing.category,
+                tags: data.tags !== undefined ? (data.tags ? String(data.tags) : null) : existing.tags,
+                status: data.status !== undefined ? String(data.status) : existing.status,
+                seoTitle: data.seoTitle !== undefined ? (data.seoTitle ? String(data.seoTitle) : null) : existing.seoTitle,
+                seoDesc: data.seoDesc !== undefined ? (data.seoDesc ? String(data.seoDesc) : null) : existing.seoDesc,
+                publishedAt,
             }
         });
         
@@ -59,7 +71,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         if (error.code === 'P2002') {
             return NextResponse.json({ error: "El enlace (slug) ya existe. Por favor cambie el título o el slug manualmente." }, { status: 400 });
         }
-        return NextResponse.json({ error: "Error en el servidor al actualizar el artículo" }, { status: 500 });
+        return NextResponse.json({ error: error?.message || "Error en el servidor al actualizar el artículo" }, { status: 500 });
     }
 }
 

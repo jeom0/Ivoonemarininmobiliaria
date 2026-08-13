@@ -28,10 +28,20 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     try {
         const { id } = await params;
         const rawData = await req.json();
-        const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, appointments: _appointments, ...data } = rawData;
+
+        const dataToUpdate: any = {};
+        if (rawData.name !== undefined) dataToUpdate.name = String(rawData.name);
+        if (rawData.email !== undefined) dataToUpdate.email = String(rawData.email);
+        if (rawData.phone !== undefined) dataToUpdate.phone = rawData.phone ? String(rawData.phone) : null;
+        if (rawData.message !== undefined) dataToUpdate.message = rawData.message ? String(rawData.message) : null;
+        if (rawData.type !== undefined) dataToUpdate.type = String(rawData.type);
+        if (rawData.status !== undefined) dataToUpdate.status = String(rawData.status);
+        if (rawData.avatar !== undefined) dataToUpdate.avatar = rawData.avatar ? String(rawData.avatar) : null;
+        if (rawData.propertyId !== undefined) dataToUpdate.propertyId = rawData.propertyId ? String(rawData.propertyId) : null;
+
         const lead = await prisma.lead.update({
             where: { id },
-            data
+            data: dataToUpdate
         });
         return NextResponse.json(lead, { status: 200 });
     } catch (error: any) {

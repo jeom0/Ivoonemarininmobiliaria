@@ -233,32 +233,42 @@ export default function AyudaPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* SECCIÓN 3: GESTIÓN DE INMUEBLES (DETALLE EXACTO) */}
+      {/* SECCIÓN 3: GESTIÓN Y CREACIÓN REAL DE INMUEBLES */}
       {/* ========================================================================= */}
       <section className="space-y-8">
         <div className="flex items-center gap-4 border-t border-outline-variant/30 pt-16">
           <div className="w-14 h-14 rounded-2xl bg-[#8b3dff]/10 flex items-center justify-center text-[#8b3dff] shadow-inner">
             <span className="material-symbols-outlined text-2xl md:text-3xl">real_estate_agent</span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-[#8b3dff]">3. Creación Real de Inmuebles</h2>
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-[#8b3dff]">3. Guía Completa: Crear y Editar Inmuebles</h2>
+            <p className="text-sm text-on-surface-variant">Aprende a publicar propiedades, definir fotos principales, configurarlas en el Hero / Inicio y editar publicaciones existentes.</p>
+          </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Paso 1 */}
           <div className="bg-[#8b3dff] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
             <div className="p-8">
               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 1: Módulo</span>
-              <h3 className="text-2xl font-bold mb-3">Encuentra el Botón Real</h3>
+              <h3 className="text-xl font-bold mb-3">Nuevo o Editar Inmueble</h3>
               <p className="text-white/80 leading-relaxed text-sm">
-                En la sección lateral de <strong>Inmuebles</strong>, verás tu lista de propiedades. Busca este botón en la esquina superior derecha.
+                Ve a <strong>Inmuebles</strong> en el menú lateral. Para crear uno nuevo haz clic en el botón superior <strong>"Nuevo Inmueble"</strong>. Para modificar uno existente, haz clic en el ícono de lápiz (Editar) en la tabla.
               </p>
             </div>
-            <div className="bg-[#b380ff] min-h-[200px] p-6 relative overflow-hidden flex items-center justify-center mt-auto">
-              <div className="bg-surface p-6 rounded-2xl shadow-2xl w-full flex justify-end">
-                <button className="bg-primary text-on-primary px-4 py-2 rounded-lg flex items-center gap-2 shadow-md text-xs font-bold animate-btn-press relative z-10">
-                  <span className="material-symbols-outlined text-sm">add</span>
-                  Nuevo Inmueble
-                </button>
+            <div className="bg-[#b380ff] min-h-[220px] p-6 relative overflow-hidden flex items-center justify-center mt-auto">
+              <div className="bg-surface p-4 rounded-2xl shadow-2xl w-full flex flex-col gap-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs font-bold text-primary">Inmuebles</span>
+                  <button className="bg-primary text-on-primary px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-md text-[10px] font-bold animate-btn-press relative z-10">
+                    <span className="material-symbols-outlined text-[12px]">add</span>
+                    Nuevo Inmueble
+                  </button>
+                </div>
+                <div className="flex items-center justify-between bg-surface-container p-2 rounded text-[10px] text-on-surface">
+                  <span>Penthouse Pinares</span>
+                  <span className="material-symbols-outlined text-primary text-[14px]">edit</span>
+                </div>
                 <div className="absolute z-20 animate-cursor hidden md:block text-4xl" style={{top: '20%', right: '15%'}}>👆🏽</div>
               </div>
             </div>
@@ -268,43 +278,43 @@ export default function AyudaPage() {
           <div className="bg-[#ff6b6b] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
             <div className="p-8">
               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 2: Datos Clave</span>
-              <h3 className="text-2xl font-bold mb-3">Información Básica Exacta</h3>
+              <h3 className="text-xl font-bold mb-3">Información Básica Exacta</h3>
               <p className="text-white/80 leading-relaxed text-sm">
-                Este es un clon de tu formulario real. Llena <strong>Título, Operación, Tipo, Precio y Ciudad</strong>.
+                Diligencia: <strong>Título, Tipo de Operación</strong> (Venta/Arriendo), <strong>Tipo de Inmueble</strong> (Apartamento, Casa, Finca, Lote, Local), <strong>Precio</strong> (0 para consultar) y <strong>Ciudad</strong>.
               </p>
             </div>
-            <div className="bg-[#ff9494] min-h-[280px] p-4 relative overflow-hidden flex flex-col justify-end mt-auto">
-              <div className="bg-surface-container-lowest p-5 rounded-t-xl shadow-2xl w-full max-w-sm mx-auto border border-outline-variant/30 space-y-4">
-                 <h3 className="font-headline-md text-primary text-xs border-b border-outline-variant/30 pb-2">Información Básica</h3>
-                 <div className="grid grid-cols-2 gap-3">
-                    <div className="col-span-2 space-y-1">
-                      <label className="text-[10px] text-secondary font-label-md">Título de la Publicación *</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-2 text-[10px] text-on-surface">
+            <div className="bg-[#ff9494] min-h-[240px] p-4 relative overflow-hidden flex flex-col justify-end mt-auto">
+              <div className="bg-surface-container-lowest p-4 rounded-t-xl shadow-2xl w-full max-w-sm mx-auto border border-outline-variant/30 space-y-3">
+                 <h3 className="font-headline-md text-primary text-[10px] border-b border-outline-variant/30 pb-1 font-bold">Información Básica</h3>
+                 <div className="grid grid-cols-2 gap-2">
+                    <div className="col-span-2 space-y-0.5">
+                      <label className="text-[8px] text-secondary font-label-md">Título de la Publicación *</label>
+                      <div className="w-full bg-surface border border-outline-variant rounded p-1 text-[9px] text-on-surface">
                         <div className="animate-typing">Penthouse en Pinares</div>
                       </div>
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] text-secondary font-label-md">Tipo de Operación *</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-2 text-[10px] text-on-surface flex justify-between">
-                        VENTA <span className="material-symbols-outlined text-[10px]">expand_more</span>
+                    <div className="space-y-0.5">
+                      <label className="text-[8px] text-secondary font-label-md">Tipo Operación *</label>
+                      <div className="w-full bg-surface border border-outline-variant rounded p-1 text-[8px] text-on-surface flex justify-between font-bold">
+                        VENTA <span className="material-symbols-outlined text-[8px]">expand_more</span>
                       </div>
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] text-secondary font-label-md">Tipo de Inmueble *</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-2 text-[10px] text-on-surface flex justify-between">
-                        APARTAMENTO <span className="material-symbols-outlined text-[10px]">expand_more</span>
+                    <div className="space-y-0.5">
+                      <label className="text-[8px] text-secondary font-label-md">Tipo Inmueble *</label>
+                      <div className="w-full bg-surface border border-outline-variant rounded p-1 text-[8px] text-on-surface flex justify-between">
+                        Apartamento <span className="material-symbols-outlined text-[8px]">expand_more</span>
                       </div>
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] text-secondary font-label-md">Precio (COP)</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-2 text-[10px] text-on-surface">
-                        <div className="animate-typing">450000000</div>
+                    <div className="space-y-0.5">
+                      <label className="text-[8px] text-secondary font-label-md">Precio (COP)</label>
+                      <div className="w-full bg-surface border border-outline-variant rounded p-1 text-[8px] text-on-surface font-mono">
+                        450000000
                       </div>
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] text-secondary font-label-md">Ciudad *</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-2 text-[10px] text-on-surface flex justify-between">
-                        Pereira <span className="material-symbols-outlined text-[10px]">expand_more</span>
+                    <div className="space-y-0.5">
+                      <label className="text-[8px] text-secondary font-label-md">Ciudad *</label>
+                      <div className="w-full bg-surface border border-outline-variant rounded p-1 text-[8px] text-on-surface flex justify-between">
+                        Pereira <span className="material-symbols-outlined text-[8px]">expand_more</span>
                       </div>
                     </div>
                  </div>
@@ -315,49 +325,25 @@ export default function AyudaPage() {
           {/* Paso 3 */}
           <div className="bg-[#f07167] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
             <div className="p-8">
-              <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 3: Características</span>
-              <h3 className="text-2xl font-bold mb-3">Detalles y Multimedia</h3>
+              <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 3: Galería de Fotos</span>
+              <h3 className="text-xl font-bold mb-3">Subir Fotos con el Cuadro (+)</h3>
               <p className="text-white/80 leading-relaxed text-sm">
-                Agrega Habitaciones, Baños y Área. Luego, sube la <strong>Imagen Principal</strong>, un <strong>Video (.mp4)</strong> o un <strong>PDF</strong>.
+                Usa el cuadro interactivo con el símbolo <strong>(+)</strong> (ubicado de primero o al lado de tus fotos) para cargar fotos desde tu equipo. Haz clic en <strong>"Hacer Principal"</strong> en la foto deseada para fijar la portada.
               </p>
             </div>
-            <div className="bg-[#f4978e] min-h-[280px] p-4 relative overflow-hidden flex flex-col justify-end mt-auto">
-              <div className="bg-surface-container-lowest p-5 rounded-t-xl shadow-2xl w-full max-w-sm mx-auto border border-outline-variant/30 space-y-4">
-                 <h3 className="font-headline-md text-primary text-xs border-b border-outline-variant/30 pb-2">Características</h3>
-                 <div className="grid grid-cols-3 gap-3 mb-2">
-                    <div className="space-y-1">
-                      <label className="text-[10px] text-secondary font-label-md">Habitaciones</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-2 text-[10px] text-on-surface text-center">3</div>
+            <div className="bg-[#f4978e] min-h-[240px] p-4 relative overflow-hidden flex flex-col justify-end mt-auto">
+              <div className="bg-surface-container-lowest p-4 rounded-t-xl shadow-2xl w-full max-w-sm mx-auto border border-outline-variant/30 space-y-3">
+                 <h3 className="font-headline-md text-primary text-[10px] border-b border-outline-variant/30 pb-1 font-bold flex items-center gap-1">
+                   <span className="material-symbols-outlined text-[12px]">photo_library</span> Galería de Fotos
+                 </h3>
+                 <div className="grid grid-cols-3 gap-2">
+                    <div className="relative rounded overflow-hidden border border-primary h-14 bg-gray-200">
+                      <span className="absolute top-0.5 left-0.5 bg-primary text-white text-[6px] font-bold px-1 rounded-full">Principal</span>
                     </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] text-secondary font-label-md">Baños</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-2 text-[10px] text-on-surface text-center">2</div>
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[10px] text-secondary font-label-md">Área (m²)</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-2 text-[10px] text-on-surface text-center">120</div>
-                    </div>
-                 </div>
-                 
-                 <h3 className="font-headline-md text-primary text-xs border-b border-outline-variant/30 pb-2 mt-2">Multimedia</h3>
-                 <div className="space-y-1">
-                    <label className="text-[9px] text-secondary font-label-md block">Imagen Principal (Subir Archivo)</label>
-                    <div className="w-full bg-surface border border-outline-variant rounded-lg p-1.5 text-[8px] text-on-surface-variant flex items-center gap-1">
-                       <span className="bg-surface-container px-1 py-0.5 rounded border border-outline-variant">Elegir archivo</span> fachada.jpg
-                    </div>
-                 </div>
-                 <div className="grid grid-cols-2 gap-2 border-t border-outline-variant/30 pt-2">
-                    <div className="space-y-1">
-                      <label className="text-[8px] text-secondary font-label-md block">Video (.mp4)</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-1.5 text-[8px] text-on-surface-variant flex items-center gap-1">
-                        <span className="bg-surface-container px-1 py-0.5 rounded border border-outline-variant">Elegir archivo</span> Sin archivo
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[8px] text-secondary font-label-md block">PDF Brochure</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-1.5 text-[8px] text-on-surface-variant flex items-center gap-1">
-                        <span className="bg-surface-container px-1 py-0.5 rounded border border-outline-variant">Elegir archivo</span> plano.pdf
-                      </div>
+                    <div className="rounded border border-dashed border-primary/50 bg-primary/10 h-14 flex flex-col items-center justify-center text-primary cursor-pointer relative">
+                      <span className="material-symbols-outlined text-sm">add</span>
+                      <span className="text-[7px] font-bold">Agregar Foto</span>
+                      <div className="absolute z-20 animate-cursor hidden md:block text-2xl" style={{top: '20%', right: '10%'}}>👆🏽</div>
                     </div>
                  </div>
               </div>
@@ -365,78 +351,125 @@ export default function AyudaPage() {
           </div>
 
           {/* Paso 4 */}
-          <div className="bg-[#9c27b0] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
+          <div className="bg-[#2a9d8f] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
             <div className="p-8">
-              <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 4: Guardar</span>
-              <h3 className="text-2xl font-bold mb-3">Confirmar y Publicar</h3>
+              <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 4: Características</span>
+              <h3 className="text-xl font-bold mb-3">Detalles Técnicos y Archivos</h3>
               <p className="text-white/80 leading-relaxed text-sm">
-                Abajo del todo verás el botón ancho "Guardar Inmueble". Una vez que el inmueble se crea, se muestra en el Inicio de tu web inmediatamente.
+                Ingresa Habitaciones, Baños, Parqueaderos, Área Construida (m²), Estrato y Administración. También puedes adjuntar un <strong>Video (.mp4)</strong> y un <strong>PDF (Brochure/Planos)</strong>.
               </p>
             </div>
-            <div className="bg-[#ba68c8] min-h-[280px] p-6 relative overflow-hidden flex flex-col items-center justify-center mt-auto gap-4">
-              <button className="bg-primary text-on-primary font-bold py-3 px-8 rounded-lg flex items-center gap-2 shadow-lg animate-btn-press relative z-10 text-sm">
-                  Guardar Inmueble
-                  <span className="material-symbols-outlined text-sm">save</span>
-              </button>
-              <div className="absolute z-20 animate-cursor hidden md:block text-4xl" style={{top: '40%', left: '50%'}}>👆🏽</div>
-              
-              <div className="mt-4 flex flex-col items-center opacity-80">
-                 <span className="material-symbols-outlined text-2xl mb-1">arrow_downward</span>
-                 <span className="text-xs uppercase tracking-wider font-bold mb-2">Automáticamente se ve así en el Inicio:</span>
-                 <div className="bg-surface rounded-xl overflow-hidden shadow-2xl w-full max-w-[180px] animate-popup">
-                  <div className="h-20 bg-gray-300 w-full flex items-center justify-center text-gray-500">
-                    <span className="material-symbols-outlined">image</span>
-                  </div>
-                  <div className="p-2">
-                    <div className="text-[8px] text-primary font-bold">VENTA</div>
-                    <div className="text-[10px] font-bold text-on-surface truncate">Penthouse en Pinares</div>
-                    <div className="text-on-surface-variant text-[9px] font-bold mt-1">$ 450.000.000</div>
-                  </div>
+            <div className="bg-[#48b3a5] min-h-[240px] p-4 relative overflow-hidden flex flex-col justify-end mt-auto">
+              <div className="bg-surface-container-lowest p-4 rounded-t-xl shadow-2xl w-full max-w-sm mx-auto border border-outline-variant/30 space-y-2">
+                 <div className="grid grid-cols-4 gap-1 text-center">
+                    <div className="bg-surface border rounded p-1"><span className="text-[7px] block text-gray-400">Hab.</span><span className="text-[9px] font-bold text-primary">3</span></div>
+                    <div className="bg-surface border rounded p-1"><span className="text-[7px] block text-gray-400">Baños</span><span className="text-[9px] font-bold text-primary">2</span></div>
+                    <div className="bg-surface border rounded p-1"><span className="text-[7px] block text-gray-400">Parq.</span><span className="text-[9px] font-bold text-primary">1</span></div>
+                    <div className="bg-surface border rounded p-1"><span className="text-[7px] block text-gray-400">m²</span><span className="text-[9px] font-bold text-primary">120</span></div>
+                 </div>
+                 <div className="space-y-1 pt-1">
+                   <span className="text-[8px] font-bold text-primary block">Adjuntos</span>
+                   <div className="flex gap-2">
+                     <div className="flex-1 bg-surface border rounded p-1 text-[7px] text-gray-600 flex items-center gap-1"><span className="material-symbols-outlined text-[10px]">movie</span> Subir Video</div>
+                     <div className="flex-1 bg-surface border rounded p-1 text-[7px] text-gray-600 flex items-center gap-1"><span className="material-symbols-outlined text-[10px]">picture_as_pdf</span> Plano.pdf</div>
+                   </div>
                  </div>
               </div>
+            </div>
+          </div>
+
+          {/* Paso 5: Destacados y Hero (EXPLICACIÓN EXPLICITA DE BOTÓN Y CASILLA) */}
+          <div className="bg-[#7b2cbf] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl md:col-span-2 lg:col-span-2">
+            <div className="p-8">
+              <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 5: Visibilidad en Portada / Hero</span>
+              <h3 className="text-2xl font-bold mb-3">¿Cómo hacer que un Inmueble aparezca en el HERO de la Web?</h3>
+              <p className="text-white/80 leading-relaxed text-sm">
+                Para que una propiedad aparezca en la <strong>pantalla de bienvenida principal (Hero de la web)</strong> y en el carrusel de <strong>Propiedades Destacadas</strong>, debes dirigirte a la sección inferior del formulario llamada <strong>"Visibilidad en Secciones del Inicio"</strong> y hacer clic en la casilla <strong>"Destacar en Inicio (Hero / Carrusel Principal)"</strong>.
+              </p>
+            </div>
+            <div className="bg-[#9d4edd] min-h-[220px] p-6 relative overflow-hidden flex flex-col justify-end mt-auto items-center">
+              <div className="bg-surface w-full max-w-md p-4 rounded-xl shadow-2xl flex flex-col gap-3 border border-outline-variant/50">
+                 <h4 className="font-headline-md text-primary text-xs border-b border-outline-variant/30 pb-2 flex items-center gap-1 font-bold">
+                   <span className="material-symbols-outlined text-sm text-primary">auto_awesome</span> Secciones de Inicio / Portada Hero
+                 </h4>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-on-surface">
+                   <label className="flex items-start gap-2 bg-primary/10 p-2.5 rounded-lg cursor-pointer border-2 border-primary/50 relative shadow-sm">
+                     <input type="checkbox" defaultChecked className="w-4 h-4 rounded text-primary accent-primary mt-0.5" />
+                     <div>
+                       <span className="text-[10px] font-bold text-primary block">Destacar en Inicio (Hero / Carrusel)</span>
+                       <span className="text-[8px] text-gray-500 block leading-tight">Muestra el inmueble en la gran portada principal.</span>
+                     </div>
+                     <div className="absolute z-20 animate-precision-cursor text-3xl" style={{top: '10%', right: '5%'}}>👆🏽</div>
+                   </label>
+                   <label className="flex items-start gap-2 bg-surface-container p-2.5 rounded-lg cursor-pointer border border-outline-variant/30">
+                     <input type="checkbox" className="w-4 h-4 rounded text-primary accent-primary mt-0.5" />
+                     <div>
+                       <span className="text-[10px] font-bold text-secondary block">Oportunidad de Inversión</span>
+                       <span className="text-[8px] text-gray-500 block leading-tight">Muestra en la sección de alta rentabilidad.</span>
+                     </div>
+                   </label>
+                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Paso 6: Confirmación */}
+          <div className="bg-[#9c27b0] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
+            <div className="p-8">
+              <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 6: Publicar</span>
+              <h3 className="text-xl font-bold mb-3">Guardar y Publicar</h3>
+              <p className="text-white/80 leading-relaxed text-sm">
+                Al finalizar, haz clic en el botón azul <strong>"Guardar Inmueble"</strong> (o "Guardar Cambios" si estás editando). La propiedad quedará disponible en el catálogo y en el Hero al instante.
+              </p>
+            </div>
+            <div className="bg-[#ba68c8] min-h-[220px] p-6 relative overflow-hidden flex flex-col items-center justify-center mt-auto gap-3">
+              <button className="bg-primary text-on-primary font-bold py-3 px-8 rounded-lg flex items-center gap-2 shadow-lg animate-btn-press relative z-10 text-xs">
+                  Guardar Inmueble
+                  <span className="material-symbols-outlined text-xs">save</span>
+              </button>
+              <div className="absolute z-20 animate-cursor hidden md:block text-3xl" style={{top: '30%', left: '50%'}}>👆🏽</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* SECCIÓN 4: BLOG Y CONTENIDO (RENOVADO 4 PASOS) */}
+      {/* SECCIÓN 4: GUÍA COMPLETA DEL BLOG (CREACIÓN Y EDICIÓN REAL) */}
       {/* ========================================================================= */}
       <section className="space-y-8">
         <div className="flex items-center gap-4 border-t border-outline-variant/30 pt-16">
           <div className="w-14 h-14 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary shadow-inner">
             <span className="material-symbols-outlined text-2xl md:text-3xl">article</span>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold text-secondary">4. Guía Detallada del Blog</h2>
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-secondary">4. Guía Detallada del Blog: Crear y Editar Artículos</h2>
+            <p className="text-sm text-on-surface-variant">Aprende a redactar artículos, subir imágenes de portada con el cuadro (+), guardarlos como borrador o publicarlos.</p>
+          </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Paso 1 Blog */}
           <div className="bg-[#ff9f1c] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
             <div className="p-8">
                <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 1: Navegación</span>
-              <h3 className="text-2xl font-bold mb-3">Encuentra la Sección</h3>
+              <h3 className="text-xl font-bold mb-3">Entrar al Módulo de Blog</h3>
               <p className="text-white/80 leading-relaxed text-sm">
-                En tu menú lateral oscuro, localiza y haz clic en la opción <strong>"Blog"</strong>. 
+                Haz clic en <strong>"Blog"</strong> en el menú lateral. Para crear una nueva publicación presiona <strong>"Nuevo Artículo"</strong>. Para modificar uno existente, haz clic en el ícono de lápiz en la tabla de blogs.
               </p>
             </div>
-            <div className="bg-[#ffbf69] min-h-[260px] p-0 relative overflow-hidden flex items-center justify-start pl-6 mt-auto">
-               <div className="w-full max-w-[200px] h-full bg-surface-container border-r border-outline-variant/20 flex flex-col p-4 space-y-1 shadow-2xl rounded-t-xl">
-                 <div className="mb-4 flex flex-col px-2">
-                   <span className="font-headline-md text-primary font-bold tracking-tighter text-xl">ivonne</span>
-                   <span className="font-headline-md text-primary font-bold tracking-tighter text-xl -mt-2">marin.</span>
+            <div className="bg-[#ffbf69] min-h-[220px] p-4 relative overflow-hidden flex items-center justify-center mt-auto">
+               <div className="w-full bg-surface rounded-xl p-3 shadow-xl border border-outline-variant/30 relative">
+                 <div className="flex justify-between items-center mb-2">
+                   <span className="text-primary font-bold text-xs">Blog</span>
+                   <button className="bg-primary text-on-primary text-[9px] px-3 py-1.5 rounded-lg flex items-center gap-1 font-bold animate-btn-press">
+                      <span className="material-symbols-outlined text-[10px]">add</span> Nuevo Artículo
+                   </button>
                  </div>
-                 <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant opacity-60">
-                   <span className="material-symbols-outlined text-sm">dashboard</span><span className="text-xs font-bold">Dashboard</span>
+                 <div className="flex justify-between items-center bg-surface-container p-2 rounded text-[9px] text-on-surface">
+                   <span>Guía de Inversión en Pereira</span>
+                   <span className="material-symbols-outlined text-primary text-[12px]">edit</span>
                  </div>
-                 <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-on-surface-variant opacity-60">
-                   <span className="material-symbols-outlined text-sm">home_work</span><span className="text-xs font-bold">Inmuebles</span>
-                 </div>
-                 <div className="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#5c1212] text-[#e17770] font-bold animate-btn-press relative z-10 shadow-inner translate-x-2">
-                   <span className="material-symbols-outlined text-sm">article</span>
-                   <span className="text-xs">Blog</span>
-                 </div>
-                 <div className="absolute z-20 animate-cursor hidden md:block text-4xl" style={{top: '55%', left: '40%'}}>👆🏽</div>
+                 <div className="absolute z-20 animate-cursor hidden md:block text-3xl" style={{top: '15%', right: '15%'}}>👆🏽</div>
                </div>
             </div>
           </div>
@@ -444,25 +477,30 @@ export default function AyudaPage() {
           {/* Paso 2 Blog */}
           <div className="bg-[#e71d36] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
             <div className="p-8">
-               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 2: La Lista</span>
-              <h3 className="text-2xl font-bold mb-3">Crear un Nuevo Artículo</h3>
+               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 2: Datos del Artículo</span>
+              <h3 className="text-xl font-bold mb-3">Título, Slug, Categoría y Resumen</h3>
               <p className="text-white/80 leading-relaxed text-sm">
-                Llegarás a la lista de tus blogs. En la parte superior derecha, haz clic en el botón <strong>"Nuevo Artículo"</strong>.
+                Diligencia el <strong>Título</strong> (el Slug se genera automáticamente), la <strong>Categoría</strong> (ej: Trámites, Inversión) y un <strong>Resumen corto</strong> para las tarjetas de vista previa.
               </p>
             </div>
-            <div className="bg-[#ff4d6d] min-h-[260px] p-6 relative overflow-hidden flex flex-col gap-4 items-center mt-auto">
-               <div className="w-full bg-surface rounded-xl p-4 shadow-xl border border-outline-variant/30 relative">
-                 <div className="flex justify-between items-center mb-4">
-                   <span className="text-primary font-bold text-sm">Blog</span>
-                   <button className="bg-primary text-on-primary text-[9px] px-3 py-1.5 rounded-lg flex items-center gap-1 font-bold animate-btn-press">
-                      <span className="material-symbols-outlined text-[10px]">add</span> Nuevo Artículo
-                   </button>
-                 </div>
-                 <div className="bg-surface-container p-4 rounded text-center opacity-60">
-                   <span className="material-symbols-outlined text-2xl text-primary mb-1">article</span>
-                   <p className="text-[10px] text-primary">No hay artículos publicados</p>
-                 </div>
-                 <div className="absolute z-20 animate-cursor hidden md:block text-4xl" style={{top: '15%', right: '15%'}}>👆🏽</div>
+            <div className="bg-[#ff4d6d] min-h-[220px] p-4 relative overflow-hidden flex flex-col justify-end mt-auto">
+               <div className="bg-surface-bright w-full max-w-[280px] mx-auto p-3 rounded-t-xl shadow-2xl flex flex-col gap-2 border border-outline-variant/50">
+                  <div className="space-y-0.5">
+                     <label className="text-[8px] font-label-md text-on-surface-variant block">Título *</label>
+                     <div className="w-full bg-surface border border-outline-variant rounded p-1 text-[8px] text-on-surface">
+                       <div className="animate-typing">Las mejores zonas de Pereira</div>
+                     </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                     <div className="space-y-0.5">
+                       <label className="text-[7px] font-label-md text-on-surface-variant block">Slug (URL) *</label>
+                       <div className="w-full bg-surface-container border border-outline-variant rounded p-1 text-[7px] text-gray-500">las-mejores-zonas</div>
+                     </div>
+                     <div className="space-y-0.5">
+                       <label className="text-[7px] font-label-md text-on-surface-variant block">Categoría</label>
+                       <div className="w-full bg-surface border border-outline-variant rounded p-1 text-[7px] text-on-surface">Inversión</div>
+                     </div>
+                  </div>
                </div>
             </div>
           </div>
@@ -470,67 +508,58 @@ export default function AyudaPage() {
           {/* Paso 3 Blog */}
           <div className="bg-[#0077b6] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
             <div className="p-8">
-               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 3: Redactar</span>
-              <h3 className="text-2xl font-bold mb-3">Llenar el Formulario</h3>
+               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 3: Imagen de Portada</span>
+              <h3 className="text-xl font-bold mb-3">Subir Foto Principal con (+)</h3>
               <p className="text-white/80 leading-relaxed text-sm">
-                A diferencia de los inmuebles, el blog pide: Título, Slug (se llena automático), Categoría, Resumen, y <strong>Contenido</strong> (puedes usar código HTML o texto plano).
+                En la sección "Imagen Principal del Artículo", haz clic en la casilla con el botón <strong>(+)</strong> para subir la foto de portada. Podrás cambiarla o quitarla cuando lo requieras.
               </p>
             </div>
-            <div className="bg-[#00b4d8] min-h-[280px] p-4 relative overflow-hidden flex flex-col justify-end mt-auto">
-              <div className="bg-surface-bright w-full max-w-[320px] mx-auto p-4 rounded-t-xl shadow-2xl flex flex-col gap-3 border border-outline-variant/50">
-                 <div className="space-y-1">
-                    <label className="text-[8px] font-label-md text-on-surface-variant block">Título *</label>
-                    <div className="w-full bg-surface border border-outline-variant rounded-lg p-1.5 text-[9px] text-on-surface">
-                      <div className="animate-typing">Las mejores zonas de Pereira</div>
-                    </div>
-                 </div>
-                 <div className="grid grid-cols-2 gap-2">
-                    <div className="space-y-1">
-                      <label className="text-[8px] font-label-md text-on-surface-variant block">Slug (URL) *</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-1.5 text-[9px] text-on-surface text-gray-500 bg-surface-container">
-                        las-mejores-zonas
-                      </div>
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[8px] font-label-md text-on-surface-variant block">Categoría</label>
-                      <div className="w-full bg-surface border border-outline-variant rounded-lg p-1.5 text-[9px] text-on-surface">
-                        Inversión
-                      </div>
-                    </div>
-                 </div>
-                 <div className="space-y-1 mt-2">
-                    <label className="text-[8px] font-label-md text-on-surface-variant block">Contenido (Soporta Markdown / HTML Básico) *</label>
-                    <div className="h-14 w-full bg-surface border border-outline-variant rounded-lg p-2 text-[8px] text-on-surface font-mono leading-tight">
-                       Pinares y Álamos son zonas de alta valorización por su ubicación estratégica...
-                    </div>
-                 </div>
-              </div>
+            <div className="bg-[#00b4d8] min-h-[220px] p-4 relative overflow-hidden flex flex-col items-center justify-center mt-auto">
+               <div className="bg-surface w-full max-w-[240px] p-3 rounded-xl shadow-xl flex items-center gap-2 border border-outline-variant/50">
+                  <div className="w-20 h-16 rounded border-2 border-dashed border-primary/50 bg-primary/10 flex flex-col items-center justify-center text-primary cursor-pointer relative">
+                    <span className="material-symbols-outlined text-sm">add</span>
+                    <span className="text-[7px] font-bold">Subir Foto</span>
+                    <div className="absolute z-20 animate-cursor hidden md:block text-2xl" style={{top: '10%', right: '10%'}}>👆🏽</div>
+                  </div>
+                  <span className="text-[8px] text-gray-500">O ingresa un enlace URL de imagen</span>
+               </div>
             </div>
           </div>
 
           {/* Paso 4 Blog */}
-          <div className="bg-[#8b3dff] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
+          <div className="bg-[#0096c7] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl md:col-span-2 lg:col-span-2">
             <div className="p-8">
-               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 4: Estado y Publicación</span>
-              <h3 className="text-2xl font-bold mb-3">¿Borrador o Público?</h3>
+               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 4: Redacción del Contenido</span>
+              <h3 className="text-xl font-bold mb-3">Cuerpo del Artículo y Formato</h3>
               <p className="text-white/80 leading-relaxed text-sm">
-                Al final del formulario puedes elegir si guardarlo como <strong>Borrador</strong> (para terminarlo luego) o <strong>Publicado</strong> para que el mundo lo vea.
+                En el campo grande <strong>"Contenido"</strong>, escribe toda la información del artículo. Soporta texto enriquecido, subtítulos y saltos de línea para dar un formato atractivo a tus lectores.
               </p>
             </div>
-            <div className="bg-[#b380ff] min-h-[280px] p-6 relative overflow-hidden flex flex-col justify-end mt-auto items-center">
-              <div className="bg-surface w-full max-w-[320px] p-4 rounded-xl shadow-2xl flex flex-col gap-4">
-                 <div className="flex justify-between items-center bg-surface-container p-2 rounded-lg">
-                    <span className="text-[10px] text-on-surface-variant font-bold">Estado:</span>
-                    <select className="bg-surface border border-outline-variant rounded p-1 text-[9px] text-on-surface focus:outline-none">
-                       <option>Publicado</option>
-                       <option>Borrador</option>
-                    </select>
-                 </div>
-                 <button className="bg-primary text-on-primary font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 text-xs shadow-md animate-btn-press relative z-10 w-full">
-                    Guardar Artículo
-                 </button>
-                 <div className="absolute z-20 animate-cursor hidden md:block text-4xl" style={{bottom: '15%', left: '50%'}}>👆🏽</div>
-              </div>
+            <div className="bg-[#48cae4] min-h-[200px] p-4 relative overflow-hidden flex flex-col justify-end mt-auto">
+               <div className="bg-surface w-full max-w-md mx-auto p-3 rounded-t-xl shadow-2xl border border-outline-variant/50">
+                  <label className="text-[8px] font-bold text-primary block mb-1">Contenido (Soporta Markdown / HTML Básico) *</label>
+                  <div className="h-16 w-full bg-surface border border-outline-variant rounded p-2 text-[8px] text-on-surface leading-tight font-sans">
+                     Pinares y Álamos son dos de las mejores zonas residenciales de Pereira por su cercanía a centros comerciales y clínicas...
+                  </div>
+               </div>
+            </div>
+          </div>
+
+          {/* Paso 5 Blog */}
+          <div className="bg-[#8b3dff] text-white rounded-3xl overflow-hidden flex flex-col shadow-xl">
+            <div className="p-8">
+               <span className="text-xs font-bold tracking-widest uppercase opacity-70 mb-2 block">Paso 5: Publicación</span>
+              <h3 className="text-xl font-bold mb-3">Publicar, Borrador o Eliminar</h3>
+              <p className="text-white/80 leading-relaxed text-sm">
+                Al pie del formulario encontrarás: <strong>"Guardar como Borrador"</strong> (para continuar luego) y <strong>"Publicar Ahora / Actualizar Publicación"</strong>. En modo edición también tendrás el botón rojo <strong>"Eliminar Artículo"</strong>.
+              </p>
+            </div>
+            <div className="bg-[#b380ff] min-h-[200px] p-4 relative overflow-hidden flex items-center justify-center mt-auto">
+               <div className="bg-surface w-full max-w-[260px] p-3 rounded-xl shadow-xl flex gap-2">
+                  <button className="flex-1 bg-surface-container text-on-surface text-[8px] py-2 rounded font-bold border border-outline-variant">Borrador</button>
+                  <button className="flex-1 bg-primary text-on-primary text-[8px] py-2 rounded font-bold shadow animate-btn-press relative z-10">Publicar Ahora</button>
+                  <div className="absolute z-20 animate-cursor hidden md:block text-3xl" style={{top: '30%', right: '20%'}}>👆🏽</div>
+               </div>
             </div>
           </div>
         </div>

@@ -16,23 +16,31 @@ export async function POST(req: Request) {
         
         const data = await req.json();
         
-        if (!data.title || !data.content || !data.slug) {
-            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+        if (!data.title || !data.content) {
+            return NextResponse.json({ error: "Faltan campos obligatorios (título y contenido)" }, { status: 400 });
+        }
+
+        let slug = data.slug;
+        if (!slug && data.title) {
+            slug = String(data.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        }
+        if (!slug) {
+            slug = `post-${Date.now()}`;
         }
         
         const blogPost = await prisma.blogPost.create({
             data: {
-                title: data.title,
-                slug: data.slug,
-                summary: data.summary || null,
-                content: data.content,
-                mainImage: data.mainImage || null,
-                author: data.author || null,
-                category: data.category || null,
-                tags: data.tags || null,
+                title: String(data.title),
+                slug: String(slug),
+                summary: data.summary ? String(data.summary) : null,
+                content: String(data.content),
+                mainImage: data.mainImage ? String(data.mainImage) : null,
+                author: data.author ? String(data.author) : null,
+                category: data.category ? String(data.category) : null,
+                tags: data.tags ? String(data.tags) : null,
                 status: data.status || "DRAFT",
-                seoTitle: data.seoTitle || null,
-                seoDesc: data.seoDesc || null,
+                seoTitle: data.seoTitle ? String(data.seoTitle) : null,
+                seoDesc: data.seoDesc ? String(data.seoDesc) : null,
                 publishedAt: data.status === "PUBLISHED" ? new Date() : null,
             }
         });
@@ -43,7 +51,7 @@ export async function POST(req: Request) {
         if (error.code === 'P2002') {
             return NextResponse.json({ error: "El enlace (slug) ya existe. Por favor cambie el título o el slug manualmente." }, { status: 400 });
         }
-        return NextResponse.json({ error: "Error en el servidor al crear el artículo" }, { status: 500 });
+        return NextResponse.json({ error: error?.message || "Error en el servidor al crear el artículo" }, { status: 500 });
     }
 }
 

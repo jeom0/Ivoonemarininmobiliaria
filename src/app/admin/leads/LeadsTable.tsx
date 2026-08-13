@@ -107,22 +107,24 @@ export default function LeadsTable({ initialLeads }: LeadsTableProps) {
   };
 
   const handleSaveLead = async () => {
+    if (!selectedLead) return;
     try {
-      const res = await fetch(`/api/leads/${selectedLead!.id}`, {
+      const res = await fetch(`/api/leads/${selectedLead.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(editLeadData),
       });
       if (res.ok) {
-        setLeads((prev) => prev.map((l) => (l.id === selectedLead!.id ? { ...l, ...editLeadData } as Lead : l)));
-        setSelectedLead({ ...selectedLead!, ...editLeadData } as Lead);
+        const updatedLead = await res.json();
+        setLeads((prev) => prev.map((l) => (l.id === selectedLead.id ? { ...l, ...updatedLead } : l)));
+        setSelectedLead((prev) => (prev ? { ...prev, ...updatedLead } : null));
         setIsEditingLead(false);
-        // NO router.refresh() to avoid closing the modal unexpectedly
       } else {
-        alert("Error al guardar cambios");
+        const errData = await res.json().catch(() => ({}));
+        alert(`Error al guardar cambios: ${errData.error || res.statusText}`);
       }
     } catch {
-      alert("Error de red");
+      alert("Error de red al intentar guardar el lead");
     }
   };
 
