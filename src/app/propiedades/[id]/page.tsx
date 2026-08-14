@@ -34,8 +34,25 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
   const agentImage = settings.agent_image || adminUser?.image || settings.logoUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBgZcfdPi_n0TAneC3N3wNfETdI8oO_G8QIPcsWa34_-98wnMr-m5RZQHICFsdciNAf2VLZZL3RkumToH7vrXWuozf0hInLZaGyF6lGXKOYDqmSjwITTmLqO7oLzDv_NqBTEzGBIEC-293iwhGjLJ6l22s1Hh9BxY-bjG8CudzkuWoKZkN2746Z-94jtta0xzNY9iv7o2Y7c-mWcOqmJCUpbG7QFOIoHu_kpCloGebH6kRR3hPJAX2d6QR6g-LUlCdd1kSrRt6Qj0w";
   const whatsappNumber = settings.whatsapp || "573000000000";
 
+  // Extraer el primer video ya sea de property.videos o property.images para mostrarlo en el reproductor gigante
+  let videoUrl: string | null = null;
+  const isVideoRegex = /\.(mp4|webm|ogg|mov)$/i;
 
-  
+  if (property.videos) {
+      try {
+          const videos = JSON.parse(property.videos);
+          if (videos.length > 0) videoUrl = videos[0];
+      } catch(e) {}
+  }
+  if (!videoUrl && property.images) {
+      try {
+          const images = JSON.parse(property.images);
+          const firstVideo = images.find((url: string) => url.match(isVideoRegex));
+          if (firstVideo) videoUrl = firstVideo;
+      } catch(e) {}
+  }
+
+
   let pdfUrl = null;
   if (property.documents) {
       try {
@@ -127,6 +144,19 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
               <div className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-wrap">
                 {property.fullDesc || (!property.shortDesc && "Sin descripción")}
               </div>
+
+              {/* Video en la descripción */}
+              {videoUrl && (
+                <div className="mt-8 bg-black rounded-2xl overflow-hidden shadow-md aspect-video relative">
+                  <video 
+                    controls autoPlay muted loop playsInline 
+                    className="w-full h-full object-cover"
+                    src={videoUrl}
+                  >
+                    Tu navegador no soporta el formato de video.
+                  </video>
+                </div>
+              )}
 
               {/* Documentos adjuntos en la descripción */}
               {pdfUrl && (
