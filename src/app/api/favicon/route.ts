@@ -27,10 +27,13 @@ export async function GET(request: Request) {
     // Append cache buster so browser gets the latest image
     const finalUrl = `${faviconUrl}?v=${Date.now()}`;
 
-    // Redirect to the actual image URL
-    // If it's a relative URL (like /uploads/image.png), URL constructor needs a base URL
-    const baseUrl = new URL(request.url).origin;
-    return NextResponse.redirect(new URL(finalUrl, baseUrl));
+    // Return a manual 302 redirect with relative path so it works behind reverse proxies
+    return new NextResponse(null, {
+      status: 302,
+      headers: {
+        Location: finalUrl
+      }
+    });
   } catch (error) {
     return new NextResponse(null, { status: 500 });
   }
