@@ -1,8 +1,30 @@
 'use client';
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import imageCompression from 'browser-image-compression';
+
+async function uploadFileChunked(file: File, originalName: string): Promise<string> {
+    const CHUNK_SIZE = 1 * 1024 * 1024; // 1MB chunks to bypass Nginx limitations
+    const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+    const fileId = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+
+    for (let i = 0; i < totalChunks; i++) {
+        const chunk = file.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+        const formData = new FormData();
+        formData.append("chunk", chunk);
+        formData.append("chunkIndex", i.toString());
+        formData.append("totalChunks", totalChunks.toString());
+        formData.append("fileId", fileId);
+        formData.append("fileName", originalName);
+
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (!res.ok) throw new Error("Upload failed");
+        
+        const data = await res.json();
+        if (data.url) return data.url; // Returns URL on the last chunk
+    }
+    throw new Error("Upload incomplete");
+}
 
 export default function EditProperty({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
@@ -90,14 +112,9 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                     console.error("Error compressing image", err);
                 }
             }
-            const uploadFormData = new FormData();
-            uploadFormData.append("file", file, originalFile.name);
             try {
-                const res = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (res.ok) {
-                    const uploadData = await res.json();
-                    newUploaded.push(uploadData.url);
-                }
+                const url = await uploadFileChunked(file as File, originalFile.name);
+                newUploaded.push(url);
             } catch (err) {
                 console.error("Error uploading file", err);
             }
@@ -173,14 +190,11 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                             console.error('Error compressing image', e);
                         }
                     }
-                    const uploadFormData = new FormData();
-                    uploadFormData.append("file", file, originalFile.name);
-                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                    if (uploadRes.ok) {
-                        const uploadData = await uploadRes.json();
-                        newUploaded.push(uploadData.url);
-                    } else {
-                        alert(`Error al subir la imagen ${originalFile.name}. Verifica su tamaño.`);
+                    try {
+                        const url = await uploadFileChunked(file as File, originalFile.name);
+                        newUploaded.push(url);
+                    } catch (e) {
+                        alert(`Error al subir la imagen ${originalFile.name}. Verifica su tamaño y conexión.`);
                         setUploadingFiles(false);
                         return;
                     }
@@ -202,14 +216,11 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
             if (pdfPreviews.length > 0) {
                 for (let i = 0; i < pdfPreviews.length; i++) {
                     const file = pdfPreviews[i].file;
-                    const uploadFormData = new FormData();
-                    uploadFormData.append("file", file);
-                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                    if (uploadRes.ok) {
-                        const uploadData = await uploadRes.json();
-                        currentDocuments.push(uploadData.url);
-                    } else {
-                        alert(`Error al subir el documento ${file.name}. Es posible que el archivo sea demasiado pesado.`);
+                    try {
+                        const url = await uploadFileChunked(file as File, file.name);
+                        currentDocuments.push(url);
+                    } catch (e) {
+                        alert(`Error al subir el documento ${file.name}.`);
                         setUploadingFiles(false);
                         return;
                     }

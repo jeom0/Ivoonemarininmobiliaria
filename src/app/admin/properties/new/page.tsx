@@ -1,8 +1,30 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import imageCompression from 'browser-image-compression';
+
+async function uploadFileChunked(file: File, originalName: string): Promise<string> {
+    const CHUNK_SIZE = 1 * 1024 * 1024; // 1MB chunks to bypass Nginx limitations
+    const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
+    const fileId = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+
+    for (let i = 0; i < totalChunks; i++) {
+        const chunk = file.slice(i * CHUNK_SIZE, (i + 1) * CHUNK_SIZE);
+        const formData = new FormData();
+        formData.append("chunk", chunk);
+        formData.append("chunkIndex", i.toString());
+        formData.append("totalChunks", totalChunks.toString());
+        formData.append("fileId", fileId);
+        formData.append("fileName", originalName);
+
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (!res.ok) throw new Error("Upload failed");
+        
+        const data = await res.json();
+        if (data.url) return data.url; // Returns URL on the last chunk
+    }
+    throw new Error("Upload incomplete");
+}
 
 export default function NewProperty() {
     const router = useRouter();
@@ -29,14 +51,9 @@ export default function NewProperty() {
                     console.error("Error compressing image", err);
                 }
             }
-            const uploadFormData = new FormData();
-            uploadFormData.append("file", file, originalFile.name);
             try {
-                const res = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (res.ok) {
-                    const uploadData = await res.json();
-                    newUploaded.push(uploadData.url);
-                }
+                const url = await uploadFileChunked(file as File, originalFile.name);
+                newUploaded.push(url);
             } catch (err) {
                 console.error("Error uploading file", err);
             }
@@ -107,19 +124,11 @@ export default function NewProperty() {
                         }
                     }
 
-                    const uploadFormData = new FormData();
-                    uploadFormData.append("file", file, originalFile.name);
-                    
-                    const uploadRes = await fetch('/api/upload', {
-                        method: 'POST',
-                        body: uploadFormData
-                    });
-
-                    if (uploadRes.ok) {
-                        const uploadData = await uploadRes.json();
-                        currentGallery.push(uploadData.url);
-                    } else {
-                        alert(`Error al subir el archivo ${originalFile.name}. Verifica el tamaño.`);
+                    try {
+                        const url = await uploadFileChunked(file as File, originalFile.name);
+                        currentGallery.push(url);
+                    } catch(err) {
+                        alert(`Error al subir el archivo ${originalFile.name}. Verifica la conexión.`);
                         setLoading(false);
                         return;
                     }
@@ -137,14 +146,11 @@ export default function NewProperty() {
             // Multiple PDF upload
             let uploadedDocs: string[] = [];
             if (pdfPreview.file) {
-                const uploadFormData = new FormData();
-                uploadFormData.append("file", pdfPreview.file);
-                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (uploadRes.ok) {
-                    const uploadData = await uploadRes.json();
-                    uploadedDocs.push(uploadData.url);
-                } else {
-                    alert(`Error al subir el documento ${pdfPreview.file.name}. Es posible que el archivo sea demasiado pesado.`);
+                try {
+                    const url = await uploadFileChunked(pdfPreview.file as File, pdfPreview.file.name);
+                    uploadedDocs.push(url);
+                } catch(err) {
+                    alert(`Error al subir el documento ${pdfPreview.file.name}.`);
                     setLoading(false);
                     return;
                 }

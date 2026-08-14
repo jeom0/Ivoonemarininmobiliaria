@@ -57,7 +57,7 @@ export default function PublicNavbar({ settings }: { settings?: any }) {
   }
 
   return (
-    <nav className="docked full-width top-0 sticky z-50 glass-nav shadow-sm h-20 transition-all bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-md">
+    <nav className="w-full top-0 md:sticky z-50 glass-nav shadow-sm h-20 transition-all bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-md">
       <div className="flex justify-between items-center w-full px-base md:px-margin-desktop max-w-container-max mx-auto h-full">
         {/* Brand */}
         <div className="flex items-center">
