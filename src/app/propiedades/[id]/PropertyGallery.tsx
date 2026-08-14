@@ -29,10 +29,7 @@ export default function PropertyGallery({ mainImage, imagesString, videosString 
 
   const allImages = Array.from(uniqueUrls);
 
-  // If no images at all, fallback to a placeholder so it doesn't break
-  if (allImages.length === 0) {
-    allImages.push("https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80");
-  }
+  // No dummy image injection
 
   const openLightbox = (index: number) => {
     setCurrentIndex(index);
@@ -95,13 +92,22 @@ export default function PropertyGallery({ mainImage, imagesString, videosString 
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-4 h-[400px] md:h-[600px] rounded-2xl overflow-hidden shadow-sm">
         <div 
-          className="md:col-span-1 md:row-span-2 relative group cursor-pointer overflow-hidden h-[200px] md:h-full"
-          onClick={() => openLightbox(0)}
+          className={`md:col-span-1 md:row-span-2 relative group overflow-hidden h-[200px] md:h-full ${allImages.length > 0 ? 'cursor-pointer' : 'bg-surface-container flex flex-col items-center justify-center text-on-surface-variant/60'}`}
+          onClick={() => allImages.length > 0 && openLightbox(0)}
         >
-          {renderMedia(allImages[0], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700", "Principal")}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
-            <span className="text-white font-label-md">Ver galería completa</span>
-          </div>
+          {allImages.length > 0 ? (
+            <>
+              {renderMedia(allImages[0], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700", "Principal")}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                <span className="text-white font-label-md">Ver galería completa</span>
+              </div>
+            </>
+          ) : (
+            <>
+              <span className="material-symbols-outlined text-6xl mb-2">no_photography</span>
+              <span className="font-label-md text-sm">No tiene foto disponible</span>
+            </>
+          )}
         </div>
         
         {allImages.length > 1 ? (

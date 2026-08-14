@@ -30,8 +30,6 @@ export default function PropertyCard({ p, isInvestment = false }: { p: Property,
   
   if (mediaList.length === 0 && p.mainImage) {
     mediaList = [p.mainImage];
-  } else if (mediaList.length === 0) {
-    mediaList = ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"];
   }
 
   // Prepend mainImage if it's not already in mediaList
@@ -72,7 +70,18 @@ export default function PropertyCard({ p, isInvestment = false }: { p: Property,
           )}
         </div>
         
-        <img className="w-full h-full object-cover transition-transform duration-700" alt={p.title} src={mediaList[currentImg]}/>
+        {mediaList.length > 0 ? (
+          mediaList[currentImg]?.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+            <video className="w-full h-full object-cover transition-transform duration-700 bg-black" src={mediaList[currentImg]} muted loop autoPlay playsInline />
+          ) : (
+            <img className="w-full h-full object-cover transition-transform duration-700" alt={p.title} src={mediaList[currentImg]}/>
+          )
+        ) : (
+          <div className="w-full h-full bg-surface-container flex flex-col items-center justify-center text-on-surface-variant/60">
+            <span className="material-symbols-outlined text-4xl mb-2">no_photography</span>
+            <span className="font-label-md text-xs">Sin foto disponible</span>
+          </div>
+        )}
         
         {mediaList.length > 1 && (
           <>
