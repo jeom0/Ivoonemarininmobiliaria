@@ -15,29 +15,9 @@ export async function generateMetadata(): Promise<Metadata> {
   // Opt out of static generation for metadata
   await headers();
   
-  let faviconUrl = "/favicon.ico";
-  try {
-    const [admin, faviconSetting, logoSetting] = await Promise.all([
-      prisma.user.findFirst({ where: { role: "ADMIN" } }),
-      prisma.setting.findUnique({ where: { key: "faviconUrl" } }),
-      prisma.setting.findUnique({ where: { key: "logoUrl" } })
-    ]);
-    if (faviconSetting?.value) {
-      faviconUrl = faviconSetting.value;
-    } else if (logoSetting?.value) {
-      faviconUrl = logoSetting.value;
-    } else if (admin?.image) {
-      faviconUrl = admin.image;
-    }
-  } catch (error) {
-    console.error("Failed to load favicon for metadata");
-  }
-
-  // Append timestamp for cache busting
-  if (faviconUrl !== "/favicon.ico") {
-    faviconUrl = `${faviconUrl}?v=${Date.now()}`;
-  }
-
+  // Use our explicit API route for dynamic favicon handling
+  // This bypasses browser caches and Next.js static optimizations
+  const faviconUrl = `/api/favicon?v=${Date.now()}`;
 
   return {
     title: "Ivonne Marin - Asesora Inmobiliaria",
