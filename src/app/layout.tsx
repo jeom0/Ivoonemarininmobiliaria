@@ -27,11 +27,14 @@ export default async function RootLayout({
   
   let faviconUrl = "/favicon.ico";
   try {
-    const [admin, logoSetting] = await Promise.all([
+    const [admin, faviconSetting, logoSetting] = await Promise.all([
       prisma.user.findFirst({ where: { role: "ADMIN" } }),
+      prisma.setting.findUnique({ where: { key: "faviconUrl" } }),
       prisma.setting.findUnique({ where: { key: "logoUrl" } })
     ]);
-    if (logoSetting?.value) {
+    if (faviconSetting?.value) {
+      faviconUrl = faviconSetting.value;
+    } else if (logoSetting?.value) {
       faviconUrl = logoSetting.value;
     } else if (admin?.image) {
       faviconUrl = admin.image;

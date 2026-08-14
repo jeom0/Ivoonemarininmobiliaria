@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SettingsForm() {
   const [logoPreview, setLogoPreview] = useState("");
+  const [faviconPreview, setFaviconPreview] = useState("");
   const [agentImagePreview, setAgentImagePreview] = useState("");
   const [heroMedia, setHeroMedia] = useState<string[]>([]);
   const [agencyName, setAgencyName] = useState("Ivonne Marin Asesora Inmobiliaria");
@@ -33,6 +34,7 @@ export default function SettingsForm() {
       if (res.ok) {
         const data = await res.json();
         if (data.logoUrl) setLogoPreview(data.logoUrl);
+        if (data.faviconUrl) setFaviconPreview(data.faviconUrl);
         if (data.agent_image) setAgentImagePreview(data.agent_image);
         if (data.hero_media) {
           try {
@@ -68,7 +70,7 @@ export default function SettingsForm() {
     }
   };
 
-  const handleImageUpload = async (file: File, type: 'logo' | 'hero' | 'agent') => {
+  const handleImageUpload = async (file: File, type: 'logo' | 'hero' | 'agent' | 'favicon') => {
     setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
@@ -80,6 +82,7 @@ export default function SettingsForm() {
       if (res.ok) {
         const data = await res.json();
         if (type === 'logo') setLogoPreview(data.url);
+        if (type === 'favicon') setFaviconPreview(data.url);
         if (type === 'agent') setAgentImagePreview(data.url);
         if (type === 'hero') setHeroMedia([...heroMedia, data.url]);
       } else {
@@ -127,6 +130,7 @@ export default function SettingsForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           logoUrl: logoPreview,
+          faviconUrl: faviconPreview,
           agent_image: agentImagePreview,
           hero_media: JSON.stringify(heroMedia),
           agencyName,
@@ -175,6 +179,28 @@ export default function SettingsForm() {
             Subir Nuevo Logo
             <input type="file" accept="image/*" className="hidden" onChange={handleLogoChange} />
           </label>
+
+          {/* Favicon */}
+          <div className="w-full mt-8 border-t border-outline-variant/30 pt-8 flex flex-col items-center">
+            <div className="w-16 h-16 rounded-lg bg-surface-container flex items-center justify-center mb-6 overflow-hidden border-2 border-outline-variant border-dashed relative shadow-sm">
+              {faviconPreview ? (
+                <img className="w-full h-full object-cover" src={faviconPreview} alt="Favicon de empresa" />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full p-2 text-center">
+                  <span className="material-symbols-outlined text-outline text-xl mb-1">tab</span>
+                </div>
+              )}
+              {loading && <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">...</div>}
+            </div>
+            <h3 className="font-headline-md text-headline-md text-on-background mb-2 text-sm">Favicon (Pestaña Navegador)</h3>
+            <p className="font-body-md text-body-md text-on-surface-variant mb-4 text-xs">Recomendado: 1:1, PNG o ICO.</p>
+            <label className="border border-secondary-fixed-dim text-primary font-label-md text-label-md py-2 px-4 rounded-lg hover:bg-surface-container transition-colors w-full flex items-center justify-center gap-2 cursor-pointer mb-6">
+              <span className="material-symbols-outlined">upload</span>
+              Subir Favicon
+              <input type="file" accept="image/*" className="hidden" onChange={(e) => { if(e.target.files) handleImageUpload(e.target.files[0], 'favicon') }} />
+            </label>
+          </div>
+
 
           <div className="w-full text-left">
             <label className="block font-label-md text-label-md text-on-background mb-2 flex justify-between">

@@ -316,3 +316,14 @@ body { background-color: #f7f3ef; }
         .chart-bar { background-color: #5c1212; border-radius: 4px 4px 0 0; }
         .chart-bar-secondary { background-color: #e5c09b; border-radius: 4px 4px 0 0; }
 
+
+/* Ocultar flechas de los inputs numericos */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
