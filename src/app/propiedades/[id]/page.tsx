@@ -34,14 +34,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
   const agentImage = settings.agent_image || adminUser?.image || settings.logoUrl || "https://lh3.googleusercontent.com/aida-public/AB6AXuBgZcfdPi_n0TAneC3N3wNfETdI8oO_G8QIPcsWa34_-98wnMr-m5RZQHICFsdciNAf2VLZZL3RkumToH7vrXWuozf0hInLZaGyF6lGXKOYDqmSjwITTmLqO7oLzDv_NqBTEzGBIEC-293iwhGjLJ6l22s1Hh9BxY-bjG8CudzkuWoKZkN2746Z-94jtta0xzNY9iv7o2Y7c-mWcOqmJCUpbG7QFOIoHu_kpCloGebH6kRR3hPJAX2d6QR6g-LUlCdd1kSrRt6Qj0w";
   const whatsappNumber = settings.whatsapp || "573000000000";
 
-  // Parse Multimedia
-  let videoUrl = null;
-  if (property.videos) {
-      try {
-          const videos = JSON.parse(property.videos);
-          if (videos.length > 0) videoUrl = videos[0];
-      } catch(e) {}
-  }
+
   
   let pdfUrl = null;
   if (property.documents) {
@@ -66,7 +59,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
         <section className="grid grid-cols-1 lg:grid-cols-3 gap-gutter items-start">
           <div className="lg:col-span-2 space-y-10">
             {/* Gallery */}
-            <PropertyGallery mainImage={property.mainImage} imagesString={property.images} />
+            <PropertyGallery mainImage={property.mainImage} imagesString={property.images} videosString={property.videos} />
 
             {/* Header Info */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-outline-variant pb-8">
@@ -151,19 +144,6 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                     <span className="material-symbols-outlined text-[18px]">download</span>
                     Descargar
                   </a>
-                </div>
-              )}
-
-              {/* Video en la descripción */}
-              {videoUrl && (
-                <div className="mt-8 bg-black rounded-2xl overflow-hidden shadow-md aspect-video relative">
-                  <video 
-                    controls autoPlay muted loop playsInline 
-                    className="w-full h-full object-cover"
-                    src={videoUrl}
-                  >
-                    Tu navegador no soporta el formato de video.
-                  </video>
                 </div>
               )}
             </div>

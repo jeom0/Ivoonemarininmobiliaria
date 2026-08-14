@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function PropertyGallery({ mainImage, imagesString }: { mainImage: string | null, imagesString: string | null }) {
+export default function PropertyGallery({ mainImage, imagesString, videosString }: { mainImage: string | null, imagesString: string | null, videosString?: string | null }) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -13,9 +13,18 @@ export default function PropertyGallery({ mainImage, imagesString }: { mainImage
     }
   } catch (e) {}
 
+  let videoItems: string[] = [];
+  try {
+    if (videosString) {
+      const parsed = JSON.parse(videosString);
+      if (Array.isArray(parsed)) videoItems = parsed;
+    }
+  } catch (e) {}
+
   // Usar un Set para eliminar duplicados
   const uniqueUrls = new Set<string>();
   if (mainImage) uniqueUrls.add(mainImage);
+  videoItems.forEach(vid => uniqueUrls.add(vid));
   additionalImages.forEach(img => uniqueUrls.add(img));
 
   const allImages = Array.from(uniqueUrls);
