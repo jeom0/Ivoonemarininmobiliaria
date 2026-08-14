@@ -332,17 +332,20 @@ export default async function Page() {
     zonas: (<>
 <section className="py-section-gap bg-surface-container-low">
 <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-<div className="mb-12">
+<div className="mb-12 text-center md:text-left">
 <h2 className="font-headline-lg text-headline-lg text-primary">Explora nuestras zonas</h2>
 <p className="text-on-surface-variant font-body-lg mt-2">Encuentra tu próximo hogar en las áreas más exclusivas y de mayor valorización.</p>
 </div>
-<div className="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div className="grid grid-cols-2 md:grid-cols-4 gap-8">
 {homeZones.map((z: any, i: number) => (
-  <div key={i} className="relative h-96 rounded-2xl overflow-hidden group">
-    <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={z.image || "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} alt={z.name} />
-    <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex flex-col justify-end p-6">
-      <h4 className="text-white font-headline-md text-headline-md">{z.name}</h4>
-      <p className="text-white/80 font-body-md">{z.subtitle}</p>
+  <div key={i} className="flex flex-col items-center gap-4 text-center group cursor-pointer">
+    <div className="relative w-40 h-40 md:w-56 md:h-56 rounded-full overflow-hidden border-[6px] border-white shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
+      <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={z.image || "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} alt={z.name} />
+      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full"></div>
+    </div>
+    <div>
+      <h4 className="text-primary font-headline-md text-headline-md group-hover:text-secondary transition-colors">{z.name}</h4>
+      <p className="text-on-surface-variant font-label-md mt-1">{z.subtitle}</p>
     </div>
   </div>
 ))}
