@@ -40,6 +40,18 @@ export async function POST(req: Request) {
             }
         });
 
+        // Si es una visita y tiene fecha, creamos la cita de una vez en la Agenda
+        if (data.type === 'VISIT' && data.scheduledDate) {
+            await prisma.appointment.create({
+                data: {
+                    leadId: lead.id,
+                    propertyId: data.propertyId || null,
+                    date: new Date(data.scheduledDate),
+                    status: "PENDING"
+                }
+            });
+        }
+
         // Find Admin email and send notification
         prisma.user.findFirst({ where: { role: 'ADMIN' } })
             .then(adminUser => {

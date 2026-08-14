@@ -11,20 +11,7 @@ const jakarta = Plus_Jakarta_Sans({
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
-export const metadata: Metadata = {
-  title: "Ivonne Marin - Asesora Inmobiliaria",
-  description: "Asesora inmobiliaria premium en el Eje Cafetero",
-};
-
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  // Opt out of static generation for the entire app to prevent build crashes
-  // while ensuring CSS chunks are properly injected in the dynamic response
-  await headers();
-  
+export async function generateMetadata(): Promise<Metadata> {
   let faviconUrl = "/favicon.ico";
   try {
     const [admin, faviconSetting, logoSetting] = await Promise.all([
@@ -40,14 +27,33 @@ export default async function RootLayout({
       faviconUrl = admin.image;
     }
   } catch (error) {
-    console.error("Failed to load favicon from database");
+    console.error("Failed to load favicon for metadata");
   }
 
+  return {
+    title: "Ivonne Marin - Asesora Inmobiliaria",
+    description: "Asesora inmobiliaria premium en el Eje Cafetero",
+    icons: {
+      icon: faviconUrl,
+      shortcut: faviconUrl,
+      apple: faviconUrl
+    }
+  };
+}
+
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  // Opt out of static generation for the entire app to prevent build crashes
+  // while ensuring CSS chunks are properly injected in the dynamic response
+  await headers();
+  
   return (
     <html lang="es" className={jakarta.className}>
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-        <link rel="icon" href={faviconUrl} />
       </head>
       <body className="min-h-full flex flex-col overflow-x-hidden bg-background text-on-surface">
         <AuthProvider>

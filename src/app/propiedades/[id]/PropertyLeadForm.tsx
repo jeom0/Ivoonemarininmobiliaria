@@ -71,6 +71,16 @@ export default function PropertyLeadForm({ propertyId, propertyCode, propertyNam
     const formData = new FormData(e.currentTarget);
     const date = formData.get("date") as string;
     const time = formData.get("time") as string;
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+
+    if (!date || !time || !name || !email || !phone) {
+      alert("Por favor, completa todos los campos requeridos.");
+      setAppointmentLoading(false);
+      return;
+    }
+
     const message = `Desea agendar visita el día ${date} a las ${time}. ${(formData.get("message") as string) || ""}`;
     
     const data = {
@@ -80,6 +90,7 @@ export default function PropertyLeadForm({ propertyId, propertyCode, propertyNam
       message: message,
       type: "VISIT",
       propertyId: propertyId,
+      scheduledDate: date && time ? new Date(`${date}T${time}`).toISOString() : undefined
     };
 
     try {
@@ -224,24 +235,24 @@ export default function PropertyLeadForm({ propertyId, propertyCode, propertyNam
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="font-label-md text-[12px] text-on-surface-variant">Día sugerido *</label>
-                    <input name="date" type="date" required min={new Date().toISOString().split('T')[0]} className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary outline-none" />
+                    <input name="date" type="date" className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary outline-none" />
                   </div>
                   <div className="space-y-1">
                     <label className="font-label-md text-[12px] text-on-surface-variant">Hora sugerida *</label>
-                    <input name="time" type="time" required className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary outline-none" />
+                    <input name="time" type="time" className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary focus:border-primary outline-none" />
                   </div>
                 </div>
                 <div className="space-y-1">
                   <label className="font-label-md text-[12px] text-on-surface-variant">Nombre completo *</label>
-                  <input name="name" required className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary outline-none" type="text" />
+                  <input name="name" className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary outline-none" type="text" />
                 </div>
                 <div className="space-y-1">
                   <label className="font-label-md text-[12px] text-on-surface-variant">Teléfono / WhatsApp *</label>
-                  <input name="phone" required className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary outline-none" type="tel" />
+                  <input name="phone" className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary outline-none" type="tel" />
                 </div>
                 <div className="space-y-1">
                   <label className="font-label-md text-[12px] text-on-surface-variant">Correo *</label>
-                  <input name="email" required className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary outline-none" type="email" />
+                  <input name="email" className="w-full bg-surface-container-low border border-outline-variant rounded-lg p-3 text-body-md focus:ring-primary outline-none" type="email" />
                 </div>
                 <button
                   disabled={appointmentLoading}
