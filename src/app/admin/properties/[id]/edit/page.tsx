@@ -18,6 +18,8 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
     const [videos, setVideos] = useState<string[]>([]);
     const [documents, setDocuments] = useState<string[]>([]);
     const [uploadingFiles, setUploadingFiles] = useState(false);
+    const [videoPreviews, setVideoPreviews] = useState<{file: File, url: string}[]>([]);
+    const [pdfPreviews, setPdfPreviews] = useState<{file: File, name: string}[]>([]);
 
     useEffect(() => {
         fetch(`/api/properties/${unwrappedParams.id}`)
@@ -527,12 +529,41 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             ))}
                                         </div>
                                     )}
-                                    <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group shadow-sm mt-4">
-                                        <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
-                                        <span className="font-label-lg text-primary font-bold mb-1">Subir Nuevos Videos</span>
-                                        <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .webm (Max 50MB)</span>
-                                        <input name="videoFiles" type="file" accept="video/*" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
-                                    </label>
+                                    {videoPreviews.length > 0 ? (
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                                            {videoPreviews.map((vp, i) => (
+                                                <div key={i} className="relative rounded-xl overflow-hidden border border-primary/50 aspect-video">
+                                                    <video src={vp.url} className="w-full h-full object-cover opacity-60 bg-black" muted autoPlay loop playsInline />
+                                                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white">
+                                                        <span className="material-symbols-outlined text-2xl mb-1">check_circle</span>
+                                                        <span className="text-[10px] text-center px-1 truncate w-full">{vp.file.name}</span>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <label className="relative flex flex-col items-center justify-center p-2 rounded-xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group aspect-video">
+                                                <span className="material-symbols-outlined text-xl text-primary">add</span>
+                                                <span className="text-[10px] text-primary">Cambiar / Agregar</span>
+                                                <input name="videoFiles" type="file" accept="video/*" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onChange={(e) => {
+                                                    if (e.target.files) {
+                                                        const newFiles = Array.from(e.target.files).map(f => ({file: f, url: URL.createObjectURL(f)}));
+                                                        setVideoPreviews(newFiles);
+                                                    }
+                                                }} />
+                                            </label>
+                                        </div>
+                                    ) : (
+                                        <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group shadow-sm mt-4">
+                                            <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
+                                            <span className="font-label-lg text-primary font-bold mb-1">Subir Nuevos Videos</span>
+                                            <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .webm (Max 50MB)</span>
+                                            <input name="videoFiles" type="file" accept="video/*" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onChange={(e) => {
+                                                if (e.target.files) {
+                                                    const newFiles = Array.from(e.target.files).map(f => ({file: f, url: URL.createObjectURL(f)}));
+                                                    setVideoPreviews(newFiles);
+                                                }
+                                            }} />
+                                        </label>
+                                    )}
                                 </div>
 
                                 {/* PDFs */}
@@ -551,12 +582,39 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             ))}
                                         </div>
                                     )}
-                                    <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10 transition-colors cursor-pointer group shadow-sm mt-4">
-                                        <span className="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform">picture_as_pdf</span>
-                                        <span className="font-label-lg text-secondary font-bold mb-1">Subir Nuevos Documentos</span>
-                                        <span className="text-xs text-on-surface-variant text-center">PDF, Brochures, Planos (Max 10MB)</span>
-                                        <input name="pdfFiles" type="file" accept="application/pdf" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
-                                    </label>
+                                    {pdfPreviews.length > 0 ? (
+                                        <div className="flex flex-col gap-2 mt-4">
+                                            {pdfPreviews.map((pp, i) => (
+                                                <div key={i} className="flex items-center gap-2 bg-secondary/10 px-3 py-2 rounded-lg border border-secondary/30 text-xs">
+                                                    <span className="material-symbols-outlined text-secondary text-[16px]">task</span>
+                                                    <span className="truncate w-full font-medium text-secondary">{pp.name}</span>
+                                                    <span className="material-symbols-outlined text-[16px] text-green-600">check_circle</span>
+                                                </div>
+                                            ))}
+                                            <label className="relative flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-dashed border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10 transition-colors cursor-pointer group mt-2">
+                                                <span className="material-symbols-outlined text-lg text-secondary">add</span>
+                                                <span className="text-xs text-secondary font-medium">Cambiar Archivos</span>
+                                                <input name="pdfFiles" type="file" accept="application/pdf" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onChange={(e) => {
+                                                    if (e.target.files) {
+                                                        const newFiles = Array.from(e.target.files).map(f => ({file: f, name: f.name}));
+                                                        setPdfPreviews(newFiles);
+                                                    }
+                                                }} />
+                                            </label>
+                                        </div>
+                                    ) : (
+                                        <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10 transition-colors cursor-pointer group shadow-sm mt-4">
+                                            <span className="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform">picture_as_pdf</span>
+                                            <span className="font-label-lg text-secondary font-bold mb-1">Subir Nuevos Documentos</span>
+                                            <span className="text-xs text-on-surface-variant text-center">PDF, Brochures, Planos (Max 10MB)</span>
+                                            <input name="pdfFiles" type="file" accept="application/pdf" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onChange={(e) => {
+                                                if (e.target.files) {
+                                                    const newFiles = Array.from(e.target.files).map(f => ({file: f, name: f.name}));
+                                                    setPdfPreviews(newFiles);
+                                                }
+                                            }} />
+                                        </label>
+                                    )}
                                 </div>
                             </div>
                         </div>

@@ -11,6 +11,8 @@ export default function NewProperty() {
     const [gallery, setGallery] = useState<string[]>([]);
     const [mainImage, setMainImage] = useState<string>('');
     const [newImageUrl, setNewImageUrl] = useState<string>('');
+    const [videoPreview, setVideoPreview] = useState<{file: File | null, url: string | null}>({file: null, url: null});
+    const [pdfPreview, setPdfPreview] = useState<{file: File | null, name: string | null}>({file: null, name: null});
 
     // Direct file upload via + card
     const handleDirectFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -388,18 +390,69 @@ export default function NewProperty() {
 
                                 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-outline-variant/30 mt-6">
-                                <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group shadow-sm">
-                                    <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
-                                    <span className="font-label-lg text-primary font-bold mb-1">Subir Video (Opcional)</span>
-                                    <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .mov (Max 50MB)</span>
-                                    <input name="videoFile" type="file" accept="video/*" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+                                <label className={`relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed ${videoPreview.url ? 'border-primary/80 bg-primary/10' : 'border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10'} transition-colors cursor-pointer group shadow-sm overflow-hidden`}>
+                                    {videoPreview.url ? (
+                                        <div className="absolute inset-0 w-full h-full">
+                                            <video src={videoPreview.url} className="w-full h-full object-cover opacity-60" muted loop autoPlay playsInline />
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white">
+                                                <span className="material-symbols-outlined text-4xl mb-2">check_circle</span>
+                                                <span className="font-label-lg font-bold">Video Seleccionado</span>
+                                                <span className="text-xs">{videoPreview.file?.name}</span>
+                                                <span className="text-xs mt-2 underline">Haz clic para cambiar</span>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
+                                            <span className="font-label-lg text-primary font-bold mb-1">Subir Video (Opcional)</span>
+                                            <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .mov (Max 50MB)</span>
+                                        </>
+                                    )}
+                                    <input 
+                                        name="videoFile" 
+                                        type="file" 
+                                        accept="video/*" 
+                                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" 
+                                        onChange={(e) => {
+                                            if (e.target.files && e.target.files[0]) {
+                                                const file = e.target.files[0];
+                                                const url = URL.createObjectURL(file);
+                                                setVideoPreview({file, url});
+                                            } else {
+                                                setVideoPreview({file: null, url: null});
+                                            }
+                                        }}
+                                    />
                                 </label>
                                 
-                                <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10 transition-colors cursor-pointer group shadow-sm">
-                                    <span className="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform">picture_as_pdf</span>
-                                    <span className="font-label-lg text-secondary font-bold mb-1">Subir Brochure (Opcional)</span>
-                                    <span className="text-xs text-on-surface-variant text-center">Formato .pdf (Max 10MB)</span>
-                                    <input name="pdfFile" type="file" accept="application/pdf" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+                                <label className={`relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed ${pdfPreview.name ? 'border-secondary/80 bg-secondary/10' : 'border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10'} transition-colors cursor-pointer group shadow-sm`}>
+                                    {pdfPreview.name ? (
+                                        <>
+                                            <span className="material-symbols-outlined text-4xl text-secondary mb-2">task</span>
+                                            <span className="font-label-lg text-secondary font-bold mb-1">PDF Seleccionado</span>
+                                            <span className="text-xs text-secondary text-center font-medium max-w-full truncate px-4">{pdfPreview.name}</span>
+                                            <span className="text-[10px] text-on-surface-variant mt-2 underline">Haz clic para cambiar</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span className="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform">picture_as_pdf</span>
+                                            <span className="font-label-lg text-secondary font-bold mb-1">Subir Brochure (Opcional)</span>
+                                            <span className="text-xs text-on-surface-variant text-center">Formato .pdf (Max 10MB)</span>
+                                        </>
+                                    )}
+                                    <input 
+                                        name="pdfFile" 
+                                        type="file" 
+                                        accept="application/pdf" 
+                                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" 
+                                        onChange={(e) => {
+                                            if (e.target.files && e.target.files[0]) {
+                                                setPdfPreview({file: e.target.files[0], name: e.target.files[0].name});
+                                            } else {
+                                                setPdfPreview({file: null, name: null});
+                                            }
+                                        }}
+                                    />
                                 </label>
                             </div>
                         </div>
