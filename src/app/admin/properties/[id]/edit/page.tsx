@@ -285,27 +285,27 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
 
                 <div className="bg-surface-container-lowest rounded-2xl p-6 md:p-8 border border-outline-variant/30 ambient-shadow">
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Información Básica */}
-                        <div>
-                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-primary">info</span>
+                        {/* Básicos - Bento Style */}
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
+                                <span className="material-symbols-outlined bg-primary/10 p-2 rounded-lg">info</span>
                                 Información Básica
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Título de la Publicación *</label>
-                                    <input name="title" required defaultValue={property?.title} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
+                            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                                <div className="md:col-span-8 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Título de la Publicación *</label>
+                                    <input name="title" required defaultValue={property?.title || ''} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: Penthouse en Pinares" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Tipo de Operación *</label>
-                                    <select name="modality" required defaultValue={property?.modality} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary">
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Tipo de Operación *</label>
+                                    <select name="modality" required defaultValue={property?.modality || 'VENTA'} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg">
                                         <option value="VENTA">Venta</option>
                                         <option value="ARRIENDO">Arriendo</option>
                                     </select>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Tipo de Inmueble *</label>
-                                    <select name="propertyType" required defaultValue={property?.propertyType} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary">
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Tipo de Inmueble *</label>
+                                    <select name="propertyType" required defaultValue={property?.propertyType || 'Apartamento'} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg">
                                         <option value="Apartamento">Apartamento</option>
                                         <option value="Casa">Casa</option>
                                         <option value="Finca">Finca</option>
@@ -315,13 +315,13 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                         <option value="Bodega">Bodega</option>
                                     </select>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Precio (COP) <span className="text-xs text-on-surface-variant font-normal">(Opcional, 0 para "Consultar")</span></label>
-                                    <input name="price" type="number" defaultValue={property?.price !== 0 ? property?.price : ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 450000000" />
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Precio (COP) <span className="text-xs text-on-surface-variant font-normal">(Opcional)</span></label>
+                                    <input name="price" type="number" defaultValue={property?.price !== 0 ? property?.price : ''} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: 450000000" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Ciudad *</label>
-                                    <input list="cityOptions" name="city" required defaultValue={property?.city} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Escribe o selecciona..." autoComplete="off" />
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Ciudad *</label>
+                                    <input list="cityOptions" name="city" required defaultValue={property?.city || ''} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Escribe o selecciona..." autoComplete="off" />
                                     <datalist id="cityOptions">
                                         <option value="Santa Rosa de Cabal" />
                                         <option value="Pereira" />
@@ -330,24 +330,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                         <option value="Manizales" />
                                     </datalist>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Estado *</label>
-                                    <select name="status" required defaultValue={property?.status} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary">
-                                        <option value="DISPONIBLE">Disponible</option>
-                                        <option value="VENDIDO">Vendido</option>
-                                        <option value="ARRENDADO">Arrendado</option>
-                                        <option value="INACTIVO">Inactivo</option>
-                                    </select>
+                                <div className="md:col-span-6 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Dirección / Sector (Opcional)</label>
+                                    <input name="address" type="text" defaultValue={property?.address || ''} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: Condominio Las Palmas" />
                                 </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                                <div className="space-y-2 md:col-span-1">
-                                    <label className="font-label-md text-secondary">Dirección / Sector (Opcional)</label>
-                                    <input name="address" type="text" defaultValue={property?.address || ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: Condominio Las Palmas" />
-                                </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="font-label-md text-secondary">Coordenadas (Latitud, Longitud)</label>
+                                <div className="md:col-span-6 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Coordenadas (Latitud, Longitud)</label>
                                     <input 
                                         type="text" 
                                         defaultValue={property?.lat && property?.lng ? `${property.lat}, ${property.lng}` : ''}
@@ -365,7 +353,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                                 }
                                             }
                                         }}
-                                        className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" 
+                                        className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" 
                                         placeholder="Ej: 4.804204, -75.738502" 
                                     />
                                     <input type="hidden" name="lat" id="lat_input" defaultValue={property?.lat || ''} />
@@ -384,7 +372,6 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                 Haz clic en **"Establecer como Principal"** para definir la foto de portada. Usa el icono de papelera para eliminar fotos no deseadas.
                             </p>
 
-                            {/* Grid de imágenes actuales y botón + de carga */}
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
                                 {gallery.map((url, idx) => {
                                     const isMain = url === mainImage;
@@ -392,14 +379,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                         <div key={idx} className={`relative group rounded-xl overflow-hidden border-2 transition-all shadow-sm ${isMain ? 'border-primary ring-2 ring-primary/30' : 'border-outline-variant/50 hover:border-primary/50'}`}>
                                             <img src={url} alt={`Foto ${idx + 1}`} className="w-full h-32 object-cover" />
                                             
-                                            {/* Badge Principal */}
                                             {isMain && (
                                                 <span className="absolute top-2 left-2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
                                                     Principal
                                                 </span>
                                             )}
 
-                                            {/* Overlay de acciones */}
                                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 gap-2">
                                                 {!isMain && (
                                                     <button
@@ -423,7 +408,6 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                     );
                                 })}
 
-                                {/* Cuadro con el icono + para agregar foto */}
                                 <div className="relative group rounded-xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all flex flex-col items-center justify-center p-4 cursor-pointer h-32 text-center">
                                     <input
                                         type="file"
@@ -450,48 +434,34 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                     )}
                                 </div>
                             </div>
-
-
                         </div>
 
-                        {/* Características Técnicas */}
-                        <div>
-                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-primary">other_houses</span>
-                                Características
+                        {/* Detalles Bento */}
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow mt-6">
+                            <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
+                                <span className="material-symbols-outlined bg-primary/10 p-2 rounded-lg">tune</span>
+                                Características Técnicas
                             </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Habitaciones</label>
-                                    <input name="bedrooms" type="number" defaultValue={property?.bedrooms ?? ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 3" />
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors shadow-sm">
+                                    <span className="material-symbols-outlined text-primary text-3xl mb-2">bed</span>
+                                    <label className="font-label-md text-secondary mb-2">Habitaciones</label>
+                                    <input name="bedrooms" type="number" className="w-16 md:w-24 text-center border-b-2 border-outline-variant bg-transparent focus:outline-none focus:border-primary font-bold text-xl pb-1" defaultValue={property?.bedrooms || 0} />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Baños</label>
-                                    <input name="bathrooms" type="number" defaultValue={property?.bathrooms ?? ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 2" />
+                                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors shadow-sm">
+                                    <span className="material-symbols-outlined text-primary text-3xl mb-2">shower</span>
+                                    <label className="font-label-md text-secondary mb-2">Baños</label>
+                                    <input name="bathrooms" type="number" className="w-16 md:w-24 text-center border-b-2 border-outline-variant bg-transparent focus:outline-none focus:border-primary font-bold text-xl pb-1" defaultValue={property?.bathrooms || 0} />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Parqueaderos</label>
-                                    <input name="parking" type="number" defaultValue={property?.parking ?? ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 1" />
+                                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors shadow-sm">
+                                    <span className="material-symbols-outlined text-primary text-3xl mb-2">directions_car</span>
+                                    <label className="font-label-md text-secondary mb-2">Parqueaderos</label>
+                                    <input name="parking" type="number" className="w-16 md:w-24 text-center border-b-2 border-outline-variant bg-transparent focus:outline-none focus:border-primary font-bold text-xl pb-1" defaultValue={property?.parking || 0} />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Área Construida (m²)</label>
-                                    <input name="builtArea" type="number" step="0.01" defaultValue={property?.builtArea ?? ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 85.5" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Área Lote (m²)</label>
-                                    <input name="lotArea" type="number" step="0.01" defaultValue={property?.lotArea ?? ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 120" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Estrato</label>
-                                    <input name="stratum" type="number" defaultValue={property?.stratum ?? ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 4" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Antigüedad (Años)</label>
-                                    <input name="antiquity" type="number" defaultValue={property?.antiquity ?? ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 5" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Administración (COP)</label>
-                                    <input name="adminFee" type="number" defaultValue={property?.adminFee ?? ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 250000" />
+                                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors shadow-sm">
+                                    <span className="material-symbols-outlined text-primary text-3xl mb-2">straighten</span>
+                                    <label className="font-label-md text-secondary mb-2">Área (m²)</label>
+                                    <input name="builtArea" type="number" step="0.01" className="w-20 md:w-28 text-center border-b-2 border-outline-variant bg-transparent focus:outline-none focus:border-primary font-bold text-xl pb-1" defaultValue={property?.builtArea || 0} />
                                 </div>
                             </div>
                         </div>
@@ -505,17 +475,10 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                             <div className="space-y-4">
                                 <div>
                                     <label className="font-label-md text-secondary block mb-1">Descripción Corta (Resumen para catálogo)</label>
-                                    <textarea name="shortDesc" defaultValue={property?.shortDesc || ''} rows={2} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Resumen breve del inmueble..."></textarea>
+                                    <textarea name="shortDesc" defaultValue={property?.shortDesc || ''} rows={2} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary"></textarea>
                                 </div>
                                 <div>
                                     <label className="font-label-md text-secondary block mb-1">Descripción Completa / Detallada</label>
-                                    <textarea name="fullDesc" defaultValue={property?.fullDesc || ''} rows={6} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Detalles de acabados, distribución, zonas comunes..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Videos y Documentos */}
-                        <div>
                             <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
                                 <span className="material-symbols-outlined text-primary">videocam</span>
                                 Videos y Archivos Adjuntos
@@ -537,8 +500,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             ))}
                                         </div>
                                     )}
-                                    <label className="font-label-sm text-on-surface-variant block mb-1">Subir Nuevos Videos (MP4, WEBM, etc.)</label>
-                                    <input name="videoFiles" type="file" accept="video/*" multiple className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary text-sm" />
+                                    <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group shadow-sm mt-4">
+                                        <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
+                                        <span className="font-label-lg text-primary font-bold mb-1">Subir Nuevos Videos</span>
+                                        <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .webm (Max 50MB)</span>
+                                        <input name="videoFiles" type="file" accept="video/*" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+                                    </label>
                                 </div>
 
                                 {/* PDFs */}
@@ -557,8 +524,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             ))}
                                         </div>
                                     )}
-                                    <label className="font-label-sm text-on-surface-variant block mb-1">Subir Nuevos Documentos (PDF, Brochures, Planos)</label>
-                                    <input name="pdfFiles" type="file" accept="application/pdf" multiple className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary text-sm" />
+                                    <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10 transition-colors cursor-pointer group shadow-sm mt-4">
+                                        <span className="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform">picture_as_pdf</span>
+                                        <span className="font-label-lg text-secondary font-bold mb-1">Subir Nuevos Documentos</span>
+                                        <span className="text-xs text-on-surface-variant text-center">PDF, Brochures, Planos (Max 10MB)</span>
+                                        <input name="pdfFiles" type="file" accept="application/pdf" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+                                    </label>
                                 </div>
                             </div>
                         </div>

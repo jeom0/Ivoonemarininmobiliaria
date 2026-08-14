@@ -196,37 +196,40 @@ export default function NewProperty() {
 
                 <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/30 ambient-shadow">
                     <form onSubmit={handleSubmit} className="space-y-8">
-                        {/* Básicos */}
-                        <div>
-                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2">Información Básica</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Título de la Publicación *</label>
-                                    <input name="title" required className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: Penthouse en Pinares" />
+                        {/* Básicos - Bento Style */}
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
+                                <span className="material-symbols-outlined bg-primary/10 p-2 rounded-lg">info</span>
+                                Información Básica
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                                <div className="md:col-span-8 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Título de la Publicación *</label>
+                                    <input name="title" required className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: Penthouse en Pinares" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Tipo de Operación *</label>
-                                    <select name="modality" required className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary">
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Tipo de Operación *</label>
+                                    <select name="modality" required className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg">
                                         <option value="VENTA">Venta</option>
                                         <option value="ARRIENDO">Arriendo</option>
                                     </select>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Tipo de Inmueble *</label>
-                                    <select name="propertyType" required className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary">
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Tipo de Inmueble *</label>
+                                    <select name="propertyType" required className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg">
                                         <option value="Apartamento">Apartamento</option>
                                         <option value="Casa">Casa</option>
                                         <option value="Finca">Finca</option>
                                         <option value="Lote">Lote</option>
                                     </select>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Precio (COP) <span className="text-xs text-on-surface-variant font-normal">(Opcional, déjalo en blanco para "Consultar Precio")</span></label>
-                                    <input name="price" type="number" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 450000000" />
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Precio (COP) <span className="text-xs text-on-surface-variant font-normal">(Opcional)</span></label>
+                                    <input name="price" type="number" className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: 450000000" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Ciudad *</label>
-                                    <input list="cityOptions" name="city" required className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Escribe o selecciona..." autoComplete="off" />
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Ciudad *</label>
+                                    <input list="cityOptions" name="city" required className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Escribe o selecciona..." autoComplete="off" />
                                     <datalist id="cityOptions">
                                         <option value="Santa Rosa de Cabal" />
                                         <option value="Pereira" />
@@ -235,14 +238,12 @@ export default function NewProperty() {
                                         <option value="Manizales" />
                                     </datalist>
                                 </div>
-                            </div>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                                <div className="space-y-2 md:col-span-1">
-                                    <label className="font-label-md text-secondary">Dirección / Sector (Opcional)</label>
-                                    <input name="address" type="text" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: Condominio Las Palmas" />
+                                <div className="md:col-span-6 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Dirección / Sector (Opcional)</label>
+                                    <input name="address" type="text" className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: Condominio Las Palmas" />
                                 </div>
-                                <div className="space-y-2 md:col-span-2">
-                                    <label className="font-label-md text-secondary">Coordenadas (Latitud, Longitud)</label>
+                                <div className="md:col-span-6 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Coordenadas (Latitud, Longitud)</label>
                                     <input 
                                         type="text" 
                                         onChange={(e) => {
@@ -259,7 +260,7 @@ export default function NewProperty() {
                                                 }
                                             }
                                         }}
-                                        className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" 
+                                        className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" 
                                         placeholder="Ej: 4.804204, -75.738502" 
                                     />
                                     <input type="hidden" name="lat" id="lat_input" />
@@ -268,21 +269,27 @@ export default function NewProperty() {
                             </div>
                         </div>
 
-                        {/* Detalles */}
-                        <div>
-                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2">Características</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Habitaciones</label>
-                                    <input name="bedrooms" type="number" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" defaultValue="0" />
+                        {/* Detalles Bento */}
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
+                                <span className="material-symbols-outlined bg-primary/10 p-2 rounded-lg">tune</span>
+                                Características Técnicas
+                            </h3>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors shadow-sm">
+                                    <span className="material-symbols-outlined text-primary text-3xl mb-2">bed</span>
+                                    <label className="font-label-md text-secondary mb-2">Habitaciones</label>
+                                    <input name="bedrooms" type="number" className="w-16 md:w-24 text-center border-b-2 border-outline-variant bg-transparent focus:outline-none focus:border-primary font-bold text-xl pb-1" defaultValue="0" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Baños</label>
-                                    <input name="bathrooms" type="number" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" defaultValue="0" />
+                                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors shadow-sm">
+                                    <span className="material-symbols-outlined text-primary text-3xl mb-2">shower</span>
+                                    <label className="font-label-md text-secondary mb-2">Baños</label>
+                                    <input name="bathrooms" type="number" className="w-16 md:w-24 text-center border-b-2 border-outline-variant bg-transparent focus:outline-none focus:border-primary font-bold text-xl pb-1" defaultValue="0" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Área (m²)</label>
-                                    <input name="builtArea" type="number" step="0.01" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" defaultValue="0" />
+                                <div className="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 flex flex-col items-center justify-center text-center hover:border-primary/50 transition-colors shadow-sm col-span-2 md:col-span-1">
+                                    <span className="material-symbols-outlined text-primary text-3xl mb-2">straighten</span>
+                                    <label className="font-label-md text-secondary mb-2">Área (m²)</label>
+                                    <input name="builtArea" type="number" step="0.01" className="w-20 md:w-28 text-center border-b-2 border-outline-variant bg-transparent focus:outline-none focus:border-primary font-bold text-xl pb-1" defaultValue="0" />
                                 </div>
                             </div>
                         </div>
@@ -364,15 +371,20 @@ export default function NewProperty() {
 
 
                                 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-outline-variant/30">
-                                <div>
-                                    <label className="font-label-md text-secondary block mb-2">Video del Inmueble (Subir .mp4, etc)</label>
-                                    <input name="videoFile" type="file" accept="video/*" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
-                                </div>
-                                <div>
-                                    <label className="font-label-md text-secondary block mb-2">PDF de Información Extendida (Brochure)</label>
-                                    <input name="pdfFile" type="file" accept="application/pdf" className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" />
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-outline-variant/30 mt-6">
+                                <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group shadow-sm">
+                                    <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
+                                    <span className="font-label-lg text-primary font-bold mb-1">Subir Video (Opcional)</span>
+                                    <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .mov (Max 50MB)</span>
+                                    <input name="videoFile" type="file" accept="video/*" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+                                </label>
+                                
+                                <label className="relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10 transition-colors cursor-pointer group shadow-sm">
+                                    <span className="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform">picture_as_pdf</span>
+                                    <span className="font-label-lg text-secondary font-bold mb-1">Subir Brochure (Opcional)</span>
+                                    <span className="text-xs text-on-surface-variant text-center">Formato .pdf (Max 10MB)</span>
+                                    <input name="pdfFile" type="file" accept="application/pdf" className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" />
+                                </label>
                             </div>
                         </div>
 
