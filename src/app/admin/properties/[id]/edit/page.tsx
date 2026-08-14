@@ -82,10 +82,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
 
         for (const originalFile of files) {
             let file = originalFile;
-            try {
-                file = await imageCompression(originalFile, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
-            } catch (err) {
-                console.error("Error compressing image", err);
+            if (originalFile.type.startsWith('image/')) {
+                try {
+                    file = await imageCompression(originalFile, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
+                } catch (err) {
+                    console.error("Error compressing image", err);
+                }
             }
             const uploadFormData = new FormData();
             uploadFormData.append("file", file, originalFile.name);
@@ -167,10 +169,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                 for (let i = 0; i < imagesInput.files.length; i++) {
                     const originalFile = imagesInput.files[i];
                     let file = originalFile;
-                    try {
-                        file = await imageCompression(originalFile, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
-                    } catch (e) {
-                        console.error('Error compressing image', e);
+                    if (originalFile.type.startsWith('image/')) {
+                        try {
+                            file = await imageCompression(originalFile, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
+                        } catch (e) {
+                            console.error('Error compressing image', e);
+                        }
                     }
                     const uploadFormData = new FormData();
                     uploadFormData.append("file", file, originalFile.name);
@@ -411,8 +415,8 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                 <div className="relative group rounded-xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all flex flex-col items-center justify-center p-4 cursor-pointer h-32 text-center">
                                     <input
                                         type="file"
-                                        accept="image/*"
                                         multiple
+                                        accept="image/*,video/*"
                                         disabled={uploadingFiles}
                                         onChange={handleDirectFileUpload}
                                         className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10 disabled:cursor-not-allowed"
@@ -428,8 +432,8 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
                                                 <span className="material-symbols-outlined text-[24px]">add</span>
                                             </div>
-                                            <span className="text-xs font-bold text-primary">Agregar Foto</span>
-                                            <span className="text-[10px] text-on-surface-variant">Clic o arrastra aquí</span>
+                                            <span className="text-xs font-bold text-primary">Subir Archivos</span>
+                                            <span className="text-[10px] text-on-surface-variant">Clic o arrastra</span>
                                         </>
                                     )}
                                 </div>

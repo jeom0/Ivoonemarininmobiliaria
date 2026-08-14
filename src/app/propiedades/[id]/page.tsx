@@ -121,51 +121,52 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
               )}
             </div>
 
-            {/* Description */}
+            {/* Description and Multimedia */}
             <div className="space-y-6">
-              <h2 className="font-headline-md text-headline-md text-primary">Descripción Comercial</h2>
-              <div className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-wrap">
-                {property.fullDesc || property.shortDesc || "Sin descripción"}
-              </div>
-            </div>
-
-            {/* Información Extendida y Multimedia */}
-            {(videoUrl || pdfUrl) && (
-              <div className="space-y-6">
-                <h2 className="font-headline-md text-headline-md text-primary">Información Extendida</h2>
-                <div className="grid grid-cols-1 gap-6">
-                  {pdfUrl && (
-                    <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-sm">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
-                          <span className="material-symbols-outlined text-[24px]">picture_as_pdf</span>
-                        </div>
-                        <div>
-                          <h4 className="font-label-md text-[16px] text-on-surface">Brochure del Inmueble</h4>
-                          <p className="text-[13px] text-on-surface-variant">Descarga la ficha técnica detallada</p>
-                        </div>
-                      </div>
-                      <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-sm hover:opacity-90 transition-opacity flex items-center gap-2">
-                        <span className="material-symbols-outlined text-[18px]">download</span>
-                        Descargar PDF
-                      </a>
-                    </div>
-                  )}
-
-                  {videoUrl && (
-                    <div className="bg-black rounded-2xl overflow-hidden shadow-md aspect-video relative">
-                      <video 
-                        controls autoPlay muted loop playsInline 
-                        className="w-full h-full object-cover"
-                        src={videoUrl}
-                      >
-                        Tu navegador no soporta el formato de video.
-                      </video>
-                    </div>
-                  )}
+              <h2 className="font-headline-md text-headline-md text-primary">Descripción del Inmueble</h2>
+              
+              {property.shortDesc && (
+                <div className="bg-primary/5 border border-primary/20 p-5 rounded-2xl font-body-lg text-primary font-medium leading-relaxed">
+                  {property.shortDesc}
                 </div>
+              )}
+
+              <div className="font-body-lg text-body-lg text-on-surface-variant leading-relaxed whitespace-pre-wrap">
+                {property.fullDesc || (!property.shortDesc && "Sin descripción")}
               </div>
-            )}
+
+              {/* Documentos adjuntos en la descripción */}
+              {pdfUrl && (
+                <div className="mt-8 bg-surface-container-low p-5 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-sm">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+                      <span className="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+                    </div>
+                    <div>
+                      <h4 className="font-label-md text-[16px] text-on-surface">Brochure / Documento Adjunto</h4>
+                      <p className="text-[13px] text-on-surface-variant">Descarga la información detallada</p>
+                    </div>
+                  </div>
+                  <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-2.5 bg-primary text-on-primary rounded-xl font-label-md text-sm hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+                    <span className="material-symbols-outlined text-[18px]">download</span>
+                    Descargar
+                  </a>
+                </div>
+              )}
+
+              {/* Video en la descripción */}
+              {videoUrl && (
+                <div className="mt-8 bg-black rounded-2xl overflow-hidden shadow-md aspect-video relative">
+                  <video 
+                    controls autoPlay muted loop playsInline 
+                    className="w-full h-full object-cover"
+                    src={videoUrl}
+                  >
+                    Tu navegador no soporta el formato de video.
+                  </video>
+                </div>
+              )}
+            </div>
 
             {/* Map Location */}
             <div className="space-y-6">
