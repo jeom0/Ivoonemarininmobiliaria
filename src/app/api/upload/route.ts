@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     const filename = `${uniqueSuffix}-${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
     
-    // Ensure public/uploads directory exists
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    // Use external directory if provided, otherwise default to public/uploads
+    const uploadDir = process.env.UPLOAD_DIR || path.join(process.cwd(), "public", "uploads");
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }

@@ -7,7 +7,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { filename } = await params;
     
     // Safely resolve path to avoid directory traversal
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    const uploadDir = process.env.UPLOAD_DIR || path.join(process.cwd(), "public", "uploads");
     const safePath = path.normalize(path.join(uploadDir, filename));
     
     if (!safePath.startsWith(uploadDir)) {
