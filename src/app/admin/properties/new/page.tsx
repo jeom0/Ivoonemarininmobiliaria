@@ -390,29 +390,14 @@ export default function NewProperty() {
 
                                 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-outline-variant/30 mt-6">
-                                <label className={`relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed ${videoPreview.url ? 'border-primary/80 bg-primary/10' : 'border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10'} transition-colors cursor-pointer group shadow-sm overflow-hidden`}>
-                                    {videoPreview.url ? (
-                                        <div className="absolute inset-0 w-full h-full">
-                                            <video src={videoPreview.url} className="w-full h-full object-cover opacity-60" muted loop autoPlay playsInline />
-                                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white">
-                                                <span className="material-symbols-outlined text-4xl mb-2">check_circle</span>
-                                                <span className="font-label-lg font-bold">Video Seleccionado</span>
-                                                <span className="text-xs">{videoPreview.file?.name}</span>
-                                                <span className="text-xs mt-2 underline">Haz clic para cambiar</span>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
-                                            <span className="font-label-lg text-primary font-bold mb-1">Subir Video (Opcional)</span>
-                                            <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .mov (Max 50MB)</span>
-                                        </>
-                                    )}
+                                {/* Video Upload */}
+                                <div className={`relative flex flex-col items-center justify-center min-h-[180px] rounded-2xl border-2 border-dashed ${videoPreview.url ? 'border-primary/80 bg-primary/10' : 'border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10'} transition-colors shadow-sm overflow-hidden`}>
                                     <input 
+                                        id="video-upload-input"
                                         name="videoFile" 
                                         type="file" 
                                         accept="video/*" 
-                                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" 
+                                        className="hidden" 
                                         onChange={(e) => {
                                             if (e.target.files && e.target.files[0]) {
                                                 const file = e.target.files[0];
@@ -423,28 +408,39 @@ export default function NewProperty() {
                                             }
                                         }}
                                     />
-                                </label>
-                                
-                                <label className={`relative flex flex-col items-center justify-center p-6 rounded-2xl border-2 border-dashed ${pdfPreview.name ? 'border-secondary/80 bg-secondary/10' : 'border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10'} transition-colors cursor-pointer group shadow-sm`}>
-                                    {pdfPreview.name ? (
-                                        <>
-                                            <span className="material-symbols-outlined text-4xl text-secondary mb-2">task</span>
-                                            <span className="font-label-lg text-secondary font-bold mb-1">PDF Seleccionado</span>
-                                            <span className="text-xs text-secondary text-center font-medium max-w-full truncate px-4">{pdfPreview.name}</span>
-                                            <span className="text-[10px] text-on-surface-variant mt-2 underline">Haz clic para cambiar</span>
-                                        </>
+                                    {videoPreview.url ? (
+                                        <div className="absolute inset-0 w-full h-full">
+                                            <video src={videoPreview.url} className="w-full h-full object-cover opacity-60 bg-black" muted loop autoPlay playsInline />
+                                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 text-white p-4">
+                                                <span className="material-symbols-outlined text-4xl mb-2 text-green-400">check_circle</span>
+                                                <span className="font-label-lg font-bold text-center w-full truncate">{videoPreview.file?.name}</span>
+                                                <button type="button" onClick={() => {
+                                                    setVideoPreview({file: null, url: null});
+                                                    const input = document.getElementById('video-upload-input') as HTMLInputElement;
+                                                    if (input) input.value = '';
+                                                }} className="mt-3 px-4 py-2 bg-error hover:bg-error/80 text-white rounded-full text-xs font-bold flex items-center gap-1 transition-colors z-20 cursor-pointer shadow-lg">
+                                                    <span className="material-symbols-outlined text-[16px]">delete</span>
+                                                    Borrar Video
+                                                </button>
+                                            </div>
+                                        </div>
                                     ) : (
-                                        <>
-                                            <span className="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform">picture_as_pdf</span>
-                                            <span className="font-label-lg text-secondary font-bold mb-1">Subir Brochure (Opcional)</span>
-                                            <span className="text-xs text-on-surface-variant text-center">Formato .pdf (Max 10MB)</span>
-                                        </>
+                                        <label htmlFor="video-upload-input" className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group w-full h-full">
+                                            <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
+                                            <span className="font-label-lg text-primary font-bold mb-1">Subir Video (Opcional)</span>
+                                            <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .mov (Max 50MB)</span>
+                                        </label>
                                     )}
+                                </div>
+                                
+                                {/* PDF Upload */}
+                                <div className={`relative flex flex-col items-center justify-center min-h-[180px] rounded-2xl border-2 border-dashed ${pdfPreview.name ? 'border-secondary/80 bg-secondary/10' : 'border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10'} transition-colors shadow-sm overflow-hidden`}>
                                     <input 
+                                        id="pdf-upload-input"
                                         name="pdfFile" 
                                         type="file" 
                                         accept="application/pdf" 
-                                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" 
+                                        className="hidden" 
                                         onChange={(e) => {
                                             if (e.target.files && e.target.files[0]) {
                                                 setPdfPreview({file: e.target.files[0], name: e.target.files[0].name});
@@ -453,7 +449,28 @@ export default function NewProperty() {
                                             }
                                         }}
                                     />
-                                </label>
+                                    {pdfPreview.name ? (
+                                        <div className="absolute inset-0 w-full h-full flex flex-col items-center justify-center bg-secondary/10 p-4">
+                                            <span className="material-symbols-outlined text-4xl text-secondary mb-2">task</span>
+                                            <span className="font-label-lg text-secondary font-bold mb-1">PDF Seleccionado</span>
+                                            <span className="text-xs text-secondary text-center font-medium max-w-full truncate px-4">{pdfPreview.name}</span>
+                                            <button type="button" onClick={() => {
+                                                setPdfPreview({file: null, name: null});
+                                                const input = document.getElementById('pdf-upload-input') as HTMLInputElement;
+                                                if (input) input.value = '';
+                                            }} className="mt-3 px-4 py-2 bg-error hover:bg-error/80 text-white rounded-full text-xs font-bold flex items-center gap-1 transition-colors z-20 cursor-pointer shadow-lg">
+                                                <span className="material-symbols-outlined text-[16px]">delete</span>
+                                                Borrar PDF
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <label htmlFor="pdf-upload-input" className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group w-full h-full">
+                                            <span className="material-symbols-outlined text-4xl text-secondary mb-2 group-hover:scale-110 transition-transform">picture_as_pdf</span>
+                                            <span className="font-label-lg text-secondary font-bold mb-1">Subir Brochure (Opcional)</span>
+                                            <span className="text-xs text-on-surface-variant text-center">Formato .pdf (Max 10MB)</span>
+                                        </label>
+                                    )}
+                                </div>
                             </div>
                         </div>
 

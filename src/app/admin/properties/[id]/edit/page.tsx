@@ -198,10 +198,9 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
 
             // 2. Upload new videos if selected
             let currentVideos = [...videos];
-            const videoInput = form.querySelector('input[name="videoFiles"]') as HTMLInputElement;
-            if (videoInput && videoInput.files && videoInput.files.length > 0) {
-                for (let i = 0; i < videoInput.files.length; i++) {
-                    const file = videoInput.files[i];
+            if (videoPreviews.length > 0) {
+                for (let i = 0; i < videoPreviews.length; i++) {
+                    const file = videoPreviews[i].file;
                     const uploadFormData = new FormData();
                     uploadFormData.append("file", file);
                     const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
@@ -214,10 +213,9 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
 
             // 3. Upload new PDFs if selected
             let currentDocuments = [...documents];
-            const pdfInput = form.querySelector('input[name="pdfFiles"]') as HTMLInputElement;
-            if (pdfInput && pdfInput.files && pdfInput.files.length > 0) {
-                for (let i = 0; i < pdfInput.files.length; i++) {
-                    const file = pdfInput.files[i];
+            if (pdfPreviews.length > 0) {
+                for (let i = 0; i < pdfPreviews.length; i++) {
+                    const file = pdfPreviews[i].file;
                     const uploadFormData = new FormData();
                     uploadFormData.append("file", file);
                     const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
@@ -532,21 +530,28 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                     {videoPreviews.length > 0 ? (
                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
                                             {videoPreviews.map((vp, i) => (
-                                                <div key={i} className="relative rounded-xl overflow-hidden border border-primary/50 aspect-video">
+                                                <div key={i} className="relative rounded-xl overflow-hidden border border-primary/50 aspect-video group shadow-sm">
                                                     <video src={vp.url} className="w-full h-full object-cover opacity-60 bg-black" muted autoPlay loop playsInline />
-                                                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white">
-                                                        <span className="material-symbols-outlined text-2xl mb-1">check_circle</span>
-                                                        <span className="text-[10px] text-center px-1 truncate w-full">{vp.file.name}</span>
+                                                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50 text-white transition-opacity">
+                                                        <span className="text-[10px] text-center px-2 truncate w-full mb-1 font-medium">{vp.file.name}</span>
+                                                        <button type="button" onClick={() => {
+                                                            const newPreviews = [...videoPreviews];
+                                                            newPreviews.splice(i, 1);
+                                                            setVideoPreviews(newPreviews);
+                                                        }} className="px-2 py-1 bg-error hover:bg-error/80 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-lg transition-colors cursor-pointer">
+                                                            <span className="material-symbols-outlined text-[14px]">delete</span>
+                                                            Quitar
+                                                        </button>
                                                     </div>
                                                 </div>
                                             ))}
                                             <label className="relative flex flex-col items-center justify-center p-2 rounded-xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-colors cursor-pointer group aspect-video">
                                                 <span className="material-symbols-outlined text-xl text-primary">add</span>
-                                                <span className="text-[10px] text-primary">Cambiar / Agregar</span>
+                                                <span className="text-[10px] text-primary text-center">Agregar más videos</span>
                                                 <input name="videoFiles" type="file" accept="video/*" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onChange={(e) => {
                                                     if (e.target.files) {
                                                         const newFiles = Array.from(e.target.files).map(f => ({file: f, url: URL.createObjectURL(f)}));
-                                                        setVideoPreviews(newFiles);
+                                                        setVideoPreviews([...videoPreviews, ...newFiles]);
                                                     }
                                                 }} />
                                             </label>
@@ -585,19 +590,25 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                     {pdfPreviews.length > 0 ? (
                                         <div className="flex flex-col gap-2 mt-4">
                                             {pdfPreviews.map((pp, i) => (
-                                                <div key={i} className="flex items-center gap-2 bg-secondary/10 px-3 py-2 rounded-lg border border-secondary/30 text-xs">
+                                                <div key={i} className="flex items-center gap-2 bg-secondary/10 px-3 py-2 rounded-lg border border-secondary/30 text-xs shadow-sm">
                                                     <span className="material-symbols-outlined text-secondary text-[16px]">task</span>
                                                     <span className="truncate w-full font-medium text-secondary">{pp.name}</span>
-                                                    <span className="material-symbols-outlined text-[16px] text-green-600">check_circle</span>
+                                                    <button type="button" onClick={() => {
+                                                        const newPreviews = [...pdfPreviews];
+                                                        newPreviews.splice(i, 1);
+                                                        setPdfPreviews(newPreviews);
+                                                    }} className="text-error hover:text-error/80 p-1 flex items-center justify-center cursor-pointer">
+                                                        <span className="material-symbols-outlined text-[18px]">close</span>
+                                                    </button>
                                                 </div>
                                             ))}
                                             <label className="relative flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-dashed border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10 transition-colors cursor-pointer group mt-2">
                                                 <span className="material-symbols-outlined text-lg text-secondary">add</span>
-                                                <span className="text-xs text-secondary font-medium">Cambiar Archivos</span>
+                                                <span className="text-xs text-secondary font-medium">Agregar más archivos</span>
                                                 <input name="pdfFiles" type="file" accept="application/pdf" multiple className="absolute inset-0 opacity-0 cursor-pointer w-full h-full" onChange={(e) => {
                                                     if (e.target.files) {
                                                         const newFiles = Array.from(e.target.files).map(f => ({file: f, name: f.name}));
-                                                        setPdfPreviews(newFiles);
+                                                        setPdfPreviews([...pdfPreviews, ...newFiles]);
                                                     }
                                                 }} />
                                             </label>
