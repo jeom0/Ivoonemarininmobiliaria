@@ -11,7 +11,6 @@ export default function NewProperty() {
     const [gallery, setGallery] = useState<string[]>([]);
     const [mainImage, setMainImage] = useState<string>('');
     const [newImageUrl, setNewImageUrl] = useState<string>('');
-    const [videoPreview, setVideoPreview] = useState<{file: File | null, url: string | null}>({file: null, url: null});
     const [pdfPreview, setPdfPreview] = useState<{file: File | null, name: string | null}>({file: null, name: null});
 
     // Direct file upload via + card
@@ -132,22 +131,8 @@ export default function NewProperty() {
                 primaryImage = currentGallery[0];
             }
 
-            // Multiple video upload
-            let uploadedVideos: string[] = [];
-            if (videoPreview.file) {
-                const uploadFormData = new FormData();
-                uploadFormData.append("file", videoPreview.file);
-                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                if (uploadRes.ok) {
-                    const uploadData = await uploadRes.json();
-                    uploadedVideos.push(uploadData.url);
-                } else {
-                    alert(`Error al subir el video ${videoPreview.file.name}. Es posible que el archivo sea demasiado pesado para el servidor (Límite sugerido: 50MB).`);
-                    setLoading(false);
-                    return;
-                }
-                if (uploadedVideos.length > 0) data.videos = JSON.stringify(uploadedVideos);
-            }
+            // Multiple video upload logic removed (handled by gallery now)
+
 
             // Multiple PDF upload
             let uploadedDocs: string[] = [];
@@ -404,48 +389,7 @@ export default function NewProperty() {
 
                                 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-outline-variant/30 mt-6">
-                                {/* Video Upload */}
-                                <div className={`relative flex flex-col items-center justify-center min-h-[180px] rounded-2xl border-2 border-dashed ${videoPreview.url ? 'border-primary/80 bg-primary/10' : 'border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10'} transition-colors shadow-sm overflow-hidden`}>
-                                    <input 
-                                        id="video-upload-input"
-                                        name="videoFile" 
-                                        type="file" 
-                                        accept="video/*" 
-                                        className="hidden" 
-                                        onChange={(e) => {
-                                            if (e.target.files && e.target.files[0]) {
-                                                const file = e.target.files[0];
-                                                const url = URL.createObjectURL(file);
-                                                setVideoPreview({file, url});
-                                            } else {
-                                                setVideoPreview({file: null, url: null});
-                                            }
-                                        }}
-                                    />
-                                    {videoPreview.url ? (
-                                        <div className="absolute inset-0 w-full h-full">
-                                            <video src={videoPreview.url} className="w-full h-full object-cover opacity-60 bg-black" muted loop autoPlay playsInline />
-                                            <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 text-white p-4">
-                                                <span className="material-symbols-outlined text-4xl mb-2 text-green-400">check_circle</span>
-                                                <span className="font-label-lg font-bold text-center w-full truncate">{videoPreview.file?.name}</span>
-                                                <button type="button" onClick={() => {
-                                                    setVideoPreview({file: null, url: null});
-                                                    const input = document.getElementById('video-upload-input') as HTMLInputElement;
-                                                    if (input) input.value = '';
-                                                }} className="mt-3 px-4 py-2 bg-error hover:bg-error/80 text-white rounded-full text-xs font-bold flex items-center gap-1 transition-colors z-20 cursor-pointer shadow-lg">
-                                                    <span className="material-symbols-outlined text-[16px]">delete</span>
-                                                    Borrar Video
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <label htmlFor="video-upload-input" className="absolute inset-0 flex flex-col items-center justify-center cursor-pointer group w-full h-full">
-                                            <span className="material-symbols-outlined text-4xl text-primary mb-2 group-hover:scale-110 transition-transform">movie</span>
-                                            <span className="font-label-lg text-primary font-bold mb-1">Subir Video (Opcional)</span>
-                                            <span className="text-xs text-on-surface-variant text-center">Formatos .mp4, .mov (Max 50MB)</span>
-                                        </label>
-                                    )}
-                                </div>
+
                                 
                                 {/* PDF Upload */}
                                 <div className={`relative flex flex-col items-center justify-center min-h-[180px] rounded-2xl border-2 border-dashed ${pdfPreview.name ? 'border-secondary/80 bg-secondary/10' : 'border-secondary/40 hover:border-secondary bg-secondary/5 hover:bg-secondary/10'} transition-colors shadow-sm overflow-hidden`}>
