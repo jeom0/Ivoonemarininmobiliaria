@@ -479,6 +479,13 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                 </div>
                                 <div>
                                     <label className="font-label-md text-secondary block mb-1">Descripción Completa / Detallada</label>
+                                    <textarea name="fullDesc" defaultValue={property?.fullDesc || ''} rows={6} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Videos y Archivos Adjuntos */}
+                        <div className="mt-6">
                             <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
                                 <span className="material-symbols-outlined text-primary">videocam</span>
                                 Videos y Archivos Adjuntos
