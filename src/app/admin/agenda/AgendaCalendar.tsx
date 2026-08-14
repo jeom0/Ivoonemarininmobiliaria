@@ -324,114 +324,142 @@ export default function AgendaCalendar({ initialAppointments, leads, properties 
 
       {/* Modal Agendar Cita */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-surface-container-lowest rounded-2xl p-6 md:p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar">
-            <h2 className="font-headline-md text-primary mb-6">Agendar Nuevo Evento / Cita</h2>
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <div className="bg-surface-container-lowest rounded-[2rem] p-6 md:p-8 max-w-3xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl border border-outline-variant/20">
+            <div className="flex justify-between items-center mb-8 border-b border-outline-variant/30 pb-4">
+              <h2 className="font-display-sm text-primary flex items-center gap-3">
+                <span className="material-symbols-outlined bg-primary/10 p-2.5 rounded-xl text-primary">event</span>
+                Agendar Nuevo Evento
+              </h2>
+              <button onClick={() => setIsModalOpen(false)} className="w-10 h-10 rounded-full bg-surface-container hover:bg-error/10 text-on-surface hover:text-error flex items-center justify-center transition-colors">
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
             
             <form onSubmit={handleCreateAppointment} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 
-                {/* Columna Izquierda */}
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-label-md text-on-surface mb-2">Seleccionar Cliente (Lead)</label>
-                    <select required value={leadId} onChange={e => setLeadId(e.target.value)} className="w-full border border-outline-variant rounded-lg px-4 py-3 bg-surface text-on-surface outline-none focus:border-primary">
-                      <option value="" disabled>-- Elige un lead --</option>
+                {/* Columna Izquierda: Información de la Cita */}
+                <div className="space-y-6">
+                  {/* Lead Section Bento */}
+                  <div className="bg-surface p-5 rounded-2xl border border-outline-variant/40 hover:border-primary/30 transition-colors shadow-sm">
+                    <h3 className="font-label-lg text-primary mb-4 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[20px]">person</span>
+                      Datos del Cliente
+                    </h3>
+                    <select required value={leadId} onChange={e => setLeadId(e.target.value)} className="w-full border-b-2 border-outline-variant bg-transparent px-2 py-3 text-on-surface outline-none focus:border-primary font-body-lg">
+                      <option value="" disabled>Selecciona un lead interesado</option>
                       {leads.map(l => (
                         <option key={l.id} value={l.id}>{l.name} - {l.email}</option>
                       ))}
                     </select>
-                  </div>
-                  
-                  {selectedLead && (
-                     <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg border border-primary/10">
-                        {selectedLead.avatar ? (
-                          <img src={selectedLead.avatar} className="w-12 h-12 rounded-full object-cover" />
-                        ) : (
-                          <div className="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xl">{selectedLead.name.substring(0,2).toUpperCase()}</div>
-                        )}
-                        <div>
-                          <p className="font-bold text-primary">{selectedLead.name}</p>
-                          <p className="text-xs text-on-surface-variant">{selectedLead.phone || selectedLead.email}</p>
-                        </div>
-                     </div>
-                  )}
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-label-md text-on-surface mb-1">Fecha</label>
-                      <input required type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border border-outline-variant rounded-lg px-4 py-3 bg-surface outline-none focus:border-primary" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-label-md text-on-surface mb-1">Hora</label>
-                      <input required type="time" value={time} onChange={e => setTime(e.target.value)} className="w-full border border-outline-variant rounded-lg px-4 py-3 bg-surface outline-none focus:border-primary" />
-                    </div>
+                    
+                    {selectedLead && (
+                       <div className="flex items-center gap-4 mt-4 p-4 bg-primary/5 rounded-xl border border-primary/10">
+                          {selectedLead.avatar ? (
+                            <img src={selectedLead.avatar} className="w-12 h-12 rounded-full object-cover shadow-sm" />
+                          ) : (
+                            <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-xl shadow-sm">{selectedLead.name.substring(0,2).toUpperCase()}</div>
+                          )}
+                          <div>
+                            <p className="font-bold text-primary font-body-lg leading-tight">{selectedLead.name}</p>
+                            <p className="text-xs font-label-md text-on-surface-variant mt-0.5 flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[14px]">call</span>
+                              {selectedLead.phone || selectedLead.email}
+                            </p>
+                          </div>
+                       </div>
+                    )}
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-label-md text-on-surface mb-2">Propiedad (Opcional)</label>
-                    <select value={propertyId} onChange={e => setPropertyId(e.target.value)} className="w-full border border-outline-variant rounded-lg px-4 py-3 bg-surface text-on-surface outline-none focus:border-primary">
-                      <option value="">-- Sin propiedad específica --</option>
+                  {/* Fecha y Hora Bento */}
+                  <div className="bg-surface p-5 rounded-2xl border border-outline-variant/40 hover:border-secondary/30 transition-colors shadow-sm flex gap-4">
+                    <div className="flex-1">
+                      <label className="block text-xs font-label-md text-secondary mb-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">calendar_today</span> Fecha</label>
+                      <input required type="date" value={date} onChange={e => setDate(e.target.value)} className="w-full border-b-2 border-outline-variant bg-transparent px-1 py-2 outline-none focus:border-secondary font-bold text-on-surface" />
+                    </div>
+                    <div className="w-px bg-outline-variant/30"></div>
+                    <div className="flex-1">
+                      <label className="block text-xs font-label-md text-secondary mb-1 flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">schedule</span> Hora</label>
+                      <input required type="time" value={time} onChange={e => setTime(e.target.value)} className="w-full border-b-2 border-outline-variant bg-transparent px-1 py-2 outline-none focus:border-secondary font-bold text-on-surface" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Columna Derecha: Propiedad y Portada */}
+                <div className="space-y-6">
+                  {/* Propiedad Bento */}
+                  <div className="bg-surface p-5 rounded-2xl border border-outline-variant/40 hover:border-primary/30 transition-colors shadow-sm">
+                    <h3 className="font-label-lg text-primary mb-4 flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[20px]">real_estate_agent</span>
+                      Propiedad a Mostrar (Opcional)
+                    </h3>
+                    <select value={propertyId} onChange={e => setPropertyId(e.target.value)} className="w-full border-b-2 border-outline-variant bg-transparent px-2 py-3 text-on-surface outline-none focus:border-primary font-body-lg">
+                      <option value="">-- Cita general (sin propiedad) --</option>
                       {properties.map(p => (
                         <option key={p.id} value={p.id}>{p.title}</option>
                       ))}
                     </select>
+
+                    {selectedProperty && (
+                      <div className="flex items-center gap-4 mt-4 p-4 bg-surface-container-lowest rounded-xl border border-outline-variant/50 shadow-sm">
+                         {selectedProperty.mainImage ? (
+                           <img src={selectedProperty.mainImage} className="w-16 h-16 rounded-lg object-cover shadow-sm" />
+                         ) : (
+                           <div className="w-16 h-16 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shadow-sm"><span className="material-symbols-outlined text-2xl">home</span></div>
+                         )}
+                         <div className="flex-1 min-w-0">
+                           <p className="font-bold text-on-surface font-body-lg line-clamp-1">{selectedProperty.title}</p>
+                           <p className="text-sm text-primary font-bold mt-1 bg-primary/10 inline-block px-2 py-0.5 rounded">
+                             {new Intl.NumberFormat('es-CO', { style: 'currency', currency: selectedProperty.currency, maximumFractionDigits: 0 }).format(selectedProperty.price)}
+                           </p>
+                         </div>
+                      </div>
+                    )}
                   </div>
 
-                  {selectedProperty && (
-                    <div className="flex items-center gap-3 p-3 bg-surface-container-low rounded-lg border border-outline-variant/50">
-                       {selectedProperty.mainImage ? (
-                         <img src={selectedProperty.mainImage} className="w-16 h-16 rounded object-cover" />
-                       ) : (
-                         <div className="w-16 h-16 rounded bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center"><span className="material-symbols-outlined">home</span></div>
-                       )}
-                       <div>
-                         <p className="font-bold text-primary line-clamp-1">{selectedProperty.title}</p>
-                         <p className="text-sm text-secondary font-label-md">{new Intl.NumberFormat('es-CO', { style: 'currency', currency: selectedProperty.currency, maximumFractionDigits: 0 }).format(selectedProperty.price)}</p>
-                       </div>
-                    </div>
-                  )}
-                </div>
+                  {/* Portada Bento */}
+                  <div className="bg-surface p-5 rounded-2xl border border-outline-variant/40 hover:border-primary/30 transition-colors shadow-sm">
+                     <h3 className="font-label-lg text-primary mb-3 flex items-center gap-2">
+                       <span className="material-symbols-outlined text-[20px]">wallpaper</span>
+                       Portada Visual del Evento
+                     </h3>
+                     
+                     <div className="w-full h-32 rounded-xl overflow-hidden bg-surface-container relative mb-4 border border-outline-variant/50 shadow-sm group">
+                        <img src={coverImage} className="w-full h-full object-cover transition-transform group-hover:scale-105" alt="Cover Preview" />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-all backdrop-blur-sm">
+                           <label className="bg-surface text-primary px-4 py-2 rounded-lg font-bold cursor-pointer hover:bg-surface-container transition-colors flex items-center gap-2 shadow-lg">
+                             <span className="material-symbols-outlined">upload</span>
+                             Subir Foto
+                             <input type="file" className="hidden" accept="image/*" onChange={handleUploadCover} />
+                           </label>
+                        </div>
+                     </div>
 
-                {/* Columna Derecha (Portada) */}
-                <div>
-                   <label className="block text-sm font-label-md text-on-surface mb-2">Portada del Evento</label>
-                   
-                   <div className="w-full h-40 rounded-xl overflow-hidden bg-surface-container relative mb-4 border border-outline-variant/50 shadow-sm">
-                      <img src={coverImage} className="w-full h-full object-cover" alt="Cover Preview" />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 bg-black/40 transition-opacity">
-                         <label className="bg-surface text-primary px-4 py-2 rounded-lg font-bold cursor-pointer hover:bg-surface-container transition-colors flex items-center gap-2">
-                           <span className="material-symbols-outlined">upload</span>
-                           Subir Personalizada
-                           <input type="file" className="hidden" accept="image/*" onChange={handleUploadCover} />
-                         </label>
-                      </div>
-                   </div>
-
-                   <p className="text-xs font-label-md text-on-surface-variant mb-2">O elige una textura predeterminada:</p>
-                   <div className="grid grid-cols-5 gap-2">
-                     {DEFAULT_TEXTURES.map((texture, idx) => (
-                       <button 
-                         key={idx}
-                         type="button"
-                         onClick={() => setCoverImage(texture)}
-                         className={`w-full aspect-square rounded-lg overflow-hidden border-2 transition-all ${coverImage === texture ? 'border-primary ring-2 ring-primary/30 scale-105 shadow-md' : 'border-transparent hover:scale-105'}`}
-                       >
-                         <img src={texture} className="w-full h-full object-cover" />
-                       </button>
-                     ))}
-                   </div>
+                     <div className="grid grid-cols-5 gap-2">
+                       {DEFAULT_TEXTURES.map((texture, idx) => (
+                         <button 
+                           key={idx}
+                           type="button"
+                           onClick={() => setCoverImage(texture)}
+                           className={`w-full aspect-square rounded-lg overflow-hidden border-2 transition-all ${coverImage === texture ? 'border-primary ring-2 ring-primary/30 scale-110 shadow-md z-10' : 'border-transparent hover:scale-110 hover:shadow-sm'}`}
+                         >
+                           <img src={texture} className="w-full h-full object-cover" />
+                         </button>
+                       ))}
+                     </div>
+                  </div>
                 </div>
 
               </div>
 
-              <div className="flex justify-end gap-3 pt-6 mt-6 border-t border-outline-variant/30">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-2 rounded-lg text-on-surface-variant hover:bg-surface-variant transition-colors font-label-md">
+              <div className="flex justify-end gap-4 pt-6 mt-2 border-t border-outline-variant/30">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="px-6 py-3 rounded-xl text-secondary hover:bg-surface-container transition-colors font-bold text-sm border border-outline-variant/50">
                   Cancelar
                 </button>
-                <button type="submit" disabled={saving || !leadId || !date || !time} className="bg-primary text-on-primary px-6 py-2 rounded-lg hover:opacity-90 transition-opacity font-label-md disabled:opacity-50 flex items-center gap-2">
-                  <span className="material-symbols-outlined">save</span>
-                  {saving ? 'Guardando...' : 'Guardar Evento'}
+                <button type="submit" disabled={saving || !leadId || !date || !time} className="bg-primary text-on-primary px-8 py-3 rounded-xl hover:bg-primary/90 transition-all font-bold disabled:opacity-50 flex items-center gap-2 shadow-lg shadow-primary/20">
+                  <span className="material-symbols-outlined">calendar_add_on</span>
+                  {saving ? 'Guardando...' : 'Confirmar Cita'}
                 </button>
               </div>
             </form>
