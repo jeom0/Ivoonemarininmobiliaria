@@ -6,8 +6,8 @@ import fs from "fs";
 import path from "path";
 import { writeFile } from "fs/promises";
 
-const MONSTERS = ["monster", "alien", "cyclops", "friendly beast", "fluffy creature", "horned goblin", "one-eyed blob"];
-const COLORS = ["blue", "purple", "pink", "green", "orange", "yellow", "teal", "red"];
+const MONSTERS = ["one-eyed alien monster", "cyclops alien", "friendly one-eyed beast"];
+const COLORS = ["purple", "blue", "pink", "green", "orange", "teal", "red"];
 
 export async function POST(request: NextRequest) {
   try {
@@ -42,8 +42,8 @@ export async function POST(request: NextRequest) {
       currentCount = 0;
     }
 
-    if (currentCount >= 2) {
-      return NextResponse.json({ success: false, message: "Has alcanzado el límite diario de 2 avatares generados por IA." }, { status: 429 });
+    if (currentCount >= 5) {
+      return NextResponse.json({ success: false, message: "Has alcanzado el límite diario de 5 avatares generados por IA." }, { status: 429 });
     }
 
     // Generate prompt
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     const randomColor = COLORS[Math.floor(Math.random() * COLORS.length)];
     
     // Pollinations AI URL (free, no API key required)
-    const prompt = `A cute extremely high quality 3D Pixar style avatar of a friendly little ${randomMonster} wearing professional clothes, solid ${randomColor} background, soft studio lighting, vibrant colors, minimalist`;
+    const prompt = `A cute extremely high quality 3D Pixar style avatar of a friendly little ${randomColor} ${randomMonster} wearing a small golden crown and a little superhero cape, isolated on a pure solid white background, soft studio lighting, vibrant colors, minimalist, facing forward, symmetrical, centered, profile picture`;
     const encodedPrompt = encodeURIComponent(prompt);
     // Add random seed to avoid caching
     const seed = Math.floor(Math.random() * 1000000);
@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       url: finalUrl,
-      remainingGenerations: 2 - (currentCount + 1)
+      remainingGenerations: 5 - (currentCount + 1)
     });
 
   } catch (error) {
