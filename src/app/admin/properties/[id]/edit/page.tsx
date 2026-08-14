@@ -346,13 +346,30 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                     <label className="font-label-md text-secondary">Dirección / Sector (Opcional)</label>
                                     <input name="address" type="text" defaultValue={property?.address || ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: Condominio Las Palmas" />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Latitud (Mapa)</label>
-                                    <input name="lat" type="number" step="any" defaultValue={property?.lat || ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: 4.8690" />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="font-label-md text-secondary">Longitud (Mapa)</label>
-                                    <input name="lng" type="number" step="any" defaultValue={property?.lng || ''} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" placeholder="Ej: -75.6231" />
+                                <div className="space-y-2 md:col-span-2">
+                                    <label className="font-label-md text-secondary">Coordenadas (Latitud, Longitud)</label>
+                                    <input 
+                                        type="text" 
+                                        defaultValue={property?.lat && property?.lng ? `${property.lat}, ${property.lng}` : ''}
+                                        onChange={(e) => {
+                                            const parts = e.target.value.split(',');
+                                            const latInput = document.getElementById('lat_input') as HTMLInputElement;
+                                            const lngInput = document.getElementById('lng_input') as HTMLInputElement;
+                                            if (latInput && lngInput) {
+                                                if (parts.length >= 2) {
+                                                    latInput.value = parts[0].trim();
+                                                    lngInput.value = parts[1].trim();
+                                                } else {
+                                                    latInput.value = '';
+                                                    lngInput.value = '';
+                                                }
+                                            }
+                                        }}
+                                        className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary" 
+                                        placeholder="Ej: 4.804204, -75.738502" 
+                                    />
+                                    <input type="hidden" name="lat" id="lat_input" defaultValue={property?.lat || ''} />
+                                    <input type="hidden" name="lng" id="lng_input" defaultValue={property?.lng || ''} />
                                 </div>
                             </div>
                         </div>
@@ -434,45 +451,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                 </div>
                             </div>
 
-                            {/* Agregar nuevas imágenes */}
-                            <div className="bg-surface p-4 rounded-xl border border-outline-variant/30 space-y-4">
-                                <h4 className="font-label-lg text-secondary flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-[20px]">add_photo_alternate</span>
-                                    Agregar Fotos a la Galería
-                                </h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="font-label-md text-secondary block mb-1">Subir Archivos desde tu Equipo (Multi-selección)</label>
-                                        <input
-                                            name="imagesFiles"
-                                            type="file"
-                                            accept="image/*"
-                                            multiple
-                                            className="w-full border border-outline-variant rounded-lg p-2.5 bg-surface text-sm focus:ring-primary focus:border-primary"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="font-label-md text-secondary block mb-1">O Agregar Foto por Enlace URL</label>
-                                        <div className="flex gap-2">
-                                            <input
-                                                type="url"
-                                                value={newImageUrl}
-                                                onChange={e => setNewImageUrl(e.target.value)}
-                                                placeholder="https://..."
-                                                className="flex-1 border border-outline-variant rounded-lg p-2.5 bg-surface text-sm focus:ring-primary focus:border-primary"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={handleAddImageUrl}
-                                                className="bg-secondary hover:bg-secondary/90 text-on-secondary font-bold px-4 py-2.5 rounded-lg text-sm transition-colors flex items-center gap-1"
-                                            >
-                                                <span className="material-symbols-outlined text-[18px]">add</span>
-                                                Añadir
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                         </div>
 
                         {/* Características Técnicas */}
