@@ -50,11 +50,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   const allCities = Array.from(new Set([...defaultCities, ...dbCities])).sort();
 
   return (
-    <>
-      
-
+    <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
 <PublicNavbar />
-<main className="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<main className="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto flex-grow">
 <header className="mb-12">
 <h1 className="font-display-lg text-display-lg text-primary mb-2">Inmuebles disponibles</h1>
 <p className="font-body-lg text-body-lg text-on-surface-variant">Explora propiedades en venta y arriendo en el Eje Cafetero.</p>
@@ -180,11 +178,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
 </div>
 </div>
 </main>
-
 <PublicFooter />
-
-
-    </>
+</div>
   );
 }
-    

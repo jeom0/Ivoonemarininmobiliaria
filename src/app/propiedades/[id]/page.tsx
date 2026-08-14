@@ -62,9 +62,9 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
       <PublicNavbar />
-      <main className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-8 min-h-screen">
+      <main className="max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-desktop py-8 flex-grow">
         <nav className="flex mb-8 items-center gap-2 font-label-md text-label-md text-on-surface-variant overflow-x-auto whitespace-nowrap">
           <Link className="hover:text-primary" href="/">Inicio</Link>
           <span className="material-symbols-outlined text-[16px]">chevron_right</span>
@@ -235,7 +235,6 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
       </main>
 
       <PublicFooter />
-    </>
+    </div>
   );
 }
-

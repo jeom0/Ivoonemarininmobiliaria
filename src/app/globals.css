@@ -327,3 +327,5 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+
+html, body { overflow-x: hidden; width: 100%; position: relative; margin: 0; padding: 0; }
