@@ -38,6 +38,7 @@ export default function NewProperty() {
     const [mainImage, setMainImage] = useState<string>('');
     const [newImageUrl, setNewImageUrl] = useState<string>('');
     const [pdfPreview, setPdfPreview] = useState<{file: File | null, name: string | null}>({file: null, name: null});
+    const [customFields, setCustomFields] = useState<{category: string, icon: string, label: string, value: string}[]>([]);
 
     // Direct file upload via + card
     const handleDirectFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -167,6 +168,11 @@ export default function NewProperty() {
                 if (uploadedDocs.length > 0) data.documents = JSON.stringify(uploadedDocs);
             }
 
+            // Append custom fields
+            if (customFields.length > 0) {
+                data.customFields = JSON.stringify(customFields);
+            }
+
             const propertyData: any = {
                 ...data,
                 mainImage: primaryImage || null,
@@ -232,6 +238,119 @@ export default function NewProperty() {
                     )}
                     
                     <form onSubmit={handleSubmit} className="space-y-6 lg:space-y-10">
+                        {/* Detalles Financieros */}
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
+                                <span className="material-symbols-outlined text-secondary">payments</span>
+                                Detalles Financieros
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div className="space-y-1 relative group">
+                                    <label className="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">Precio *</label>
+                                    <input name="price" type="number" required className="w-full border-b-2 border-outline-variant bg-transparent p-0 focus:border-primary focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50 pb-1" placeholder="Ej: 450000000" />
+                                </div>
+                                <div className="space-y-1 relative group">
+                                    <label className="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">Administración</label>
+                                    <input name="adminFee" type="number" className="w-full border-b-2 border-outline-variant bg-transparent p-0 focus:border-primary focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50 pb-1" placeholder="Ej: 350000" />
+                                </div>
+                                <div className="space-y-1 relative group">
+                                    <label className="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">Moneda</label>
+                                    <select name="currency" className="w-full border-b-2 border-outline-variant bg-transparent p-0 focus:border-primary focus:ring-0 text-on-surface font-body-lg pb-1">
+                                        <option value="COP">COP ($)</option>
+                                        <option value="USD">USD ($)</option>
+                                        <option value="EUR">EUR (€)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Ficha Técnica Extendida (Custom Fields) */}
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="font-headline-md text-primary flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-secondary">list_alt</span>
+                                    Especificaciones Extra (Ficha Técnica)
+                                </h3>
+                                <button type="button" onClick={() => setCustomFields([...customFields, { category: 'Características Técnicas', icon: 'check_circle', label: '', value: '' }])} className="text-sm bg-primary/10 text-primary px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-primary/20 transition-colors">
+                                    <span className="material-symbols-outlined text-sm">add</span> Añadir Campo
+                                </button>
+                            </div>
+                            <p className="text-sm text-on-surface-variant mb-4">Agrega especificaciones personalizadas que no estén en el formulario base (ej. "Tipo de Piso", "Zonas Verdes", "Acabados"). Puedes usar nombres de íconos de <a href="https://fonts.google.com/icons?icon.set=Material+Symbols" target="_blank" className="text-secondary hover:underline">Google Material Symbols</a>.</p>
+                            
+                            <div className="space-y-4">
+                                {customFields.map((field, idx) => (
+                                    <div key={idx} className="flex flex-col md:flex-row gap-3 items-start md:items-center bg-surface-container-low p-3 rounded-xl border border-outline-variant/30">
+                                        <select 
+                                            value={field.category} 
+                                            onChange={(e) => {
+                                                const newFields = [...customFields];
+                                                newFields[idx].category = e.target.value;
+                                                setCustomFields(newFields);
+                                            }}
+                                            className="bg-surface border border-outline-variant rounded-md px-2 py-1.5 text-sm"
+                                        >
+                                            <option value="Información Básica">Información Básica</option>
+                                            <option value="Características Técnicas">Características Técnicas</option>
+                                        </select>
+                                        
+                                        <div className="flex items-center gap-2 bg-surface border border-outline-variant rounded-md px-2 py-1.5 focus-within:border-primary">
+                                            <span className="material-symbols-outlined text-on-surface-variant">{field.icon}</span>
+                                            <input 
+                                                type="text" 
+                                                placeholder="Ícono (ej. pool)" 
+                                                value={field.icon}
+                                                onChange={(e) => {
+                                                    const newFields = [...customFields];
+                                                    newFields[idx].icon = e.target.value;
+                                                    setCustomFields(newFields);
+                                                }}
+                                                className="w-24 outline-none text-sm bg-transparent"
+                                            />
+                                        </div>
+                                        
+                                        <input 
+                                            type="text" 
+                                            placeholder="Nombre (ej. Cuarto Útil)" 
+                                            value={field.label}
+                                            required
+                                            onChange={(e) => {
+                                                const newFields = [...customFields];
+                                                newFields[idx].label = e.target.value;
+                                                setCustomFields(newFields);
+                                            }}
+                                            className="flex-1 bg-surface border border-outline-variant rounded-md px-3 py-1.5 text-sm outline-none focus:border-primary"
+                                        />
+                                        
+                                        <input 
+                                            type="text" 
+                                            placeholder="Valor (ej. Sí, 4m2)" 
+                                            value={field.value}
+                                            required
+                                            onChange={(e) => {
+                                                const newFields = [...customFields];
+                                                newFields[idx].value = e.target.value;
+                                                setCustomFields(newFields);
+                                            }}
+                                            className="flex-1 bg-surface border border-outline-variant rounded-md px-3 py-1.5 text-sm outline-none focus:border-primary"
+                                        />
+                                        
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
+                                            className="text-error hover:bg-error/10 p-1.5 rounded-md transition-colors"
+                                        >
+                                            <span className="material-symbols-outlined text-lg">delete</span>
+                                        </button>
+                                    </div>
+                                ))}
+                                {customFields.length === 0 && (
+                                    <div className="text-center py-6 text-on-surface-variant bg-surface-container-low rounded-xl border border-dashed border-outline-variant">
+                                        No has añadido campos adicionales.
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
                         {/* Básicos - Bento Style */}
                         <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">

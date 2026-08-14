@@ -131,6 +131,46 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
               )}
             </div>
 
+            {/* Custom Fields (Ficha Técnica Extendida) */}
+            {(() => {
+                if (!property.customFields) return null;
+                try {
+                    const fields = JSON.parse(property.customFields) as {category: string, icon: string, label: string, value: string}[];
+                    if (!fields || fields.length === 0) return null;
+                    
+                    const groupedFields = fields.reduce((acc, field) => {
+                        if (!acc[field.category]) acc[field.category] = [];
+                        acc[field.category].push(field);
+                        return acc;
+                    }, {} as Record<string, typeof fields>);
+                    
+                    return (
+                        <div className="space-y-8 mt-10">
+                            {Object.entries(groupedFields).map(([category, items]) => (
+                                <div key={category} className="space-y-4">
+                                    <h2 className="font-headline-md text-headline-md text-primary pb-2 border-b border-outline-variant/30">
+                                        {category}
+                                    </h2>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                        {items.map((item, idx) => (
+                                            <div key={idx} className="flex items-start gap-3 p-4 bg-surface-container-low rounded-xl border border-outline-variant/30 hover:shadow-sm transition-shadow">
+                                                <span className="material-symbols-outlined text-secondary text-[24px] mt-0.5">{item.icon}</span>
+                                                <div>
+                                                    <p className="text-[12px] font-label-md text-on-surface-variant uppercase tracking-wide">{item.label}</p>
+                                                    <p className="font-body-lg text-on-surface font-medium mt-0.5">{item.value}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    );
+                } catch(e) {
+                    return null;
+                }
+            })()}
+
             {/* Description and Multimedia */}
             <div className="space-y-6">
               <h2 className="font-headline-md text-headline-md text-primary">Descripción del Inmueble</h2>

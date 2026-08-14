@@ -52,6 +52,7 @@ model Property {
   adminFee        Float?   // Administración
   amenities       String?  @db.Text // JSON string or comma separated
   features        String?  @db.Text // JSON string or comma separated
+  customFields    String?  @db.LongText // JSON array with objects: { category, icon, label, value }
   mainImage       String?
   images          String?  @db.LongText // JSON array
   videos          String?  @db.LongText // JSON array

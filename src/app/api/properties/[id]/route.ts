@@ -81,6 +81,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         if (data.virtualTour !== undefined) dataToUpdate.virtualTour = data.virtualTour ? String(data.virtualTour) : null;
         if (data.amenities !== undefined) dataToUpdate.amenities = data.amenities ? String(data.amenities) : null;
         if (data.features !== undefined) dataToUpdate.features = data.features ? String(data.features) : null;
+        if (data.customFields !== undefined) dataToUpdate.customFields = data.customFields ? String(data.customFields) : null;
         if (data.seoTitle !== undefined) dataToUpdate.seoTitle = data.seoTitle ? String(data.seoTitle) : null;
         if (data.seoDesc !== undefined) dataToUpdate.seoDesc = data.seoDesc ? String(data.seoDesc) : null;
 

@@ -40,6 +40,7 @@ export async function POST(req: Request) {
                 fullDesc: data.fullDesc ? String(data.fullDesc) : null,
                 features: data.features ? String(data.features) : null,
                 amenities: data.amenities ? String(data.amenities) : null,
+                customFields: data.customFields ? String(data.customFields) : null,
                 virtualTour: data.virtualTour ? String(data.virtualTour) : null,
                 internalCode: data.internalCode ? String(data.internalCode) : null,
                 sector: data.sector ? String(data.sector) : null,
