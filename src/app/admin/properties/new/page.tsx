@@ -311,10 +311,10 @@ export default function NewProperty() {
                         <div>
                             <h3 className="font-headline-md text-primary mb-2 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
                                 <span className="material-symbols-outlined text-primary">photo_library</span>
-                                Galería e Imagen Principal ({gallery.length})
+                                Galería de Fotos y Videos ({gallery.length})
                             </h3>
                             <p className="text-xs text-on-surface-variant mb-4">
-                                Haz clic en **"Hacer Principal"** para definir la portada del inmueble. Las imágenes se cargarán y optimizarán de forma inmediata.
+                                Aquí puedes subir tanto **fotos** como **videos**. Haz clic en **"Hacer Principal"** para definir la portada del inmueble. Las imágenes y videos se cargarán de forma inmediata.
                             </p>
 
                             {/* Grid de imágenes y botón + */}

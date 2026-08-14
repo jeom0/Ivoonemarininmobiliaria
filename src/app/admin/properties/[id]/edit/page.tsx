@@ -360,10 +360,10 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                         <div>
                             <h3 className="font-headline-md text-primary mb-2 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
                                 <span className="material-symbols-outlined text-primary">photo_library</span>
-                                Galería de Fotos ({gallery.length})
+                                Galería de Fotos y Videos ({gallery.length})
                             </h3>
                             <p className="text-xs text-on-surface-variant mb-4">
-                                Haz clic en **"Establecer como Principal"** para definir la foto de portada. Usa el icono de papelera para eliminar fotos no deseadas.
+                                Aquí puedes subir tanto **fotos** como **videos**. Haz clic en **"Establecer como Principal"** para definir la foto de portada. Usa el icono de papelera para eliminar archivos no deseados.
                             </p>
 
                             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
