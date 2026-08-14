@@ -30,16 +30,13 @@ export async function POST(request: NextRequest) {
     
     const filepath = path.join(uploadDir, filename);
 
-    // Save to public/uploads using Streams to prevent memory overload with large files
+    // Save to public/uploads
     try {
-      const { Readable } = await import("stream");
-      const { pipeline } = await import("stream/promises");
-      
-      const nodeStream = Readable.fromWeb(file.stream() as any);
-      const writeStream = fs.createWriteStream(filepath);
-      await pipeline(nodeStream, writeStream);
+      const arrayBuffer = await file.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      await writeFile(filepath, buffer);
     } catch (e) {
-      console.error("Stream saving failed:", e);
+      console.error("File saving failed:", e);
       return NextResponse.json({ success: false, message: "File processing error" }, { status: 500 });
     }
 
