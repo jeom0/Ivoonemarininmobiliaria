@@ -387,8 +387,7 @@ export default function NewProperty() {
                             </div>
 
 
-                                
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-outline-variant/30 mt-6">
+                            <div className="grid grid-cols-1 gap-6 pt-6 border-t border-outline-variant/30 mt-6">
 
                                 
                                 {/* PDF Upload */}

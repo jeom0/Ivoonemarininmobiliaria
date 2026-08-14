@@ -497,14 +497,14 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                         {/* Videos y Archivos Adjuntos */}
                         <div className="mt-6">
                             <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-primary">videocam</span>
-                                Videos y Archivos Adjuntos
+                                <span className="material-symbols-outlined text-primary">description</span>
+                                Documentos Adjuntos (PDF)
                             </h3>
                             <div className="space-y-6">
 
 
                                 {/* PDFs */}
-                                <div className="pt-4 border-t border-outline-variant/30">
+                                <div className="">
                                     <label className="font-label-md text-secondary block mb-2">Documentos PDF Guardados ({documents.length})</label>
                                     {documents.length > 0 && (
                                         <div className="flex flex-wrap gap-3 mb-3">
