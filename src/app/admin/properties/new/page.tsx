@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import imageCompression from 'browser-image-compression';
 
 async function uploadFileChunked(file: File, originalName: string): Promise<string> {
