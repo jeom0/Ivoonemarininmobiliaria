@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import imageCompression from 'browser-image-compression';
 
-async function uploadFileChunked(file: File, originalName: string): Promise<string> {
+async function uploadFileChunked(file: File, originalName: string, onProgress?: (p: number) => void): Promise<string> {
     const CHUNK_SIZE = 1 * 1024 * 1024; // 1MB chunks to bypass Nginx limitations
     const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
     const fileId = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
@@ -21,6 +21,8 @@ async function uploadFileChunked(file: File, originalName: string): Promise<stri
         const res = await fetch('/api/upload', { method: 'POST', body: formData });
         if (!res.ok) throw new Error("Upload failed");
         
+        if (onProgress) onProgress(Math.round(((i + 1) / totalChunks) * 100));
+        
         const data = await res.json();
         if (data.url) return data.url; // Returns URL on the last chunk
     }
@@ -30,6 +32,7 @@ async function uploadFileChunked(file: File, originalName: string): Promise<stri
 export default function NewProperty() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
     const [uploadingFiles, setUploadingFiles] = useState(false);
     const [gallery, setGallery] = useState<string[]>([]);
     const [mainImage, setMainImage] = useState<string>('');
@@ -53,10 +56,13 @@ export default function NewProperty() {
                 }
             }
             try {
-                const url = await uploadFileChunked(file as File, originalFile.name);
+                setUploadProgress(0);
+                const url = await uploadFileChunked(file as File, originalFile.name, setUploadProgress);
                 newUploaded.push(url);
+                setUploadProgress(null);
             } catch (err) {
                 console.error("Error uploading file", err);
+                setUploadProgress(null);
             }
         }
 
@@ -126,11 +132,14 @@ export default function NewProperty() {
                     }
 
                     try {
-                        const url = await uploadFileChunked(file as File, originalFile.name);
+                        setUploadProgress(0);
+                        const url = await uploadFileChunked(file as File, originalFile.name, setUploadProgress);
                         currentGallery.push(url);
+                        setUploadProgress(null);
                     } catch(err) {
                         alert(`Error al subir el archivo ${originalFile.name}. Verifica la conexión.`);
                         setLoading(false);
+                        setUploadProgress(null);
                         return;
                     }
                 }
@@ -141,18 +150,18 @@ export default function NewProperty() {
                 primaryImage = currentGallery[0];
             }
 
-            // Multiple video upload logic removed (handled by gallery now)
-
-
             // Multiple PDF upload
             let uploadedDocs: string[] = [];
             if (pdfPreview.file) {
                 try {
-                    const url = await uploadFileChunked(pdfPreview.file as File, pdfPreview.file.name);
+                    setUploadProgress(0);
+                    const url = await uploadFileChunked(pdfPreview.file as File, pdfPreview.file.name, setUploadProgress);
                     uploadedDocs.push(url);
+                    setUploadProgress(null);
                 } catch(err) {
                     alert(`Error al subir el documento ${pdfPreview.file.name}.`);
                     setLoading(false);
+                    setUploadProgress(null);
                     return;
                 }
                 if (uploadedDocs.length > 0) data.documents = JSON.stringify(uploadedDocs);
@@ -207,7 +216,22 @@ export default function NewProperty() {
                 </div>
 
                 <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/30 ambient-shadow">
-                    <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Progress Overlay */}
+                    {uploadProgress !== null && (
+                        <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                            <div className="bg-white p-8 rounded-3xl max-w-sm w-full mx-4 shadow-2xl text-center space-y-4">
+                                <span className="material-symbols-outlined text-5xl text-primary animate-bounce">cloud_upload</span>
+                                <h3 className="font-headline-md text-primary">Subiendo Archivo...</h3>
+                                <div className="w-full bg-surface-container-high rounded-full h-3 overflow-hidden">
+                                    <div className="bg-primary h-full transition-all duration-300" style={{ width: `${uploadProgress}%` }}></div>
+                                </div>
+                                <p className="font-label-md text-on-surface-variant text-sm">{uploadProgress}% completado</p>
+                                <p className="text-xs text-on-surface-variant/70 mt-2">Por favor, no cierres esta ventana.</p>
+                            </div>
+                        </div>
+                    )}
+                    
+                    <form onSubmit={handleSubmit} className="space-y-6 lg:space-y-10">
                         {/* Básicos - Bento Style */}
                         <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">

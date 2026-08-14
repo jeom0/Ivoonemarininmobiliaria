@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import imageCompression from 'browser-image-compression';
 
-async function uploadFileChunked(file: File, originalName: string): Promise<string> {
+async function uploadFileChunked(file: File, originalName: string, onProgress?: (p: number) => void): Promise<string> {
     const CHUNK_SIZE = 1 * 1024 * 1024; // 1MB chunks to bypass Nginx limitations
     const totalChunks = Math.ceil(file.size / CHUNK_SIZE);
     const fileId = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
@@ -21,6 +21,8 @@ async function uploadFileChunked(file: File, originalName: string): Promise<stri
         const res = await fetch('/api/upload', { method: 'POST', body: formData });
         if (!res.ok) throw new Error("Upload failed");
         
+        if (onProgress) onProgress(Math.round(((i + 1) / totalChunks) * 100));
+        
         const data = await res.json();
         if (data.url) return data.url; // Returns URL on the last chunk
     }
@@ -30,8 +32,10 @@ async function uploadFileChunked(file: File, originalName: string): Promise<stri
 export default function EditProperty({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
     const unwrappedParams = use(params);
-    const [loading, setLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+    const [uploadingFiles, setUploadingFiles] = useState(false);
     const [property, setProperty] = useState<any>(null);
 
     // Gallery state
@@ -39,7 +43,6 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
     const [mainImage, setMainImage] = useState<string>('');
     const [newImageUrl, setNewImageUrl] = useState<string>('');
     const [documents, setDocuments] = useState<string[]>([]);
-    const [uploadingFiles, setUploadingFiles] = useState(false);
     const [pdfPreviews, setPdfPreviews] = useState<{file: File, name: string}[]>([]);
 
     useEffect(() => {
@@ -114,10 +117,13 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                 }
             }
             try {
-                const url = await uploadFileChunked(file as File, originalFile.name);
+                setUploadProgress(0);
+                const url = await uploadFileChunked(file as File, originalFile.name, setUploadProgress);
                 newUploaded.push(url);
+                setUploadProgress(null);
             } catch (err) {
                 console.error("Error uploading file", err);
+                setUploadProgress(null);
             }
         }
 
@@ -192,11 +198,14 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                         }
                     }
                     try {
-                        const url = await uploadFileChunked(file as File, originalFile.name);
+                        setUploadProgress(0);
+                        const url = await uploadFileChunked(file as File, originalFile.name, setUploadProgress);
                         newUploaded.push(url);
+                        setUploadProgress(null);
                     } catch (e) {
                         alert(`Error al subir la imagen ${originalFile.name}. Verifica su tamaño y conexión.`);
                         setUploadingFiles(false);
+                        setUploadProgress(null);
                         return;
                     }
                 }
@@ -218,11 +227,14 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                 for (let i = 0; i < pdfPreviews.length; i++) {
                     const file = pdfPreviews[i].file;
                     try {
-                        const url = await uploadFileChunked(file as File, file.name);
+                        setUploadProgress(0);
+                        const url = await uploadFileChunked(file as File, file.name, setUploadProgress);
                         currentDocuments.push(url);
+                        setUploadProgress(null);
                     } catch (e) {
                         alert(`Error al subir el documento ${file.name}.`);
                         setUploadingFiles(false);
+                        setUploadProgress(null);
                         return;
                     }
                 }
@@ -290,7 +302,22 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                 </div>
 
                 <div className="bg-surface-container-lowest rounded-2xl p-6 md:p-8 border border-outline-variant/30 ambient-shadow">
-                    <form onSubmit={handleSubmit} className="space-y-8">
+                    {/* Progress Overlay */}
+            {uploadProgress !== null && (
+                <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center backdrop-blur-sm">
+                    <div className="bg-white p-8 rounded-3xl max-w-sm w-full mx-4 shadow-2xl text-center space-y-4">
+                        <span className="material-symbols-outlined text-5xl text-primary animate-bounce">cloud_upload</span>
+                        <h3 className="font-headline-md text-primary">Subiendo Archivo...</h3>
+                        <div className="w-full bg-surface-container-high rounded-full h-3 overflow-hidden">
+                            <div className="bg-primary h-full transition-all duration-300" style={{ width: `${uploadProgress}%` }}></div>
+                        </div>
+                        <p className="font-label-md text-on-surface-variant text-sm">{uploadProgress}% completado</p>
+                        <p className="text-xs text-on-surface-variant/70 mt-2">Por favor, no cierres esta ventana.</p>
+                    </div>
+                </div>
+            )}
+            
+            <form onSubmit={handleSubmit} className="space-y-6 lg:space-y-10">
                         {/* Básicos - Bento Style */}
                         <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
