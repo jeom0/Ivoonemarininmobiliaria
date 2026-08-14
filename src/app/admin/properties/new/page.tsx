@@ -89,27 +89,41 @@ export default function NewProperty() {
             let currentGallery = [...gallery];
             
             // Multiple images upload fallback if any selected via traditional input
-            const imagesInput = form.querySelector('input[name="mainImageFile"]') as HTMLInputElement;
+            const imagesInput = form.querySelector('input[name="imagesFiles"]') as HTMLInputElement;
             if (imagesInput && imagesInput.files && imagesInput.files.length > 0) {
-                const uploadedImages = [];
                 for (let i = 0; i < imagesInput.files.length; i++) {
                     const originalFile = imagesInput.files[i];
                     let file = originalFile;
+                    
+                    // Comprimir solo si es imagen
                     if (originalFile.type.startsWith('image/')) {
                         try {
-                            file = await imageCompression(originalFile, { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true });
-                        } catch (err) { console.error('Error compressing', err); }
+                            file = await imageCompression(originalFile, {
+                                maxSizeMB: 1,
+                                maxWidthOrHeight: 1920,
+                                useWebWorker: true,
+                            });
+                        } catch (error) {
+                            console.error('Error compressing image:', error);
+                        }
                     }
+
                     const uploadFormData = new FormData();
                     uploadFormData.append("file", file, originalFile.name);
-                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                    
+                    const uploadRes = await fetch('/api/upload', {
+                        method: 'POST',
+                        body: uploadFormData
+                    });
+
                     if (uploadRes.ok) {
                         const uploadData = await uploadRes.json();
-                        uploadedImages.push(uploadData.url);
+                        currentGallery.push(uploadData.url);
+                    } else {
+                        alert(`Error al subir el archivo ${originalFile.name}. Verifica el tamaño.`);
+                        setLoading(false);
+                        return;
                     }
-                }
-                if (uploadedImages.length > 0) {
-                    currentGallery = [...currentGallery, ...uploadedImages];
                 }
             }
 
@@ -119,37 +133,37 @@ export default function NewProperty() {
             }
 
             // Multiple video upload
-            const videoInput = form.querySelector('input[name="videoFile"]') as HTMLInputElement;
-            if (videoInput && videoInput.files && videoInput.files.length > 0) {
-                const uploadedVideos = [];
-                for (let i = 0; i < videoInput.files.length; i++) {
-                    const file = videoInput.files[i];
-                    const uploadFormData = new FormData();
-                    uploadFormData.append("file", file);
-                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                    if (uploadRes.ok) {
-                        const uploadData = await uploadRes.json();
-                        uploadedVideos.push(uploadData.url);
-                    }
+            let uploadedVideos: string[] = [];
+            if (videoPreview.file) {
+                const uploadFormData = new FormData();
+                uploadFormData.append("file", videoPreview.file);
+                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                if (uploadRes.ok) {
+                    const uploadData = await uploadRes.json();
+                    uploadedVideos.push(uploadData.url);
+                } else {
+                    alert(`Error al subir el video ${videoPreview.file.name}. Es posible que el archivo sea demasiado pesado para el servidor (Límite sugerido: 50MB).`);
+                    setLoading(false);
+                    return;
                 }
                 if (uploadedVideos.length > 0) data.videos = JSON.stringify(uploadedVideos);
             }
 
             // Multiple PDF upload
-            const pdfInput = form.querySelector('input[name="pdfFile"]') as HTMLInputElement;
-            if (pdfInput && pdfInput.files && pdfInput.files.length > 0) {
-                const uploadedPdfs = [];
-                for (let i = 0; i < pdfInput.files.length; i++) {
-                    const file = pdfInput.files[i];
-                    const uploadFormData = new FormData();
-                    uploadFormData.append("file", file);
-                    const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
-                    if (uploadRes.ok) {
-                        const uploadData = await uploadRes.json();
-                        uploadedPdfs.push(uploadData.url);
-                    }
+            let uploadedDocs: string[] = [];
+            if (pdfPreview.file) {
+                const uploadFormData = new FormData();
+                uploadFormData.append("file", pdfPreview.file);
+                const uploadRes = await fetch('/api/upload', { method: 'POST', body: uploadFormData });
+                if (uploadRes.ok) {
+                    const uploadData = await uploadRes.json();
+                    uploadedDocs.push(uploadData.url);
+                } else {
+                    alert(`Error al subir el documento ${pdfPreview.file.name}. Es posible que el archivo sea demasiado pesado.`);
+                    setLoading(false);
+                    return;
                 }
-                if (uploadedPdfs.length > 0) data.documents = JSON.stringify(uploadedPdfs);
+                if (uploadedDocs.length > 0) data.documents = JSON.stringify(uploadedDocs);
             }
 
             const propertyData: any = {

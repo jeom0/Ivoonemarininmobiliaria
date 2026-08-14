@@ -184,6 +184,10 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                     if (uploadRes.ok) {
                         const uploadData = await uploadRes.json();
                         newUploaded.push(uploadData.url);
+                    } else {
+                        alert(`Error al subir la imagen ${originalFile.name}. Verifica su tamaño.`);
+                        setUploadingFiles(false);
+                        return;
                     }
                 }
                 if (newUploaded.length > 0) {
@@ -207,6 +211,10 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                     if (uploadRes.ok) {
                         const uploadData = await uploadRes.json();
                         currentVideos.push(uploadData.url);
+                    } else {
+                        alert(`Error al subir el video ${file.name}. Es posible que el archivo sea demasiado pesado para el servidor (Límite sugerido: 50MB).`);
+                        setUploadingFiles(false);
+                        return;
                     }
                 }
             }
@@ -222,6 +230,10 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                     if (uploadRes.ok) {
                         const uploadData = await uploadRes.json();
                         currentDocuments.push(uploadData.url);
+                    } else {
+                        alert(`Error al subir el documento ${file.name}. Es posible que el archivo sea demasiado pesado.`);
+                        setUploadingFiles(false);
+                        return;
                     }
                 }
             }
