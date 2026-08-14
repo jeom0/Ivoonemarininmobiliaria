@@ -322,7 +322,11 @@ export default function NewProperty() {
                                     const isMain = url === mainImage;
                                     return (
                                         <div key={idx} className={`relative group rounded-xl overflow-hidden border-2 transition-all shadow-sm ${isMain ? 'border-primary ring-2 ring-primary/30' : 'border-outline-variant/50 hover:border-primary/50'}`}>
-                                            <img src={url} alt={`Foto ${idx + 1}`} className="w-full h-32 object-cover" />
+                                            {url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                                                <video src={url} className="w-full h-32 object-cover bg-black" muted loop autoPlay playsInline />
+                                            ) : (
+                                                <img src={url} alt={`Media ${idx + 1}`} className="w-full h-32 object-cover" />
+                                            )}
                                             
                                             {isMain && (
                                                 <span className="absolute top-2 left-2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
