@@ -12,6 +12,9 @@ import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 
 export async function generateMetadata(): Promise<Metadata> {
+  // Opt out of static generation for metadata
+  await headers();
+  
   let faviconUrl = "/favicon.ico";
   try {
     const [admin, faviconSetting, logoSetting] = await Promise.all([
@@ -29,6 +32,12 @@ export async function generateMetadata(): Promise<Metadata> {
   } catch (error) {
     console.error("Failed to load favicon for metadata");
   }
+
+  // Append timestamp for cache busting
+  if (faviconUrl !== "/favicon.ico") {
+    faviconUrl = `${faviconUrl}?v=${Date.now()}`;
+  }
+
 
   return {
     title: "Ivonne Marin - Asesora Inmobiliaria",
