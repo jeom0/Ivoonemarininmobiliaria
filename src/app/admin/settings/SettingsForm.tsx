@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 
 export default function SettingsForm() {
   const [logoPreview, setLogoPreview] = useState("");
+  const [agentImagePreview, setAgentImagePreview] = useState("");
   const [heroMedia, setHeroMedia] = useState<string[]>([]);
   const [agencyName, setAgencyName] = useState("Ivonne Marin Asesora Inmobiliaria");
   const [whatsapp, setWhatsapp] = useState("+57 300 000 0000");
@@ -32,6 +33,7 @@ export default function SettingsForm() {
       if (res.ok) {
         const data = await res.json();
         if (data.logoUrl) setLogoPreview(data.logoUrl);
+        if (data.agent_image) setAgentImagePreview(data.agent_image);
         if (data.hero_media) {
           try {
             const parsed = JSON.parse(data.hero_media);
@@ -66,7 +68,7 @@ export default function SettingsForm() {
     }
   };
 
-  const handleImageUpload = async (file: File, type: 'logo' | 'hero') => {
+  const handleImageUpload = async (file: File, type: 'logo' | 'hero' | 'agent') => {
     setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
@@ -78,6 +80,7 @@ export default function SettingsForm() {
       if (res.ok) {
         const data = await res.json();
         if (type === 'logo') setLogoPreview(data.url);
+        if (type === 'agent') setAgentImagePreview(data.url);
         if (type === 'hero') setHeroMedia([...heroMedia, data.url]);
       } else {
         showToast("Error al subir archivo", 'error');
@@ -124,6 +127,7 @@ export default function SettingsForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           logoUrl: logoPreview,
+          agent_image: agentImagePreview,
           hero_media: JSON.stringify(heroMedia),
           agencyName,
           whatsapp,
@@ -185,6 +189,26 @@ export default function SettingsForm() {
               onChange={e => setLogoSize(e.target.value)} 
               className="w-full accent-primary" 
             />
+          </div>
+
+          <div className="w-full mt-8 border-t border-outline-variant/30 pt-8 flex flex-col items-center">
+            <div className="w-32 h-32 rounded-full bg-surface-container flex items-center justify-center mb-6 overflow-hidden border-2 border-outline-variant border-dashed relative">
+              {agentImagePreview ? (
+                <img className="w-full h-full object-cover" src={agentImagePreview} alt="Foto Agente" />
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full p-4 text-center">
+                  <span className="material-symbols-outlined text-outline text-3xl mb-1">person</span>
+                  <span className="text-[10px] text-outline font-bold leading-tight">Sin Foto</span>
+                </div>
+              )}
+              {loading && <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white">...</div>}
+            </div>
+            <h3 className="font-headline-md text-headline-md text-on-background mb-2">Foto Asesor</h3>
+            <label className="border border-secondary-fixed-dim text-primary font-label-md text-label-md py-2 px-4 rounded-lg hover:bg-surface-container transition-colors w-full flex items-center justify-center gap-2 cursor-pointer mb-6">
+              <span className="material-symbols-outlined">upload</span>
+              Subir Foto Asesor
+              <input type="file" accept="image/*" className="hidden" onChange={(e) => { if(e.target.files) handleImageUpload(e.target.files[0], 'agent') }} />
+            </label>
           </div>
 
           <div className="w-full mt-8 border-t border-outline-variant/30 pt-8 flex flex-col">

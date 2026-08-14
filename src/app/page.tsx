@@ -2,6 +2,7 @@ import Link from "next/link";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
 import HeroCarousel from "@/components/HeroCarousel";
+import PropertyCard from "@/components/PropertyCard";
 import { PrismaClient } from '@prisma/client';
 
 export const dynamic = 'force-dynamic';
@@ -85,38 +86,7 @@ export default async function Page() {
     </div>
   ) : (
     featuredProperties.map((p) => (
-      <Link href={`/propiedades/${p.id}`} key={p.id} className="block group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2">
-        <div className="relative h-64 overflow-hidden">
-        <div className="absolute top-4 left-4 z-10">
-        <span className={`${p.modality === 'VENTA' ? 'bg-primary' : 'bg-secondary'} text-white text-[10px] font-bold px-3 py-1 rounded-full`}>{p.modality}</span>
-        </div>
-        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}/>
-        </div>
-        <div className="p-6">
-        <h3 className="font-headline-md text-headline-md mb-2 text-on-surface hover:text-primary transition-colors line-clamp-1">{p.title}</h3>
-        <div className="flex items-center gap-1 text-on-surface-variant mb-4">
-        <span className="material-symbols-outlined text-sm">location_on</span>
-        <span className="font-body-md text-body-md">{p.city}</span>
-        </div>
-        <div className="flex flex-col gap-4 py-4 border-t border-outline-variant/30">
-        <div className="flex gap-4 flex-wrap">
-        <div className="flex items-center gap-1 text-on-surface-variant">
-        <span className="material-symbols-outlined text-lg">bed</span>
-        <span className="text-sm">{p.bedrooms || 0}</span>
-        </div>
-        <div className="flex items-center gap-1 text-on-surface-variant">
-        <span className="material-symbols-outlined text-lg">bathtub</span>
-        <span className="text-sm">{p.bathrooms || 0}</span>
-        </div>
-        <div className="flex items-center gap-1 text-on-surface-variant">
-        <span className="material-symbols-outlined text-lg">square_foot</span>
-        <span className="text-sm">{p.builtArea || 0}m²</span>
-        </div>
-        </div>
-        <p className="font-bold text-primary text-lg whitespace-nowrap">${p.price.toLocaleString("es-CO")}{p.modality === 'ARRIENDO' ? '/mes' : ''}</p>
-        </div>
-        </div>
-      </Link>
+      <PropertyCard key={p.id} p={p} />
     ))
   )}
 </div>
@@ -129,7 +99,7 @@ export default async function Page() {
     <div className="relative h-[300px] lg:h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-outline-variant/30 group">
       <img 
         className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" 
-        src="/perfil.jpg" 
+        src={settings.agent_image || "/perfil.jpg"} 
         alt="Ivonne Marin Asesora" 
       />
       <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/10 to-transparent flex items-end p-8">
@@ -190,34 +160,7 @@ export default async function Page() {
             </div>
         ) : (
             properties.map(p => (
-                <Link href={`/propiedades/${p.id}`} key={p.id} className="block bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 shadow-md group">
-                    <div className="relative h-64 overflow-hidden">
-                        <div className="absolute top-4 left-4 z-10 flex gap-2">
-                            <span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">{p.modality}</span>
-                        </div>
-                        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} />
-                    </div>
-                    <div className="p-6">
-                        <div className="flex justify-between items-start mb-2">
-                            <h3 className="font-headline-md text-headline-md text-primary">{p.title}</h3>
-                            <span className="text-headline-md font-bold text-on-surface">${p.price.toLocaleString('es-CO')}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-on-surface-variant mb-4">
-                            <span className="material-symbols-outlined text-[18px]">location_on</span>
-                            <span className="text-body-md">{p.city}</span>
-                        </div>
-                        <div className="flex justify-between py-4 border-t border-outline-variant/30 text-on-surface-variant">
-                            <div className="flex items-center gap-2">
-                                <span className="material-symbols-outlined">bed</span>
-                                <span className="text-label-md">{p.bedrooms} Hab</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <span className="material-symbols-outlined">bathtub</span>
-                                <span className="text-label-md">{p.bathrooms} Baños</span>
-                            </div>
-                        </div>
-                    </div>
-                </Link>
+                <PropertyCard key={p.id} p={p} />
             ))
         )}
     </div>
@@ -244,39 +187,7 @@ export default async function Page() {
     </div>
   ) : (
     investmentProperties.map((p) => (
-      <Link href={`/propiedades/${p.id}`} key={p.id} className="block group bg-surface-container-lowest border border-outline-variant/30 rounded-xl overflow-hidden luxury-shadow transition-transform hover:-translate-y-2 relative">
-        <div className="relative h-64 overflow-hidden">
-        <div className="absolute top-4 left-4 z-10 flex gap-2">
-        <span className={`${p.modality === 'VENTA' ? 'bg-primary' : 'bg-secondary'} text-white text-[10px] font-bold px-3 py-1 rounded-full`}>{p.modality}</span>
-        <span className="bg-[#D4AF37] text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">trending_up</span> Inversión</span>
-        </div>
-        <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"}/>
-        </div>
-        <div className="p-6">
-        <h3 className="font-headline-md text-headline-md mb-2 text-on-surface hover:text-primary transition-colors line-clamp-1">{p.title}</h3>
-        <div className="flex items-center gap-1 text-on-surface-variant mb-4">
-        <span className="material-symbols-outlined text-sm">location_on</span>
-        <span className="font-body-md text-body-md">{p.city}</span>
-        </div>
-        <div className="flex flex-col gap-4 py-4 border-t border-outline-variant/30">
-        <div className="flex gap-4 flex-wrap">
-        <div className="flex items-center gap-1 text-on-surface-variant">
-        <span className="material-symbols-outlined text-lg">bed</span>
-        <span className="text-sm">{p.bedrooms || 0}</span>
-        </div>
-        <div className="flex items-center gap-1 text-on-surface-variant">
-        <span className="material-symbols-outlined text-lg">bathtub</span>
-        <span className="text-sm">{p.bathrooms || 0}</span>
-        </div>
-        <div className="flex items-center gap-1 text-on-surface-variant">
-        <span className="material-symbols-outlined text-lg">square_foot</span>
-        <span className="text-sm">{p.builtArea || 0}m²</span>
-        </div>
-        </div>
-        <p className="font-bold text-primary text-lg whitespace-nowrap">${p.price.toLocaleString("es-CO")}{p.modality === 'ARRIENDO' ? '/mes' : ''}</p>
-        </div>
-        </div>
-      </Link>
+      <PropertyCard key={p.id} p={p} isInvestment={true} />
     ))
   )}
 </div>

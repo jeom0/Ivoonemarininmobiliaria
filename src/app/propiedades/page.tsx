@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
 import SortSelect from "@/components/SortSelect";
+import PropertyCard from "@/components/PropertyCard";
 const prisma = new PrismaClient();
 
 import { Prisma } from '@prisma/client';
@@ -156,39 +157,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
     </div>
 ) : (
     properties.map(p => (
-        <Link href={`/propiedades/${p.id}`} key={p.id} className="block bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/20 card-hover transition-all duration-300 group">
-            <div className="relative h-64 overflow-hidden">
-                <div className="absolute top-4 left-4 z-10 flex gap-2">
-                    <span className="bg-primary text-on-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">{p.modality}</span>
-                    {p.status === 'NUEVO' && <span className="bg-secondary-fixed text-primary px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest">Nuevo</span>}
-                </div>
-                <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={p.title} src={p.mainImage || "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"} />
-            </div>
-            <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                    <h3 className="font-headline-md text-headline-md text-primary">{p.title}</h3>
-                    <span className="text-headline-md font-bold text-on-surface">${p.price.toLocaleString('es-CO')}</span>
-                </div>
-                <div className="flex items-center gap-1 text-on-surface-variant mb-4">
-                    <span className="material-symbols-outlined text-[18px]">location_on</span>
-                    <span className="text-body-md">{p.city} {p.sector ? '- ' + p.sector : ''}</span>
-                </div>
-                <div className="flex justify-between py-4 border-t border-outline-variant/30 text-on-surface-variant">
-                    <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined">bed</span>
-                        <span className="text-label-md">{p.bedrooms} Hab</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined">bathtub</span>
-                        <span className="text-label-md">{p.bathrooms} Baños</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <span className="material-symbols-outlined">square_foot</span>
-                        <span className="text-label-md">{p.builtArea}m²</span>
-                    </div>
-                </div>
-            </div>
-        </Link>
+        <PropertyCard key={p.id} p={p} />
     ))
 )}
 
