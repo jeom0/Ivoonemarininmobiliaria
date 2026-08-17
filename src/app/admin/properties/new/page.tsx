@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import imageCompression from 'browser-image-compression';
@@ -40,8 +40,48 @@ export default function NewProperty() {
     const [mainImage, setMainImage] = useState<string>('');
     const [newImageUrl, setNewImageUrl] = useState<string>('');
     const [pdfPreview, setPdfPreview] = useState<{file: File | null, name: string | null}>({file: null, name: null});
-        const [addingFieldCategory, setAddingFieldCategory] = useState<string | null>(null);
-    const [newFieldConfig, setNewFieldConfig] = useState<any>({ category: '', icon: 'star', label: '', value: '', type: 'text' });
+            const [globalTemplates, setGlobalTemplates] = useState<any[]>([]);
+    const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
+    const [templateModalCategory, setTemplateModalCategory] = useState<string>('');
+    const [newTemplate, setNewTemplate] = useState<any>({ icon: 'star', label: '', type: 'text', required: false });
+
+    // Fetch on mount
+    useEffect(() => {
+        fetch('/api/settings')
+            .then(res => res.json())
+            .then(data => {
+                if (data.customFieldTemplates) {
+                    try {
+                        setGlobalTemplates(JSON.parse(data.customFieldTemplates));
+                    } catch (e) {}
+                }
+            });
+    }, []);
+
+    const saveGlobalTemplates = async (newTemplates: any[]) => {
+        setGlobalTemplates(newTemplates);
+        await fetch('/api/settings', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ customFieldTemplates: JSON.stringify(newTemplates) })
+        });
+    };
+
+    const handleCreateTemplate = async () => {
+        if (!newTemplate.label) return;
+        const template = { ...newTemplate, id: Date.now().toString(), category: templateModalCategory };
+        const updated = [...globalTemplates, template];
+        await saveGlobalTemplates(updated);
+        // Add to property
+        setCustomFields([...customFields, { ...template, value: '' }]);
+        setNewTemplate({ icon: 'star', label: '', type: 'text', required: false });
+    };
+
+    const deleteTemplate = async (id: string) => {
+        if(confirm("¿Estás seguro de eliminar esta plantilla? Desaparecerá de las opciones globales.")) {
+            await saveGlobalTemplates(globalTemplates.filter(t => t.id !== id));
+        }
+    };
     const [customFields, setCustomFields] = useState<any[]>([]);
 
     // Direct file upload via + card
@@ -318,7 +358,7 @@ export default function NewProperty() {
                                     <div key={idx} className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors relative group">
                                         <button type="button" onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))} className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-error hover:bg-error/10 p-1 rounded-md transition-all"><span className="material-symbols-outlined text-[18px]">close</span></button>
                                         <label className="font-label-md text-secondary mb-2 flex items-center gap-1">
-                                            <span className="material-symbols-outlined text-[18px] text-primary/70">{field.icon}</span> {field.label}
+                                            <span className="material-symbols-outlined text-[18px] text-primary/70">{field.icon}</span> {field.label} {field.required && <span className="text-error">*</span>}
                                         </label>
                                         
                                         {(!field.type || field.type === 'text') && (
@@ -351,49 +391,13 @@ export default function NewProperty() {
 
                                 {/* Botón para Agregar a Información Básica */}
                                 <div className="md:col-span-4 bg-primary/5 hover:bg-primary/10 border-2 border-dashed border-primary/30 hover:border-primary/50 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors min-h-[100px]" onClick={() => {
-                                    setAddingFieldCategory('Información Básica');
-                                    setNewFieldConfig({ category: 'Información Básica', icon: 'star', label: '', value: '', type: 'text' });
+                                    setTemplateModalCategory('Información Básica'); setIsTemplateModalOpen(true);
                                 }}>
                                     <span className="material-symbols-outlined text-primary mb-1 text-2xl">add_circle</span>
                                     <span className="font-label-sm text-primary text-center">Añadir Campo</span>
                                 </div>
 
-                                {/* Panel de Configuración de Nuevo Campo */}
-                                {addingFieldCategory === 'Información Básica' && (
-                                    <div className="md:col-span-12 bg-surface-container-lowest p-6 rounded-2xl border-2 border-primary/40 shadow-md relative">
-                                        <h4 className="font-label-md text-primary mb-4 flex items-center gap-2"><span className="material-symbols-outlined">settings</span> Configurar Nuevo Campo para {addingFieldCategory}</h4>
-                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                                            <div className="space-y-1">
-                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Nombre del Campo *</label>
-                                                <div className="flex gap-2">
-                                                    <div className="flex items-center gap-2 bg-surface border border-outline-variant rounded-md px-2 py-2 w-20 shrink-0">
-                                                        <span className="material-symbols-outlined text-[18px]">{newFieldConfig.icon}</span>
-                                                        <input type="text" placeholder="Ícono" value={newFieldConfig.icon} onChange={(e) => setNewFieldConfig({...newFieldConfig, icon: e.target.value})} className="w-full outline-none text-xs bg-transparent" />
-                                                    </div>
-                                                    <input type="text" placeholder="Ej. Cuarto Útil" value={newFieldConfig.label} onChange={(e) => setNewFieldConfig({...newFieldConfig, label: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary" />
-                                                </div>
-                                            </div>
-                                            <div className="space-y-1">
-                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Tipo de Dato</label>
-                                                <select value={newFieldConfig.type} onChange={(e) => setNewFieldConfig({...newFieldConfig, type: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary">
-                                                    <option value="text">Texto</option>
-                                                    <option value="number">Número</option>
-                                                    <option value="price">Precio / Moneda</option>
-                                                    <option value="boolean">Sí / No</option>
-                                                </select>
-                                            </div>
-                                            <div className="space-y-1 md:col-span-2 flex gap-2 justify-end">
-                                                <button type="button" onClick={() => setAddingFieldCategory(null)} className="px-4 py-2 text-sm font-medium text-on-surface-variant bg-surface hover:bg-surface-container rounded-lg border border-outline-variant transition-colors">Cancelar</button>
-                                                <button type="button" onClick={() => {
-                                                    if(newFieldConfig.label) {
-                                                        setCustomFields([...customFields, newFieldConfig]);
-                                                        setAddingFieldCategory(null);
-                                                    }
-                                                }} className="px-4 py-2 text-sm font-medium text-on-primary bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-colors flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">save</span> Guardar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
+                                
                             </div>
                         </div>
 
@@ -434,7 +438,7 @@ export default function NewProperty() {
                                     <div key={idx} className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors relative group">
                                         <button type="button" onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))} className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-error hover:bg-error/10 p-1 rounded-md transition-all"><span className="material-symbols-outlined text-[18px]">close</span></button>
                                         <label className="font-label-md text-secondary mb-2 flex items-center gap-1">
-                                            <span className="material-symbols-outlined text-[18px] text-primary/70">{field.icon}</span> {field.label}
+                                            <span className="material-symbols-outlined text-[18px] text-primary/70">{field.icon}</span> {field.label} {field.required && <span className="text-error">*</span>}
                                         </label>
                                         
                                         {(!field.type || field.type === 'text') && (
@@ -467,49 +471,13 @@ export default function NewProperty() {
 
                                 {/* Botón para Agregar a Características Técnicas */}
                                 <div className="md:col-span-4 bg-primary/5 hover:bg-primary/10 border-2 border-dashed border-primary/30 hover:border-primary/50 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors min-h-[100px]" onClick={() => {
-                                    setAddingFieldCategory('Características Técnicas');
-                                    setNewFieldConfig({ category: 'Características Técnicas', icon: 'star', label: '', value: '', type: 'text' });
+                                    setTemplateModalCategory('Características Técnicas'); setIsTemplateModalOpen(true);
                                 }}>
                                     <span className="material-symbols-outlined text-primary mb-1 text-2xl">add_circle</span>
                                     <span className="font-label-sm text-primary text-center">Añadir Campo</span>
                                 </div>
 
-                                {/* Panel de Configuración de Nuevo Campo */}
-                                {addingFieldCategory === 'Características Técnicas' && (
-                                    <div className="md:col-span-12 bg-surface-container-lowest p-6 rounded-2xl border-2 border-primary/40 shadow-md relative">
-                                        <h4 className="font-label-md text-primary mb-4 flex items-center gap-2"><span className="material-symbols-outlined">settings</span> Configurar Nuevo Campo para {addingFieldCategory}</h4>
-                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-                                            <div className="space-y-1">
-                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Nombre del Campo *</label>
-                                                <div className="flex gap-2">
-                                                    <div className="flex items-center gap-2 bg-surface border border-outline-variant rounded-md px-2 py-2 w-20 shrink-0">
-                                                        <span className="material-symbols-outlined text-[18px]">{newFieldConfig.icon}</span>
-                                                        <input type="text" placeholder="Ícono" value={newFieldConfig.icon} onChange={(e) => setNewFieldConfig({...newFieldConfig, icon: e.target.value})} className="w-full outline-none text-xs bg-transparent" />
-                                                    </div>
-                                                    <input type="text" placeholder="Ej. Cuarto Útil" value={newFieldConfig.label} onChange={(e) => setNewFieldConfig({...newFieldConfig, label: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary" />
-                                                </div>
-                                            </div>
-                                            <div className="space-y-1">
-                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Tipo de Dato</label>
-                                                <select value={newFieldConfig.type} onChange={(e) => setNewFieldConfig({...newFieldConfig, type: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary">
-                                                    <option value="text">Texto</option>
-                                                    <option value="number">Número</option>
-                                                    <option value="price">Precio / Moneda</option>
-                                                    <option value="boolean">Sí / No</option>
-                                                </select>
-                                            </div>
-                                            <div className="space-y-1 md:col-span-2 flex gap-2 justify-end">
-                                                <button type="button" onClick={() => setAddingFieldCategory(null)} className="px-4 py-2 text-sm font-medium text-on-surface-variant bg-surface hover:bg-surface-container rounded-lg border border-outline-variant transition-colors">Cancelar</button>
-                                                <button type="button" onClick={() => {
-                                                    if(newFieldConfig.label) {
-                                                        setCustomFields([...customFields, newFieldConfig]);
-                                                        setAddingFieldCategory(null);
-                                                    }
-                                                }} className="px-4 py-2 text-sm font-medium text-on-primary bg-primary hover:bg-primary/90 rounded-lg shadow-sm transition-colors flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">save</span> Guardar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}                            </div>
+                                                            </div>
                         </div>
 
                         {/* Multimedia */}
@@ -753,6 +721,112 @@ export default function NewProperty() {
                     </div>
                 </div>
             )}
+
+            {/* Modal de Plantillas de Ficha Técnica */}
+            {isTemplateModalOpen && (
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div className="bg-surface w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+                        <div className="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-lowest">
+                            <h2 className="font-headline-md text-primary flex items-center gap-2">
+                                <span className="material-symbols-outlined">playlist_add</span>
+                                Plantillas de Ficha Técnica - {templateModalCategory}
+                            </h2>
+                            <button onClick={() => setIsTemplateModalOpen(false)} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        
+                        <div className="p-6 overflow-y-auto flex-1 space-y-8 bg-surface">
+                            {/* Plantillas Existentes */}
+                            <div>
+                                <h3 className="font-label-lg text-secondary mb-4 uppercase tracking-wider">Plantillas Existentes</h3>
+                                {globalTemplates.filter(t => t.category === templateModalCategory).length === 0 ? (
+                                    <p className="text-sm text-on-surface-variant bg-surface-container p-4 rounded-xl border border-dashed border-outline-variant">No hay plantillas guardadas para esta categoría. Crea una abajo.</p>
+                                ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {globalTemplates.filter(t => t.category === templateModalCategory).map(template => (
+                                            <div key={template.id} className="bg-surface-container-lowest border border-outline-variant/40 p-4 rounded-2xl shadow-sm hover:border-primary/40 transition-colors group flex flex-col">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                                                            <span className="material-symbols-outlined">{template.icon}</span>
+                                                        </div>
+                                                        <div>
+                                                            <h4 className="font-label-md text-on-surface font-bold">{template.label} {template.required && <span className="text-error">*</span>}</h4>
+                                                            <span className="text-[11px] text-on-surface-variant uppercase bg-surface-container px-2 py-0.5 rounded-md">{template.type}</span>
+                                                        </div>
+                                                    </div>
+                                                    <button onClick={() => deleteTemplate(template.id)} className="opacity-0 group-hover:opacity-100 text-error hover:bg-error/10 p-2 rounded-lg transition-all" title="Eliminar del Sistema"><span className="material-symbols-outlined text-[18px]">delete</span></button>
+                                                </div>
+                                                <div className="mt-auto pt-4">
+                                                    <button onClick={() => {
+                                                        setCustomFields([...customFields, { ...template, value: '' }]);
+                                                        setIsTemplateModalOpen(false);
+                                                    }} className="w-full py-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-xl font-label-md transition-colors flex items-center justify-center gap-2">
+                                                        <span className="material-symbols-outlined text-[18px]">add</span> Añadir a Propiedad
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            {/* Crear Nueva */}
+                            <div className="bg-surface-container-lowest p-6 rounded-3xl border-2 border-primary/20 shadow-sm relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-2 h-full bg-primary"></div>
+                                <h3 className="font-headline-sm text-primary mb-4 flex items-center gap-2"><span className="material-symbols-outlined">add_circle</span> Crear Nueva Plantilla (Se guardará para siempre)</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                                    <div className="md:col-span-3 space-y-1">
+                                        <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Ícono</label>
+                                        <select value={newTemplate.icon} onChange={(e) => setNewTemplate({...newTemplate, icon: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-xl px-3 py-3 text-sm outline-none focus:border-primary">
+                                            <option value="star">★ Genérico</option>
+                                            <option value="directions_car">Carro / Parqueadero</option>
+                                            <option value="pool">Piscina</option>
+                                            <option value="shower">Baño / Ducha</option>
+                                            <option value="bed">Cama / Habitación</option>
+                                            <option value="local_florist">Naturaleza / Jardín</option>
+                                            <option value="pets">Mascotas</option>
+                                            <option value="balcony">Balcón</option>
+                                            <option value="elevator">Ascensor</option>
+                                            <option value="fitness_center">Gimnasio</option>
+                                            <option value="ac_unit">Aire Acondicionado</option>
+                                            <option value="security">Seguridad / Portería</option>
+                                            <option value="home">Casa / Principal</option>
+                                            <option value="square_foot">Área / Medidas</option>
+                                        </select>
+                                    </div>
+                                    <div className="md:col-span-4 space-y-1">
+                                        <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Nombre del Campo *</label>
+                                        <input type="text" placeholder="Ej. Cuarto Útil" value={newTemplate.label} onChange={(e) => setNewTemplate({...newTemplate, label: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-xl px-3 py-3 text-sm outline-none focus:border-primary" />
+                                    </div>
+                                    <div className="md:col-span-3 space-y-1">
+                                        <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Tipo de Dato</label>
+                                        <select value={newTemplate.type} onChange={(e) => setNewTemplate({...newTemplate, type: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-xl px-3 py-3 text-sm outline-none focus:border-primary">
+                                            <option value="text">Texto Corto</option>
+                                            <option value="number">Número</option>
+                                            <option value="price">Precio / Moneda</option>
+                                            <option value="boolean">Sí / No</option>
+                                        </select>
+                                    </div>
+                                    <div className="md:col-span-2 space-y-1 flex items-center h-full pb-3">
+                                        <label className="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" checked={newTemplate.required} onChange={(e) => setNewTemplate({...newTemplate, required: e.target.checked})} className="w-5 h-5 text-primary rounded border-outline-variant focus:ring-primary focus:ring-2" />
+                                            <span className="text-sm font-bold text-on-surface">Obligatorio</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div className="mt-6 flex justify-end">
+                                    <button type="button" onClick={handleCreateTemplate} disabled={!newTemplate.label} className="px-6 py-3 font-label-md text-on-primary bg-primary disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+                                        <span className="material-symbols-outlined text-[20px]">save</span> Crear y Añadir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </main>
     );
 }
