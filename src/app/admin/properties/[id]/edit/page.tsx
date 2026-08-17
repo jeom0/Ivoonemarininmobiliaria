@@ -35,8 +35,6 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
     const [initialLoading, setInitialLoading] = useState(true);
     const [loading, setLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
-    const [lightboxOpen, setLightboxOpen] = useState(false);
-    const [lightboxIndex, setLightboxIndex] = useState(0);
     const [uploadingFiles, setUploadingFiles] = useState(false);
     const [property, setProperty] = useState<any>(null);
 
@@ -257,7 +255,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
             if (customFields.length > 0) {
                 data.customFields = JSON.stringify(customFields);
             } else {
-                data.customFields = null as any; // Enforce deletion if array is empty
+                data.customFields = null; // Enforce deletion if array is empty
             }
 
             setUploadingFiles(false);
@@ -304,49 +302,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                     <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
                     <p className="font-label-lg text-primary">Cargando datos del inmueble...</p>
                 </div>
-            {/* Lightbox for Admin Images */}
-            {lightboxOpen && gallery.length > 0 && (
-                <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4 backdrop-blur-md">
-                    <button onClick={() => setLightboxOpen(false)} className="absolute top-6 right-6 w-12 h-12 bg-surface/10 hover:bg-surface/20 rounded-full flex items-center justify-center text-white transition-colors">
-                        <span className="material-symbols-outlined text-3xl">close</span>
-                    </button>
-                    
-                    <a 
-                        href={gallery[lightboxIndex]} 
-                        download={`imagen-${lightboxIndex + 1}.jpg`} 
-                        target="_blank"
-                        className="absolute top-6 right-24 bg-primary text-on-primary px-4 py-2.5 rounded-full flex items-center gap-2 hover:bg-primary/90 transition-colors font-label-md"
-                    >
-                        <span className="material-symbols-outlined text-xl">download</span>
-                        Descargar
-                    </a>
-
-                    <button 
-                        onClick={() => setLightboxIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))}
-                        className="absolute left-6 w-14 h-14 bg-surface/10 hover:bg-surface/30 rounded-full flex items-center justify-center text-white transition-colors"
-                    >
-                        <span className="material-symbols-outlined text-4xl">chevron_left</span>
-                    </button>
-
-                    <img 
-                        src={gallery[lightboxIndex]} 
-                        alt="Vista previa" 
-                        className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" 
-                    />
-
-                    <button 
-                        onClick={() => setLightboxIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))}
-                        className="absolute right-6 w-14 h-14 bg-surface/10 hover:bg-surface/30 rounded-full flex items-center justify-center text-white transition-colors"
-                    >
-                        <span className="material-symbols-outlined text-4xl">chevron_right</span>
-                    </button>
-
-                    <div className="absolute bottom-8 text-white font-label-md bg-black/50 px-4 py-1.5 rounded-full">
-                        {lightboxIndex + 1} de {gallery.length}
-                    </div>
-                </div>
-            )}
-        </main>
+            </main>
         );
     }
 
@@ -407,7 +363,168 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                         </div>
 
                         {/* Ficha Técnica Extendida (Custom Fields) */}
-                        
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="font-headline-md text-primary flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-secondary">list_alt</span>
+                                    Especificaciones Extra (Ficha Técnica)
+                                </h3>
+                                <button type="button" onClick={() => setCustomFields([...customFields, { category: 'Características Técnicas', icon: 'check_circle', label: '', value: '' }])} className="text-sm bg-primary/10 text-primary px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-primary/20 transition-colors">
+                                    <span className="material-symbols-outlined text-sm">add</span> Añadir Campo
+                                </button>
+                            </div>
+                            <p className="text-sm text-on-surface-variant mb-4">Agrega especificaciones personalizadas que no estén en el formulario base (ej. "Tipo de Piso", "Zonas Verdes", "Acabados"). Puedes usar nombres de íconos de <a href="https://fonts.google.com/icons?icon.set=Material+Symbols" target="_blank" className="text-secondary hover:underline">Google Material Symbols</a>.</p>
+                            
+                            <div className="space-y-4">
+                                {customFields.map((field, idx) => (
+                                    <div key={idx} className="flex flex-col md:flex-row gap-3 items-start md:items-center bg-surface-container-low p-3 rounded-xl border border-outline-variant/30">
+                                        <select 
+                                            value={field.category} 
+                                            onChange={(e) => {
+                                                const newFields = [...customFields];
+                                                newFields[idx].category = e.target.value;
+                                                setCustomFields(newFields);
+                                            }}
+                                            className="bg-surface border border-outline-variant rounded-md px-2 py-1.5 text-sm"
+                                        >
+                                            <option value="Información Básica">Información Básica</option>
+                                            <option value="Características Técnicas">Características Técnicas</option>
+                                        </select>
+                                        
+                                        <div className="flex items-center gap-2 bg-surface border border-outline-variant rounded-md px-2 py-1.5 focus-within:border-primary">
+                                            <span className="material-symbols-outlined text-on-surface-variant">{field.icon}</span>
+                                            <input 
+                                                type="text" 
+                                                placeholder="Ícono (ej. pool)" 
+                                                value={field.icon}
+                                                onChange={(e) => {
+                                                    const newFields = [...customFields];
+                                                    newFields[idx].icon = e.target.value;
+                                                    setCustomFields(newFields);
+                                                }}
+                                                className="w-24 outline-none text-sm bg-transparent"
+                                            />
+                                        </div>
+                                        
+                                        <input 
+                                            type="text" 
+                                            placeholder="Nombre (ej. Cuarto Útil)" 
+                                            value={field.label}
+                                            required
+                                            onChange={(e) => {
+                                                const newFields = [...customFields];
+                                                newFields[idx].label = e.target.value;
+                                                setCustomFields(newFields);
+                                            }}
+                                            className="flex-1 bg-surface border border-outline-variant rounded-md px-3 py-1.5 text-sm outline-none focus:border-primary"
+                                        />
+                                        
+                                        <input 
+                                            type="text" 
+                                            placeholder="Valor (ej. Sí, 4m2)" 
+                                            value={field.value}
+                                            required
+                                            onChange={(e) => {
+                                                const newFields = [...customFields];
+                                                newFields[idx].value = e.target.value;
+                                                setCustomFields(newFields);
+                                            }}
+                                            className="flex-1 bg-surface border border-outline-variant rounded-md px-3 py-1.5 text-sm outline-none focus:border-primary"
+                                        />
+                                        
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
+                                            className="text-error hover:bg-error/10 p-1.5 rounded-md transition-colors"
+                                        >
+                                            <span className="material-symbols-outlined text-lg">delete</span>
+                                        </button>
+                                    </div>
+                                ))}
+                                {customFields.length === 0 && (
+                                    <div className="text-center py-6 text-on-surface-variant bg-surface-container-low rounded-xl border border-dashed border-outline-variant">
+                                        No has añadido campos adicionales.
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Básicos - Bento Style */}
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
+                                <span className="material-symbols-outlined bg-primary/10 p-2 rounded-lg">info</span>
+                                Información Básica
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                                <div className="md:col-span-8 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Título de la Publicación *</label>
+                                    <input name="title" required defaultValue={property?.title || ''} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: Penthouse en Pinares" />
+                                </div>
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Tipo de Operación *</label>
+                                    <select name="modality" required defaultValue={property?.modality || 'VENTA'} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg">
+                                        <option value="VENTA">Venta</option>
+                                        <option value="ARRIENDO">Arriendo</option>
+                                    </select>
+                                </div>
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Tipo de Inmueble *</label>
+                                    <select name="propertyType" required defaultValue={property?.propertyType || 'Apartamento'} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg">
+                                        <option value="Apartamento">Apartamento</option>
+                                        <option value="Casa">Casa</option>
+                                        <option value="Finca">Finca</option>
+                                        <option value="Lote">Lote</option>
+                                        <option value="Local">Local Comercial</option>
+                                        <option value="Oficina">Oficina</option>
+                                        <option value="Bodega">Bodega</option>
+                                    </select>
+                                </div>
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Precio (COP) <span className="text-xs text-on-surface-variant font-normal">(Opcional)</span></label>
+                                    <input name="price" type="number" defaultValue={property?.price !== 0 ? property?.price : ''} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: 450000000" />
+                                </div>
+                                <div className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Ciudad *</label>
+                                    <input list="cityOptions" name="city" required defaultValue={property?.city || ''} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Escribe o selecciona..." autoComplete="off" />
+                                    <datalist id="cityOptions">
+                                        <option value="Santa Rosa de Cabal" />
+                                        <option value="Pereira" />
+                                        <option value="Dosquebradas" />
+                                        <option value="Armenia" />
+                                        <option value="Manizales" />
+                                    </datalist>
+                                </div>
+                                <div className="md:col-span-6 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Dirección / Sector (Opcional)</label>
+                                    <input name="address" type="text" defaultValue={property?.address || ''} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej: Condominio Las Palmas" />
+                                </div>
+                                <div className="md:col-span-6 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors">
+                                    <label className="font-label-md text-secondary block mb-2">Coordenadas (Latitud, Longitud)</label>
+                                    <input 
+                                        type="text" 
+                                        defaultValue={property?.lat && property?.lng ? `${property.lat}, ${property.lng}` : ''}
+                                        onChange={(e) => {
+                                            const parts = e.target.value.split(',');
+                                            const latInput = document.getElementById('lat_input') as HTMLInputElement;
+                                            const lngInput = document.getElementById('lng_input') as HTMLInputElement;
+                                            if (latInput && lngInput) {
+                                                if (parts.length >= 2) {
+                                                    latInput.value = parts[0].trim();
+                                                    lngInput.value = parts[1].trim();
+                                                } else {
+                                                    latInput.value = '';
+                                                    lngInput.value = '';
+                                                }
+                                            }
+                                        }}
+                                        className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" 
+                                        placeholder="Ej: 4.804204, -75.738502" 
+                                    />
+                                    <input type="hidden" name="lat" id="lat_input" defaultValue={property?.lat || ''} />
+                                    <input type="hidden" name="lng" id="lng_input" defaultValue={property?.lng || ''} />
+                                </div>
+                            </div>
+                        </div>
 
                         {/* Galería de Fotos */}
                         <div>
@@ -683,48 +800,6 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                     </form>
                 </div>
             </div>
-        {/* Lightbox for Admin Images */}
-            {lightboxOpen && gallery.length > 0 && (
-                <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4 backdrop-blur-md">
-                    <button onClick={() => setLightboxOpen(false)} className="absolute top-6 right-6 w-12 h-12 bg-surface/10 hover:bg-surface/20 rounded-full flex items-center justify-center text-white transition-colors">
-                        <span className="material-symbols-outlined text-3xl">close</span>
-                    </button>
-                    
-                    <a 
-                        href={gallery[lightboxIndex]} 
-                        download={`imagen-${lightboxIndex + 1}.jpg`} 
-                        target="_blank"
-                        className="absolute top-6 right-24 bg-primary text-on-primary px-4 py-2.5 rounded-full flex items-center gap-2 hover:bg-primary/90 transition-colors font-label-md"
-                    >
-                        <span className="material-symbols-outlined text-xl">download</span>
-                        Descargar
-                    </a>
-
-                    <button 
-                        onClick={() => setLightboxIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))}
-                        className="absolute left-6 w-14 h-14 bg-surface/10 hover:bg-surface/30 rounded-full flex items-center justify-center text-white transition-colors"
-                    >
-                        <span className="material-symbols-outlined text-4xl">chevron_left</span>
-                    </button>
-
-                    <img 
-                        src={gallery[lightboxIndex]} 
-                        alt="Vista previa" 
-                        className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" 
-                    />
-
-                    <button 
-                        onClick={() => setLightboxIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))}
-                        className="absolute right-6 w-14 h-14 bg-surface/10 hover:bg-surface/30 rounded-full flex items-center justify-center text-white transition-colors"
-                    >
-                        <span className="material-symbols-outlined text-4xl">chevron_right</span>
-                    </button>
-
-                    <div className="absolute bottom-8 text-white font-label-md bg-black/50 px-4 py-1.5 rounded-full">
-                        {lightboxIndex + 1} de {gallery.length}
-                    </div>
-                </div>
-            )}
         </main>
     );
 }
