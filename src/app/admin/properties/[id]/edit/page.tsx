@@ -378,9 +378,11 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             <div key={template.id} className="bg-surface-container-lowest border border-outline-variant/30 p-5 rounded-3xl shadow-sm hover:shadow-md hover:border-primary/40 transition-all group flex flex-col relative overflow-hidden">
                                                 <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
                                                 <div className="flex justify-between items-start mb-4">
-                                                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 shadow-inner">
-                                                        <span className="material-symbols-outlined text-[28px]">{template.icon}</span>
-                                                    </div>
+                                                    {templateModalCategory !== 'Información Básica' && (
+                                                        <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 shadow-inner">
+                                                            <span className="material-symbols-outlined text-[28px]">{template.icon}</span>
+                                                        </div>
+                                                    )}
                                                     <button onClick={() => deleteTemplate(template.id)} className="opacity-0 group-hover:opacity-100 text-error hover:bg-error/10 p-2 rounded-xl transition-all z-10" title="Eliminar del Sistema"><span className="material-symbols-outlined text-[20px]">delete</span></button>
                                                 </div>
                                                 <div className="mb-4">
@@ -439,6 +441,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                         </label>
 
                                         {/* Grilla de Íconos */}
+                                        {templateModalCategory !== 'Información Básica' && (
                                         <div className="bg-surface p-4 rounded-2xl border border-outline-variant/40">
                                             <label className="text-[10px] font-bold text-primary uppercase tracking-wider block mb-3">Selecciona un Ícono</label>
                                             <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-1.5 h-48 overflow-y-auto pr-2 custom-scrollbar">
@@ -455,6 +458,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                                 ))}
                                             </div>
                                         </div>
+                                        )}
 
                                         {/* Botón Guardar */}
                                         <button 
