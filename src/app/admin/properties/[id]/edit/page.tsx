@@ -347,11 +347,11 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
     
             {/* Modal de Plantillas de Ficha Técnica */}
             {isTemplateModalOpen && (
-                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-                    <div className="bg-surface w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 md:p-6 bg-black/60 backdrop-blur-sm">
+                    <div className="bg-surface w-full max-w-4xl rounded-[2rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
                         <div className="p-6 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-lowest">
                             <h2 className="font-headline-md text-primary flex items-center gap-2">
-                                <span className="material-symbols-outlined">playlist_add</span>
+                                <span className="material-symbols-outlined bg-primary/10 p-2 rounded-xl">playlist_add</span>
                                 Plantillas de Ficha Técnica - {templateModalCategory}
                             </h2>
                             <button onClick={() => setIsTemplateModalOpen(false)} className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
@@ -359,34 +359,40 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                             </button>
                         </div>
                         
-                        <div className="p-6 overflow-y-auto flex-1 space-y-8 bg-surface">
-                            {/* Plantillas Existentes */}
-                            <div>
-                                <h3 className="font-label-lg text-secondary mb-4 uppercase tracking-wider">Plantillas Existentes</h3>
+                        <div className="p-6 overflow-y-auto flex-1 bg-background grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            
+                            {/* Columna Izquierda: Plantillas Existentes */}
+                            <div className="space-y-4">
+                                <h3 className="font-label-lg text-secondary uppercase tracking-wider flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-[18px]">view_module</span> 
+                                    Plantillas Existentes
+                                </h3>
                                 {globalTemplates.filter(t => t.category === templateModalCategory).length === 0 ? (
-                                    <p className="text-sm text-on-surface-variant bg-surface-container p-4 rounded-xl border border-dashed border-outline-variant">No hay plantillas guardadas para esta categoría. Crea una abajo.</p>
+                                    <div className="bg-surface-container-lowest p-8 rounded-3xl border-2 border-dashed border-outline-variant/50 text-center flex flex-col items-center justify-center h-48">
+                                        <span className="material-symbols-outlined text-4xl text-on-surface-variant/50 mb-2">inventory_2</span>
+                                        <p className="text-sm text-on-surface-variant font-medium">No hay plantillas guardadas.<br/>Crea tu primera plantilla a la derecha.</p>
+                                    </div>
                                 ) : (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {globalTemplates.filter(t => t.category === templateModalCategory).map(template => (
-                                            <div key={template.id} className="bg-surface-container-lowest border border-outline-variant/40 p-4 rounded-2xl shadow-sm hover:border-primary/40 transition-colors group flex flex-col">
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <div className="flex items-center gap-2">
-                                                        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                                                            <span className="material-symbols-outlined">{template.icon}</span>
-                                                        </div>
-                                                        <div>
-                                                            <h4 className="font-label-md text-on-surface font-bold">{template.label} {template.required && <span className="text-error">*</span>}</h4>
-                                                            <span className="text-[11px] text-on-surface-variant uppercase bg-surface-container px-2 py-0.5 rounded-md">{template.type}</span>
-                                                        </div>
+                                            <div key={template.id} className="bg-surface-container-lowest border border-outline-variant/30 p-5 rounded-3xl shadow-sm hover:shadow-md hover:border-primary/40 transition-all group flex flex-col relative overflow-hidden">
+                                                <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0 shadow-inner">
+                                                        <span className="material-symbols-outlined text-[28px]">{template.icon}</span>
                                                     </div>
-                                                    <button onClick={() => deleteTemplate(template.id)} className="opacity-0 group-hover:opacity-100 text-error hover:bg-error/10 p-2 rounded-lg transition-all" title="Eliminar del Sistema"><span className="material-symbols-outlined text-[18px]">delete</span></button>
+                                                    <button onClick={() => deleteTemplate(template.id)} className="opacity-0 group-hover:opacity-100 text-error hover:bg-error/10 p-2 rounded-xl transition-all z-10" title="Eliminar del Sistema"><span className="material-symbols-outlined text-[20px]">delete</span></button>
                                                 </div>
-                                                <div className="mt-auto pt-4">
+                                                <div className="mb-4">
+                                                    <h4 className="font-label-lg text-on-surface font-bold leading-tight flex items-center gap-1">{template.label} {template.required && <span className="text-error text-xl leading-none">*</span>}</h4>
+                                                    <span className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mt-1 block">{template.type === 'text' ? 'Texto' : template.type === 'number' ? 'Número' : template.type === 'price' ? 'Precio' : 'Sí / No'}</span>
+                                                </div>
+                                                <div className="mt-auto">
                                                     <button onClick={() => {
                                                         setCustomFields([...customFields, { ...template, value: '' }]);
                                                         setIsTemplateModalOpen(false);
-                                                    }} className="w-full py-2 bg-primary/10 text-primary hover:bg-primary/20 rounded-xl font-label-md transition-colors flex items-center justify-center gap-2">
-                                                        <span className="material-symbols-outlined text-[18px]">add</span> Añadir a Propiedad
+                                                    }} className="w-full py-2.5 bg-primary text-on-primary hover:bg-primary/90 rounded-xl font-label-md transition-transform active:scale-95 flex items-center justify-center gap-2 shadow-sm">
+                                                        <span className="material-symbols-outlined text-[18px]">add</span> Añadir
                                                     </button>
                                                 </div>
                                             </div>
@@ -395,54 +401,78 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                 )}
                             </div>
 
-                            {/* Crear Nueva */}
-                            <div className="bg-surface-container-lowest p-6 rounded-3xl border-2 border-primary/20 shadow-sm relative overflow-hidden">
-                                <div className="absolute top-0 left-0 w-2 h-full bg-primary"></div>
-                                <h3 className="font-headline-sm text-primary mb-4 flex items-center gap-2"><span className="material-symbols-outlined">add_circle</span> Crear Nueva Plantilla (Se guardará para siempre)</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-                                    <div className="md:col-span-3 space-y-1">
-                                        <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Ícono</label>
-                                        <select value={newTemplate.icon} onChange={(e) => setNewTemplate({...newTemplate, icon: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-xl px-3 py-3 text-sm outline-none focus:border-primary">
-                                            <option value="star">★ Genérico</option>
-                                            <option value="directions_car">Carro / Parqueadero</option>
-                                            <option value="pool">Piscina</option>
-                                            <option value="shower">Baño / Ducha</option>
-                                            <option value="bed">Cama / Habitación</option>
-                                            <option value="local_florist">Naturaleza / Jardín</option>
-                                            <option value="pets">Mascotas</option>
-                                            <option value="balcony">Balcón</option>
-                                            <option value="elevator">Ascensor</option>
-                                            <option value="fitness_center">Gimnasio</option>
-                                            <option value="ac_unit">Aire Acondicionado</option>
-                                            <option value="security">Seguridad / Portería</option>
-                                            <option value="home">Casa / Principal</option>
-                                            <option value="square_foot">Área / Medidas</option>
-                                        </select>
+                            {/* Columna Derecha: Crear Nueva (Bento Style) */}
+                            <div className="space-y-4">
+                                <h3 className="font-label-lg text-secondary uppercase tracking-wider flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-[18px]">add_box</span> 
+                                    Crear Nueva Plantilla
+                                </h3>
+                                
+                                <div className="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/40 shadow-sm">
+                                    <div className="space-y-6">
+                                        
+                                        {/* Nombre del Campo */}
+                                        <div className="bg-surface p-4 rounded-2xl border border-outline-variant/30 focus-within:border-primary/50 transition-colors">
+                                            <label className="text-[11px] font-bold text-primary uppercase tracking-wider block mb-2">1. Nombre del Campo *</label>
+                                            <input type="text" placeholder="Ej. Cuarto Útil, Ascensor, Estrato..." value={newTemplate.label} onChange={(e) => setNewTemplate({...newTemplate, label: e.target.value})} className="w-full bg-transparent border-none p-0 text-on-surface font-body-lg placeholder-on-surface-variant/40 focus:ring-0" />
+                                        </div>
+
+                                        {/* Grilla de Íconos */}
+                                        <div>
+                                            <label className="text-[11px] font-bold text-primary uppercase tracking-wider block mb-3">2. Selecciona un Ícono</label>
+                                            <div className="grid grid-cols-5 sm:grid-cols-6 gap-2">
+                                                {['star', 'directions_car', 'pool', 'shower', 'bed', 'local_florist', 'pets', 'balcony', 'elevator', 'fitness_center', 'ac_unit', 'security', 'home', 'square_foot', 'kitchen', 'wifi', 'tv', 'local_laundry_service', 'outdoor_grill', 'deck', 'chair', 'local_cafe', 'weekend', 'door_front'].map(icon => (
+                                                    <button 
+                                                        key={icon}
+                                                        type="button"
+                                                        onClick={() => setNewTemplate({...newTemplate, icon})}
+                                                        className={`aspect-square flex items-center justify-center rounded-2xl transition-all ${newTemplate.icon === icon ? 'bg-primary text-on-primary shadow-md scale-110 z-10' : 'bg-surface border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container hover:text-primary'}`}
+                                                        title={icon}
+                                                    >
+                                                        <span className="material-symbols-outlined">{icon}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {/* Tipo de Dato */}
+                                            <div className="bg-surface p-4 rounded-2xl border border-outline-variant/30 focus-within:border-primary/50 transition-colors">
+                                                <label className="text-[11px] font-bold text-primary uppercase tracking-wider block mb-2">3. Tipo de Dato</label>
+                                                <select value={newTemplate.type} onChange={(e) => setNewTemplate({...newTemplate, type: e.target.value})} className="w-full bg-transparent border-none p-0 text-on-surface font-body-md focus:ring-0 cursor-pointer">
+                                                    <option value="text">Texto Corto</option>
+                                                    <option value="number">Número</option>
+                                                    <option value="price">Precio</option>
+                                                    <option value="boolean">Sí / No</option>
+                                                </select>
+                                            </div>
+
+                                            {/* Obligatorio */}
+                                            <button 
+                                                type="button"
+                                                onClick={() => setNewTemplate({...newTemplate, required: !newTemplate.required})}
+                                                className={`p-4 rounded-2xl border transition-all flex flex-col justify-center items-start text-left ${newTemplate.required ? 'bg-primary/10 border-primary text-primary' : 'bg-surface border-outline-variant/30 text-on-surface-variant hover:bg-surface-container'}`}
+                                            >
+                                                <label className="text-[11px] font-bold uppercase tracking-wider block mb-1">4. Obligatorio</label>
+                                                <div className="flex items-center gap-2 font-bold">
+                                                    <span className="material-symbols-outlined text-[20px]">{newTemplate.required ? 'check_circle' : 'radio_button_unchecked'}</span>
+                                                    {newTemplate.required ? 'Sí, requerido' : 'No (Opcional)'}
+                                                </div>
+                                            </button>
+                                        </div>
+
+                                        {/* Botón Guardar */}
+                                        <button 
+                                            type="button" 
+                                            onClick={handleCreateTemplate} 
+                                            disabled={!newTemplate.label} 
+                                            className="w-full py-4 mt-2 font-label-lg text-on-primary bg-primary disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                                        >
+                                            <span className="material-symbols-outlined text-[24px]">save</span> 
+                                            Crear y Guardar Plantilla
+                                        </button>
+                                        
                                     </div>
-                                    <div className="md:col-span-4 space-y-1">
-                                        <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Nombre del Campo *</label>
-                                        <input type="text" placeholder="Ej. Cuarto Útil" value={newTemplate.label} onChange={(e) => setNewTemplate({...newTemplate, label: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-xl px-3 py-3 text-sm outline-none focus:border-primary" />
-                                    </div>
-                                    <div className="md:col-span-3 space-y-1">
-                                        <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Tipo de Dato</label>
-                                        <select value={newTemplate.type} onChange={(e) => setNewTemplate({...newTemplate, type: e.target.value})} className="w-full bg-surface border border-outline-variant rounded-xl px-3 py-3 text-sm outline-none focus:border-primary">
-                                            <option value="text">Texto Corto</option>
-                                            <option value="number">Número</option>
-                                            <option value="price">Precio / Moneda</option>
-                                            <option value="boolean">Sí / No</option>
-                                        </select>
-                                    </div>
-                                    <div className="md:col-span-2 space-y-1 flex items-center h-full pb-3">
-                                        <label className="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" checked={newTemplate.required} onChange={(e) => setNewTemplate({...newTemplate, required: e.target.checked})} className="w-5 h-5 text-primary rounded border-outline-variant focus:ring-primary focus:ring-2" />
-                                            <span className="text-sm font-bold text-on-surface">Obligatorio</span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="mt-6 flex justify-end">
-                                    <button type="button" onClick={handleCreateTemplate} disabled={!newTemplate.label} className="px-6 py-3 font-label-md text-on-primary bg-primary disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2">
-                                        <span className="material-symbols-outlined text-[20px]">save</span> Crear y Añadir
-                                    </button>
                                 </div>
                             </div>
                         </div>
