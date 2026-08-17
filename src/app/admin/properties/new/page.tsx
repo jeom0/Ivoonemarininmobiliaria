@@ -242,35 +242,6 @@ export default function NewProperty() {
                     )}
                     
                     <form onSubmit={handleSubmit} className="space-y-6 lg:space-y-10">
-                        {/* Detalles Financieros */}
-                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
-                            <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
-                                <span className="material-symbols-outlined text-secondary">payments</span>
-                                Detalles Financieros
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                <div className="space-y-1 relative group">
-                                    <label className="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">Precio *</label>
-                                    <input name="price" type="number" required className="w-full border-b-2 border-outline-variant bg-transparent p-0 focus:border-primary focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50 pb-1" placeholder="Ej: 450000000" />
-                                </div>
-                                <div className="space-y-1 relative group">
-                                    <label className="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">Administración</label>
-                                    <input name="adminFee" type="number" className="w-full border-b-2 border-outline-variant bg-transparent p-0 focus:border-primary focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50 pb-1" placeholder="Ej: 350000" />
-                                </div>
-                                <div className="space-y-1 relative group">
-                                    <label className="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">Moneda</label>
-                                    <select name="currency" className="w-full border-b-2 border-outline-variant bg-transparent p-0 focus:border-primary focus:ring-0 text-on-surface font-body-lg pb-1">
-                                        <option value="COP">COP ($)</option>
-                                        <option value="USD">USD ($)</option>
-                                        <option value="EUR">EUR (€)</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Ficha Técnica Extendida (Custom Fields) */}
-
-
                         {/* Básicos - Bento Style */}
                         <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">

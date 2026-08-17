@@ -93,7 +93,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     : allNavItems.filter(item => item.id === 'dashboard' || item.id === 'ayuda' || permissions.includes(item.id));
 
   return (
-    <div className="flex min-h-screen bg-background relative">
+    <div className="flex h-screen bg-background relative overflow-hidden">
       {/* Mobile Sidebar Overlay (Only on small screens) */}
       <div 
         className={`fixed inset-0 bg-black/50 z-[45] transition-opacity md:hidden ${sidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
@@ -122,7 +122,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </div>
 
       {/* SideNavBar */}
-      <aside className={`fixed md:sticky top-0 left-0 h-screen bg-surface-container border-r border-outline-variant/20 shadow-md flex flex-col p-4 z-50 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] shrink-0 overflow-y-auto overscroll-contain ${
+      <aside className={`fixed md:sticky top-0 left-0 h-full bg-surface-container border-r border-outline-variant/20 shadow-md flex flex-col p-4 z-50 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] shrink-0 overflow-y-auto overscroll-contain ${
         sidebarOpen ? 'w-full md:w-64 translate-x-0' : '-translate-x-full w-full md:w-20 md:translate-x-0'
       }`}>
         {/* Header/Logo section */}
@@ -204,7 +204,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Canvas */}
-      <main className={`flex-1 min-h-screen bg-background overflow-x-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] md:p-8 p-4 pt-24 md:pt-8`}>
+      <main className={`flex-1 h-full overflow-y-auto bg-background overflow-x-hidden transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] md:p-8 p-4 pt-24 md:pt-8`}>
         {children}
       </main>
     </div>

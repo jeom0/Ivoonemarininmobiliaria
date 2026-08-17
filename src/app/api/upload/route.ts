@@ -23,7 +23,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, message: "No file or chunk uploaded" }, { status: 400 });
     }
 
-    const uploadDir = process.env.UPLOAD_DIR || path.join(process.cwd(), "public", "uploads");
+    const isProd = process.env.NODE_ENV === 'production';
+    const uploadDir = process.env.UPLOAD_DIR || (isProd 
+      ? '/home/u351811476/domains/ivonnemarininmobiliaria.com/public_html/uploads' 
+      : path.join(process.cwd(), "public", "uploads"));
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }

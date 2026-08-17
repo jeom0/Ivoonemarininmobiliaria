@@ -7,7 +7,10 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const { filename } = await params;
     
     // Safely resolve path to avoid directory traversal
-    const uploadDir = process.env.UPLOAD_DIR || path.join(process.cwd(), "public", "uploads");
+    const isProd = process.env.NODE_ENV === 'production';
+    const uploadDir = process.env.UPLOAD_DIR || (isProd 
+      ? '/home/u351811476/domains/ivonnemarininmobiliaria.com/public_html/uploads' 
+      : path.join(process.cwd(), "public", "uploads"));
     const safePath = path.normalize(path.join(uploadDir, filename));
     
     if (!safePath.startsWith(uploadDir)) {
