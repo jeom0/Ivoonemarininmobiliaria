@@ -409,36 +409,18 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                 </h3>
                                 
                                 <div className="bg-surface-container-lowest p-6 rounded-3xl border border-outline-variant/40 shadow-sm">
-                                    <div className="space-y-6">
+                                    <div className="space-y-5">
                                         
-                                        {/* Nombre del Campo */}
-                                        <div className="bg-surface p-4 rounded-2xl border border-outline-variant/30 focus-within:border-primary/50 transition-colors">
-                                            <label className="text-[11px] font-bold text-primary uppercase tracking-wider block mb-2">1. Nombre del Campo *</label>
-                                            <input type="text" placeholder="Ej. Cuarto Útil, Ascensor, Estrato..." value={newTemplate.label} onChange={(e) => setNewTemplate({...newTemplate, label: e.target.value})} className="w-full bg-transparent border-none p-0 text-on-surface font-body-lg placeholder-on-surface-variant/40 focus:ring-0" />
-                                        </div>
-
-                                        {/* Grilla de Íconos */}
-                                        <div>
-                                            <label className="text-[11px] font-bold text-primary uppercase tracking-wider block mb-3">2. Selecciona un Ícono</label>
-                                            <div className="grid grid-cols-5 sm:grid-cols-6 gap-2">
-                                                {['star', 'directions_car', 'pool', 'shower', 'bed', 'local_florist', 'pets', 'balcony', 'elevator', 'fitness_center', 'ac_unit', 'security', 'home', 'square_foot', 'kitchen', 'wifi', 'tv', 'local_laundry_service', 'outdoor_grill', 'deck', 'chair', 'local_cafe', 'weekend', 'door_front'].map(icon => (
-                                                    <button 
-                                                        key={icon}
-                                                        type="button"
-                                                        onClick={() => setNewTemplate({...newTemplate, icon})}
-                                                        className={`aspect-square flex items-center justify-center rounded-2xl transition-all ${newTemplate.icon === icon ? 'bg-primary text-on-primary shadow-md scale-110 z-10' : 'bg-surface border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container hover:text-primary'}`}
-                                                        title={icon}
-                                                    >
-                                                        <span className="material-symbols-outlined">{icon}</span>
-                                                    </button>
-                                                ))}
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {/* Nombre del Campo */}
+                                            <div className="bg-surface p-3.5 rounded-2xl border border-outline-variant/40 focus-within:border-primary/60 transition-colors">
+                                                <label className="text-[10px] font-bold text-primary uppercase tracking-wider block mb-1">Nombre del Campo *</label>
+                                                <input type="text" placeholder="Ej. Cuarto Útil" value={newTemplate.label} onChange={(e) => setNewTemplate({...newTemplate, label: e.target.value})} className="w-full bg-transparent border-none p-0 text-on-surface font-body-md placeholder-on-surface-variant/40 focus:ring-0" />
                                             </div>
-                                        </div>
 
-                                        <div className="grid grid-cols-2 gap-4">
                                             {/* Tipo de Dato */}
-                                            <div className="bg-surface p-4 rounded-2xl border border-outline-variant/30 focus-within:border-primary/50 transition-colors">
-                                                <label className="text-[11px] font-bold text-primary uppercase tracking-wider block mb-2">3. Tipo de Dato</label>
+                                            <div className="bg-surface p-3.5 rounded-2xl border border-outline-variant/40 focus-within:border-primary/60 transition-colors">
+                                                <label className="text-[10px] font-bold text-primary uppercase tracking-wider block mb-1">Tipo de Dato</label>
                                                 <select value={newTemplate.type} onChange={(e) => setNewTemplate({...newTemplate, type: e.target.value})} className="w-full bg-transparent border-none p-0 text-on-surface font-body-md focus:ring-0 cursor-pointer">
                                                     <option value="text">Texto Corto</option>
                                                     <option value="number">Número</option>
@@ -446,19 +428,32 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                                     <option value="boolean">Sí / No</option>
                                                 </select>
                                             </div>
+                                        </div>
 
-                                            {/* Obligatorio */}
-                                            <button 
-                                                type="button"
-                                                onClick={() => setNewTemplate({...newTemplate, required: !newTemplate.required})}
-                                                className={`p-4 rounded-2xl border transition-all flex flex-col justify-center items-start text-left ${newTemplate.required ? 'bg-primary/10 border-primary text-primary' : 'bg-surface border-outline-variant/30 text-on-surface-variant hover:bg-surface-container'}`}
-                                            >
-                                                <label className="text-[11px] font-bold uppercase tracking-wider block mb-1">4. Obligatorio</label>
-                                                <div className="flex items-center gap-2 font-bold">
-                                                    <span className="material-symbols-outlined text-[20px]">{newTemplate.required ? 'check_circle' : 'radio_button_unchecked'}</span>
-                                                    {newTemplate.required ? 'Sí, requerido' : 'No (Opcional)'}
-                                                </div>
-                                            </button>
+                                        {/* Obligatorio */}
+                                        <label className="flex items-center gap-3 p-3.5 bg-surface rounded-2xl border border-outline-variant/40 cursor-pointer hover:bg-surface-container/50 transition-colors group">
+                                            <div className="relative flex items-center justify-center">
+                                                <input type="checkbox" checked={newTemplate.required} onChange={(e) => setNewTemplate({...newTemplate, required: e.target.checked})} className="peer w-5 h-5 rounded border-outline-variant/50 text-primary focus:ring-primary focus:ring-offset-0 bg-transparent transition-all cursor-pointer" />
+                                            </div>
+                                            <span className="font-label-md text-on-surface font-medium group-hover:text-primary transition-colors">Este campo es obligatorio</span>
+                                        </label>
+
+                                        {/* Grilla de Íconos */}
+                                        <div className="bg-surface p-4 rounded-2xl border border-outline-variant/40">
+                                            <label className="text-[10px] font-bold text-primary uppercase tracking-wider block mb-3">Selecciona un Ícono</label>
+                                            <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 gap-1.5 h-48 overflow-y-auto pr-2 custom-scrollbar">
+                                                {['star', 'directions_car', 'pool', 'shower', 'bed', 'local_florist', 'pets', 'balcony', 'elevator', 'fitness_center', 'ac_unit', 'security', 'home', 'square_foot', 'kitchen', 'wifi', 'tv', 'local_laundry_service', 'outdoor_grill', 'deck', 'chair', 'local_cafe', 'weekend', 'door_front', 'yard', 'fence', 'garage', 'roofing', 'camera_outdoor', 'sensor_window', 'fireplace', 'water_drop', 'electric_bolt', 'local_parking', 'camera', 'directions_bus', 'school', 'local_hospital', 'shopping_cart', 'park', 'restaurant', 'nature', 'sports_tennis', 'sports_soccer', 'golf_course', 'spa', 'hot_tub', 'iron', 'microwave', 'blender', 'coffee_maker', 'heat_pump', 'solar_power', 'wind_power'].map(icon => (
+                                                    <button 
+                                                        key={icon}
+                                                        type="button"
+                                                        onClick={() => setNewTemplate({...newTemplate, icon})}
+                                                        className={`aspect-square flex items-center justify-center rounded-xl transition-all ${newTemplate.icon === icon ? 'bg-primary text-on-primary shadow-md scale-110 z-10' : 'bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container hover:text-primary'}`}
+                                                        title={icon}
+                                                    >
+                                                        <span className="material-symbols-outlined text-[18px]">{icon}</span>
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
 
                                         {/* Botón Guardar */}
@@ -466,9 +461,9 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             type="button" 
                                             onClick={handleCreateTemplate} 
                                             disabled={!newTemplate.label} 
-                                            className="w-full py-4 mt-2 font-label-lg text-on-primary bg-primary disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
+                                            className="w-full py-3.5 mt-2 font-label-md text-on-primary bg-primary disabled:opacity-50 disabled:cursor-not-allowed hover:bg-primary/90 rounded-2xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2"
                                         >
-                                            <span className="material-symbols-outlined text-[24px]">save</span> 
+                                            <span className="material-symbols-outlined text-[20px]">save</span> 
                                             Crear y Guardar Plantilla
                                         </button>
                                         
