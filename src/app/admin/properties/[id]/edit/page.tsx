@@ -819,14 +819,15 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                             </div>
                         </div>
 
+                        
+
                         {/* Submit */}
                         <div className="flex items-center justify-end gap-4 pt-6 border-t border-outline-variant/30">
                             <Link href="/admin/properties" className="px-6 py-3 border border-outline-variant rounded-lg text-secondary hover:bg-surface-container transition-colors text-sm font-semibold">
                                 Cancelar
                             </Link>
-                            <button type="submit" disabled={loading || uploadingFiles} className="bg-primary hover:bg-primary-container hover:text-primary transition-all text-on-primary font-bold py-3.5 px-8 rounded-lg flex items-center gap-2 shadow-lg disabled:opacity-50">
-                                {loading || uploadingFiles ? "Guardando Cambios..." : "Guardar Cambios"}
-                                <span className="material-symbols-outlined">save</span>
+                            <button type="submit" disabled={uploadingFiles} className="px-6 py-3 bg-primary text-on-primary rounded-lg shadow-md hover:bg-primary/90 transition-colors font-semibold disabled:opacity-50 flex items-center gap-2">
+                                {uploadingFiles ? 'Subiendo...' : 'Guardar Cambios'}
                             </button>
                         </div>
                     </form>
@@ -834,6 +835,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
             </div>
 
             {/* Modal de Plantillas de Ficha Técnica */}
+
             {isTemplateModalOpen && (
                 <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
                     <div className="bg-surface w-full max-w-3xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
