@@ -44,7 +44,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
     const [newImageUrl, setNewImageUrl] = useState<string>('');
     const [documents, setDocuments] = useState<string[]>([]);
     const [pdfPreviews, setPdfPreviews] = useState<{file: File, name: string}[]>([]);
-    const [customFields, setCustomFields] = useState<{category: string, icon: string, label: string, value: string}[]>([]);
+    const [customFields, setCustomFields] = useState<any[]>([]);
 
     useEffect(() => {
         fetch(`/api/properties/${unwrappedParams.id}`)
@@ -255,7 +255,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
             if (customFields.length > 0) {
                 data.customFields = JSON.stringify(customFields);
             } else {
-                data.customFields = null; // Enforce deletion if array is empty
+                data.customFields = null as any; // Enforce deletion if array is empty
             }
 
             setUploadingFiles(false);
@@ -523,6 +523,227 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                     <input type="hidden" name="lat" id="lat_input" defaultValue={property?.lat || ''} />
                                     <input type="hidden" name="lng" id="lng_input" defaultValue={property?.lng || ''} />
                                 </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="font-headline-md text-primary flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-secondary">list_alt</span>
+                                    Información Básica, Características Técnicas y Más
+                                </h3>
+                                <button type="button" onClick={() => setCustomFields([...customFields, { category: 'Información Básica', icon: 'check_circle', label: '', value: '', type: 'text' }])} className="text-sm bg-primary text-on-primary px-4 py-2 rounded-xl flex items-center gap-1 hover:opacity-90 transition-opacity font-medium ambient-shadow">
+                                    <span className="material-symbols-outlined text-sm">add</span> Agregar Ítem
+                                </button>
+                            </div>
+                            <p className="text-sm text-on-surface-variant mb-6">Agrega detalles como Habitaciones, Parqueaderos, Único Dueño, Cabañas, o Especificaciones Técnicas. Selecciona el <strong>Tipo de Valor</strong> para facilitar la captura de datos.</p>
+                            
+                            <datalist id="categories">
+                                <option value="Información Básica" />
+                                <option value="Características Técnicas" />
+                                <option value="Zonas Comunes" />
+                                <option value="Cabañas / Turismo" />
+                            </datalist>
+
+                            <div className="space-y-4">
+                                {customFields.map((field: any, idx: number) => (
+                                    <div key={idx} className="flex flex-col lg:flex-row gap-3 items-start lg:items-center bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/50 shadow-sm relative overflow-hidden group">
+                                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 w-full items-end">
+                                            {/* Categoría e Ícono */}
+                                            <div className="space-y-1">
+                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Categoría</label>
+                                                <input 
+                                                    list="categories"
+                                                    value={field.category} 
+                                                    placeholder="Ej. Información Básica"
+                                                    onChange={(e) => {
+                                                        const newFields = [...customFields];
+                                                        newFields[idx].category = e.target.value;
+                                                        setCustomFields(newFields);
+                                                    }}
+                                                    className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                                />
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Nombre del Ítem</label>
+                                                <div className="flex gap-2">
+                                                    <div className="flex items-center gap-2 bg-surface border border-outline-variant rounded-md px-2 py-2 focus-within:border-primary w-24 shrink-0" title="Ícono de Material Symbols">
+                                                        <span className="material-symbols-outlined text-on-surface-variant text-[18px]">{field.icon || 'star'}</span>
+                                                        <input 
+                                                            type="text" 
+                                                            placeholder="Ícono" 
+                                                            value={field.icon}
+                                                            onChange={(e) => {
+                                                                const newFields = [...customFields];
+                                                                newFields[idx].icon = e.target.value;
+                                                                setCustomFields(newFields);
+                                                            }}
+                                                            className="w-full outline-none text-xs bg-transparent"
+                                                        />
+                                                    </div>
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Ej. Habitaciones" 
+                                                        value={field.label}
+                                                        required
+                                                        onChange={(e) => {
+                                                            const newFields = [...customFields];
+                                                            newFields[idx].label = e.target.value;
+                                                            setCustomFields(newFields);
+                                                        }}
+                                                        className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Tipo de Dato</label>
+                                                <select 
+                                                    value={field.type || 'text'} 
+                                                    onChange={(e) => {
+                                                        const newFields = [...customFields];
+                                                        newFields[idx].type = e.target.value;
+                                                        // Reset value logic based on type
+                                                        if (e.target.value === 'number' && isNaN(Number(newFields[idx].value))) newFields[idx].value = '0';
+                                                        if (e.target.value === 'boolean') newFields[idx].value = 'Sí';
+                                                        setCustomFields(newFields);
+                                                    }}
+                                                    className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                                >
+                                                    <option value="text">Texto Corto (Ej. "Madera")</option>
+                                                    <option value="number">Número Entero (Ej. 3)</option>
+                                                    <option value="price">Moneda / Precio</option>
+                                                    <option value="boolean">Sí / No (Casilla)</option>
+                                                </select>
+                                            </div>
+
+                                            <div className="space-y-1 flex-1">
+                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Valor</label>
+                                                <div className="w-full">
+                                                    {(!field.type || field.type === 'text') && (
+                                                        <input 
+                                                            type="text" 
+                                                            placeholder="Valor" 
+                                                            value={field.value}
+                                                            required
+                                                            onChange={(e) => {
+                                                                const newFields = [...customFields];
+                                                                newFields[idx].value = e.target.value;
+                                                                setCustomFields(newFields);
+                                                            }}
+                                                            className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                                        />
+                                                    )}
+                                                    
+                                                    {field.type === 'number' && (
+                                                        <div className="flex items-center gap-2">
+                                                            <button 
+                                                                type="button" 
+                                                                onClick={() => {
+                                                                    const newFields = [...customFields];
+                                                                    newFields[idx].value = String(Math.max(0, (parseInt(newFields[idx].value) || 0) - 1));
+                                                                    setCustomFields(newFields);
+                                                                }}
+                                                                className="w-9 h-9 flex items-center justify-center bg-surface border border-outline-variant rounded-md hover:bg-surface-container transition-colors text-primary font-bold"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[18px]">remove</span>
+                                                            </button>
+                                                            <input 
+                                                                type="number" 
+                                                                value={field.value}
+                                                                required
+                                                                onChange={(e) => {
+                                                                    const newFields = [...customFields];
+                                                                    newFields[idx].value = e.target.value;
+                                                                    setCustomFields(newFields);
+                                                                }}
+                                                                className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm text-center outline-none focus:border-primary"
+                                                            />
+                                                            <button 
+                                                                type="button" 
+                                                                onClick={() => {
+                                                                    const newFields = [...customFields];
+                                                                    newFields[idx].value = String((parseInt(newFields[idx].value) || 0) + 1);
+                                                                    setCustomFields(newFields);
+                                                                }}
+                                                                className="w-9 h-9 flex items-center justify-center bg-surface border border-outline-variant rounded-md hover:bg-surface-container transition-colors text-primary font-bold"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[18px]">add</span>
+                                                            </button>
+                                                        </div>
+                                                    )}
+
+                                                    {field.type === 'price' && (
+                                                        <div className="relative">
+                                                            <span className="absolute left-3 top-2 text-sm text-on-surface-variant">$</span>
+                                                            <input 
+                                                                type="number" 
+                                                                value={field.value}
+                                                                required
+                                                                onChange={(e) => {
+                                                                    const newFields = [...customFields];
+                                                                    newFields[idx].value = e.target.value;
+                                                                    setCustomFields(newFields);
+                                                                }}
+                                                                className="w-full bg-surface border border-outline-variant rounded-md pl-7 pr-3 py-2 text-sm outline-none focus:border-primary"
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {field.type === 'boolean' && (
+                                                        <div className="flex items-center gap-3 h-[38px] px-2">
+                                                            <label className="flex items-center gap-2 cursor-pointer">
+                                                                <input 
+                                                                    type="radio" 
+                                                                    checked={field.value === 'Sí'}
+                                                                    onChange={() => {
+                                                                        const newFields = [...customFields];
+                                                                        newFields[idx].value = 'Sí';
+                                                                        setCustomFields(newFields);
+                                                                    }}
+                                                                    className="text-primary focus:ring-primary"
+                                                                />
+                                                                <span className="text-sm font-medium text-on-surface">Sí</span>
+                                                            </label>
+                                                            <label className="flex items-center gap-2 cursor-pointer">
+                                                                <input 
+                                                                    type="radio" 
+                                                                    checked={field.value === 'No'}
+                                                                    onChange={() => {
+                                                                        const newFields = [...customFields];
+                                                                        newFields[idx].value = 'No';
+                                                                        setCustomFields(newFields);
+                                                                    }}
+                                                                    className="text-primary focus:ring-primary"
+                                                                />
+                                                                <span className="text-sm font-medium text-on-surface">No</span>
+                                                            </label>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
+                                            className="text-error hover:bg-error/10 p-2 rounded-lg transition-colors mt-6 lg:mt-0 lg:ml-2 border border-error/20 bg-error/5"
+                                            title="Eliminar este ítem"
+                                        >
+                                            <span className="material-symbols-outlined text-[20px]">delete</span>
+                                        </button>
+                                    </div>
+                                ))}
+                                {customFields.length === 0 && (
+                                    <div className="text-center py-10 text-on-surface-variant bg-surface-container-low rounded-xl border border-dashed border-outline-variant">
+                                        <span className="material-symbols-outlined text-4xl mb-2 text-outline">format_list_bulleted_add</span>
+                                        <p>No has añadido campos adicionales.</p>
+                                        <p className="text-xs mt-1">Haz clic en "Agregar Ítem" para personalizar la ficha técnica.</p>
+                                    </div>
+                                )}
                             </div>
                         </div>
 

@@ -33,12 +33,14 @@ export default function NewProperty() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [lightboxIndex, setLightboxIndex] = useState(0);
     const [uploadingFiles, setUploadingFiles] = useState(false);
     const [gallery, setGallery] = useState<string[]>([]);
     const [mainImage, setMainImage] = useState<string>('');
     const [newImageUrl, setNewImageUrl] = useState<string>('');
     const [pdfPreview, setPdfPreview] = useState<{file: File | null, name: string | null}>({file: null, name: null});
-    const [customFields, setCustomFields] = useState<{category: string, icon: string, label: string, value: string}[]>([]);
+    const [customFields, setCustomFields] = useState<any[]>([]);
 
     // Direct file upload via + card
     const handleDirectFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -265,91 +267,7 @@ export default function NewProperty() {
                         </div>
 
                         {/* Ficha Técnica Extendida (Custom Fields) */}
-                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
-                            <div className="flex justify-between items-center mb-6">
-                                <h3 className="font-headline-md text-primary flex items-center gap-2">
-                                    <span className="material-symbols-outlined text-secondary">list_alt</span>
-                                    Especificaciones Extra (Ficha Técnica)
-                                </h3>
-                                <button type="button" onClick={() => setCustomFields([...customFields, { category: 'Características Técnicas', icon: 'check_circle', label: '', value: '' }])} className="text-sm bg-primary/10 text-primary px-3 py-1.5 rounded-lg flex items-center gap-1 hover:bg-primary/20 transition-colors">
-                                    <span className="material-symbols-outlined text-sm">add</span> Añadir Campo
-                                </button>
-                            </div>
-                            <p className="text-sm text-on-surface-variant mb-4">Agrega especificaciones personalizadas que no estén en el formulario base (ej. "Tipo de Piso", "Zonas Verdes", "Acabados"). Puedes usar nombres de íconos de <a href="https://fonts.google.com/icons?icon.set=Material+Symbols" target="_blank" className="text-secondary hover:underline">Google Material Symbols</a>.</p>
-                            
-                            <div className="space-y-4">
-                                {customFields.map((field, idx) => (
-                                    <div key={idx} className="flex flex-col md:flex-row gap-3 items-start md:items-center bg-surface-container-low p-3 rounded-xl border border-outline-variant/30">
-                                        <select 
-                                            value={field.category} 
-                                            onChange={(e) => {
-                                                const newFields = [...customFields];
-                                                newFields[idx].category = e.target.value;
-                                                setCustomFields(newFields);
-                                            }}
-                                            className="bg-surface border border-outline-variant rounded-md px-2 py-1.5 text-sm"
-                                        >
-                                            <option value="Información Básica">Información Básica</option>
-                                            <option value="Características Técnicas">Características Técnicas</option>
-                                        </select>
-                                        
-                                        <div className="flex items-center gap-2 bg-surface border border-outline-variant rounded-md px-2 py-1.5 focus-within:border-primary">
-                                            <span className="material-symbols-outlined text-on-surface-variant">{field.icon}</span>
-                                            <input 
-                                                type="text" 
-                                                placeholder="Ícono (ej. pool)" 
-                                                value={field.icon}
-                                                onChange={(e) => {
-                                                    const newFields = [...customFields];
-                                                    newFields[idx].icon = e.target.value;
-                                                    setCustomFields(newFields);
-                                                }}
-                                                className="w-24 outline-none text-sm bg-transparent"
-                                            />
-                                        </div>
-                                        
-                                        <input 
-                                            type="text" 
-                                            placeholder="Nombre (ej. Cuarto Útil)" 
-                                            value={field.label}
-                                            required
-                                            onChange={(e) => {
-                                                const newFields = [...customFields];
-                                                newFields[idx].label = e.target.value;
-                                                setCustomFields(newFields);
-                                            }}
-                                            className="flex-1 bg-surface border border-outline-variant rounded-md px-3 py-1.5 text-sm outline-none focus:border-primary"
-                                        />
-                                        
-                                        <input 
-                                            type="text" 
-                                            placeholder="Valor (ej. Sí, 4m2)" 
-                                            value={field.value}
-                                            required
-                                            onChange={(e) => {
-                                                const newFields = [...customFields];
-                                                newFields[idx].value = e.target.value;
-                                                setCustomFields(newFields);
-                                            }}
-                                            className="flex-1 bg-surface border border-outline-variant rounded-md px-3 py-1.5 text-sm outline-none focus:border-primary"
-                                        />
-                                        
-                                        <button 
-                                            type="button" 
-                                            onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
-                                            className="text-error hover:bg-error/10 p-1.5 rounded-md transition-colors"
-                                        >
-                                            <span className="material-symbols-outlined text-lg">delete</span>
-                                        </button>
-                                    </div>
-                                ))}
-                                {customFields.length === 0 && (
-                                    <div className="text-center py-6 text-on-surface-variant bg-surface-container-low rounded-xl border border-dashed border-outline-variant">
-                                        No has añadido campos adicionales.
-                                    </div>
-                                )}
-                            </div>
-                        </div>
+
 
                         {/* Básicos - Bento Style */}
                         <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
@@ -424,6 +342,227 @@ export default function NewProperty() {
                             </div>
                         </div>
 
+                        <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
+                            <div className="flex justify-between items-center mb-6">
+                                <h3 className="font-headline-md text-primary flex items-center gap-2">
+                                    <span className="material-symbols-outlined text-secondary">list_alt</span>
+                                    Información Básica, Características Técnicas y Más
+                                </h3>
+                                <button type="button" onClick={() => setCustomFields([...customFields, { category: 'Información Básica', icon: 'check_circle', label: '', value: '', type: 'text' }])} className="text-sm bg-primary text-on-primary px-4 py-2 rounded-xl flex items-center gap-1 hover:opacity-90 transition-opacity font-medium ambient-shadow">
+                                    <span className="material-symbols-outlined text-sm">add</span> Agregar Ítem
+                                </button>
+                            </div>
+                            <p className="text-sm text-on-surface-variant mb-6">Agrega detalles como Habitaciones, Parqueaderos, Único Dueño, Cabañas, o Especificaciones Técnicas. Selecciona el <strong>Tipo de Valor</strong> para facilitar la captura de datos.</p>
+                            
+                            <datalist id="categories">
+                                <option value="Información Básica" />
+                                <option value="Características Técnicas" />
+                                <option value="Zonas Comunes" />
+                                <option value="Cabañas / Turismo" />
+                            </datalist>
+
+                            <div className="space-y-4">
+                                {customFields.map((field: any, idx: number) => (
+                                    <div key={idx} className="flex flex-col lg:flex-row gap-3 items-start lg:items-center bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/50 shadow-sm relative overflow-hidden group">
+                                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-primary"></div>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-3 w-full items-end">
+                                            {/* Categoría e Ícono */}
+                                            <div className="space-y-1">
+                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Categoría</label>
+                                                <input 
+                                                    list="categories"
+                                                    value={field.category} 
+                                                    placeholder="Ej. Información Básica"
+                                                    onChange={(e) => {
+                                                        const newFields = [...customFields];
+                                                        newFields[idx].category = e.target.value;
+                                                        setCustomFields(newFields);
+                                                    }}
+                                                    className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                                />
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Nombre del Ítem</label>
+                                                <div className="flex gap-2">
+                                                    <div className="flex items-center gap-2 bg-surface border border-outline-variant rounded-md px-2 py-2 focus-within:border-primary w-24 shrink-0" title="Ícono de Material Symbols">
+                                                        <span className="material-symbols-outlined text-on-surface-variant text-[18px]">{field.icon || 'star'}</span>
+                                                        <input 
+                                                            type="text" 
+                                                            placeholder="Ícono" 
+                                                            value={field.icon}
+                                                            onChange={(e) => {
+                                                                const newFields = [...customFields];
+                                                                newFields[idx].icon = e.target.value;
+                                                                setCustomFields(newFields);
+                                                            }}
+                                                            className="w-full outline-none text-xs bg-transparent"
+                                                        />
+                                                    </div>
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Ej. Habitaciones" 
+                                                        value={field.label}
+                                                        required
+                                                        onChange={(e) => {
+                                                            const newFields = [...customFields];
+                                                            newFields[idx].label = e.target.value;
+                                                            setCustomFields(newFields);
+                                                        }}
+                                                        className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Tipo de Dato</label>
+                                                <select 
+                                                    value={field.type || 'text'} 
+                                                    onChange={(e) => {
+                                                        const newFields = [...customFields];
+                                                        newFields[idx].type = e.target.value;
+                                                        // Reset value logic based on type
+                                                        if (e.target.value === 'number' && isNaN(Number(newFields[idx].value))) newFields[idx].value = '0';
+                                                        if (e.target.value === 'boolean') newFields[idx].value = 'Sí';
+                                                        setCustomFields(newFields);
+                                                    }}
+                                                    className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                                >
+                                                    <option value="text">Texto Corto (Ej. "Madera")</option>
+                                                    <option value="number">Número Entero (Ej. 3)</option>
+                                                    <option value="price">Moneda / Precio</option>
+                                                    <option value="boolean">Sí / No (Casilla)</option>
+                                                </select>
+                                            </div>
+
+                                            <div className="space-y-1 flex-1">
+                                                <label className="text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Valor</label>
+                                                <div className="w-full">
+                                                    {(!field.type || field.type === 'text') && (
+                                                        <input 
+                                                            type="text" 
+                                                            placeholder="Valor" 
+                                                            value={field.value}
+                                                            required
+                                                            onChange={(e) => {
+                                                                const newFields = [...customFields];
+                                                                newFields[idx].value = e.target.value;
+                                                                setCustomFields(newFields);
+                                                            }}
+                                                            className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
+                                                        />
+                                                    )}
+                                                    
+                                                    {field.type === 'number' && (
+                                                        <div className="flex items-center gap-2">
+                                                            <button 
+                                                                type="button" 
+                                                                onClick={() => {
+                                                                    const newFields = [...customFields];
+                                                                    newFields[idx].value = String(Math.max(0, (parseInt(newFields[idx].value) || 0) - 1));
+                                                                    setCustomFields(newFields);
+                                                                }}
+                                                                className="w-9 h-9 flex items-center justify-center bg-surface border border-outline-variant rounded-md hover:bg-surface-container transition-colors text-primary font-bold"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[18px]">remove</span>
+                                                            </button>
+                                                            <input 
+                                                                type="number" 
+                                                                value={field.value}
+                                                                required
+                                                                onChange={(e) => {
+                                                                    const newFields = [...customFields];
+                                                                    newFields[idx].value = e.target.value;
+                                                                    setCustomFields(newFields);
+                                                                }}
+                                                                className="w-full bg-surface border border-outline-variant rounded-md px-3 py-2 text-sm text-center outline-none focus:border-primary"
+                                                            />
+                                                            <button 
+                                                                type="button" 
+                                                                onClick={() => {
+                                                                    const newFields = [...customFields];
+                                                                    newFields[idx].value = String((parseInt(newFields[idx].value) || 0) + 1);
+                                                                    setCustomFields(newFields);
+                                                                }}
+                                                                className="w-9 h-9 flex items-center justify-center bg-surface border border-outline-variant rounded-md hover:bg-surface-container transition-colors text-primary font-bold"
+                                                            >
+                                                                <span className="material-symbols-outlined text-[18px]">add</span>
+                                                            </button>
+                                                        </div>
+                                                    )}
+
+                                                    {field.type === 'price' && (
+                                                        <div className="relative">
+                                                            <span className="absolute left-3 top-2 text-sm text-on-surface-variant">$</span>
+                                                            <input 
+                                                                type="number" 
+                                                                value={field.value}
+                                                                required
+                                                                onChange={(e) => {
+                                                                    const newFields = [...customFields];
+                                                                    newFields[idx].value = e.target.value;
+                                                                    setCustomFields(newFields);
+                                                                }}
+                                                                className="w-full bg-surface border border-outline-variant rounded-md pl-7 pr-3 py-2 text-sm outline-none focus:border-primary"
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {field.type === 'boolean' && (
+                                                        <div className="flex items-center gap-3 h-[38px] px-2">
+                                                            <label className="flex items-center gap-2 cursor-pointer">
+                                                                <input 
+                                                                    type="radio" 
+                                                                    checked={field.value === 'Sí'}
+                                                                    onChange={() => {
+                                                                        const newFields = [...customFields];
+                                                                        newFields[idx].value = 'Sí';
+                                                                        setCustomFields(newFields);
+                                                                    }}
+                                                                    className="text-primary focus:ring-primary"
+                                                                />
+                                                                <span className="text-sm font-medium text-on-surface">Sí</span>
+                                                            </label>
+                                                            <label className="flex items-center gap-2 cursor-pointer">
+                                                                <input 
+                                                                    type="radio" 
+                                                                    checked={field.value === 'No'}
+                                                                    onChange={() => {
+                                                                        const newFields = [...customFields];
+                                                                        newFields[idx].value = 'No';
+                                                                        setCustomFields(newFields);
+                                                                    }}
+                                                                    className="text-primary focus:ring-primary"
+                                                                />
+                                                                <span className="text-sm font-medium text-on-surface">No</span>
+                                                            </label>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <button 
+                                            type="button" 
+                                            onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))}
+                                            className="text-error hover:bg-error/10 p-2 rounded-lg transition-colors mt-6 lg:mt-0 lg:ml-2 border border-error/20 bg-error/5"
+                                            title="Eliminar este ítem"
+                                        >
+                                            <span className="material-symbols-outlined text-[20px]">delete</span>
+                                        </button>
+                                    </div>
+                                ))}
+                                {customFields.length === 0 && (
+                                    <div className="text-center py-10 text-on-surface-variant bg-surface-container-low rounded-xl border border-dashed border-outline-variant">
+                                        <span className="material-symbols-outlined text-4xl mb-2 text-outline">format_list_bulleted_add</span>
+                                        <p>No has añadido campos adicionales.</p>
+                                        <p className="text-xs mt-1">Haz clic en "Agregar Ítem" para personalizar la ficha técnica.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
                         {/* Detalles Bento */}
                         <div className="bg-surface p-6 rounded-2xl border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
                             <h3 className="font-headline-md text-primary mb-6 flex items-center gap-2">
@@ -472,37 +611,49 @@ export default function NewProperty() {
                                 {gallery.map((url, idx) => {
                                     const isMain = url === mainImage;
                                     return (
-                                        <div key={idx} className={`relative group rounded-xl overflow-hidden border-2 transition-all shadow-sm ${isMain ? 'border-primary ring-2 ring-primary/30' : 'border-outline-variant/50 hover:border-primary/50'}`}>
+                                        <div key={idx} className={`relative group rounded-xl overflow-hidden border-2 transition-all shadow-sm cursor-pointer ${isMain ? 'border-primary ring-2 ring-primary/30' : 'border-outline-variant/50 hover:border-primary/50'}`} onClick={() => { if(!url.match(/\.(mp4|webm|ogg|mov)$/i)) { setLightboxIndex(idx); setLightboxOpen(true); } }}>
                                             {url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
-                                                <video src={url} className="w-full h-32 object-cover bg-black" muted loop autoPlay playsInline />
+                                                <video src={url} className="w-full h-32 object-cover bg-black" muted loop autoPlay playsInline controls />
                                             ) : (
                                                 <img src={url} alt={`Media ${idx + 1}`} className="w-full h-32 object-cover" />
                                             )}
                                             
                                             {isMain && (
-                                                <span className="absolute top-2 left-2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                                                <span className="absolute top-2 left-2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow z-10">
                                                     Principal
                                                 </span>
                                             )}
 
-                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 gap-2">
+                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 gap-2 z-20" onClick={(e) => e.stopPropagation()}>
+                                                <div className="flex gap-2">
+                                                    {!url.match(/\.(mp4|webm|ogg|mov)$/i) && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx); setLightboxOpen(true); }}
+                                                            className="bg-primary text-on-primary p-1.5 rounded-full hover:bg-primary/80 transition-colors"
+                                                            title="Ver en grande"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[18px]">visibility</span>
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => { e.stopPropagation(); handleRemoveImage(url); }}
+                                                        className="bg-error/90 text-white p-1.5 rounded-full hover:bg-error transition-colors"
+                                                        title="Eliminar foto"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                                                    </button>
+                                                </div>
                                                 {!isMain && (
                                                     <button
                                                         type="button"
-                                                        onClick={() => handleSetMain(url)}
+                                                        onClick={(e) => { e.stopPropagation(); handleSetMain(url); }}
                                                         className="bg-surface text-primary text-xs font-semibold px-2 py-1 rounded shadow hover:bg-primary hover:text-on-primary transition-colors"
                                                     >
                                                         Hacer Principal
                                                     </button>
                                                 )}
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleRemoveImage(url)}
-                                                    className="bg-error/90 text-white p-1.5 rounded-full hover:bg-error transition-colors"
-                                                    title="Eliminar foto"
-                                                >
-                                                    <span className="material-symbols-outlined text-[18px]">delete</span>
-                                                </button>
                                             </div>
                                         </div>
                                     );
@@ -644,6 +795,48 @@ export default function NewProperty() {
                     </form>
                 </div>
             </div>
+                    {/* Lightbox for Admin Images */}
+            {lightboxOpen && gallery.length > 0 && (
+                <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4 backdrop-blur-md">
+                    <button onClick={() => setLightboxOpen(false)} className="absolute top-6 right-6 w-12 h-12 bg-surface/10 hover:bg-surface/20 rounded-full flex items-center justify-center text-white transition-colors">
+                        <span className="material-symbols-outlined text-3xl">close</span>
+                    </button>
+                    
+                    <a 
+                        href={gallery[lightboxIndex]} 
+                        download={`imagen-${lightboxIndex + 1}.jpg`} 
+                        target="_blank"
+                        className="absolute top-6 right-24 bg-primary text-on-primary px-4 py-2.5 rounded-full flex items-center gap-2 hover:bg-primary/90 transition-colors font-label-md"
+                    >
+                        <span className="material-symbols-outlined text-xl">download</span>
+                        Descargar
+                    </a>
+
+                    <button 
+                        onClick={() => setLightboxIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))}
+                        className="absolute left-6 w-14 h-14 bg-surface/10 hover:bg-surface/30 rounded-full flex items-center justify-center text-white transition-colors"
+                    >
+                        <span className="material-symbols-outlined text-4xl">chevron_left</span>
+                    </button>
+
+                    <img 
+                        src={gallery[lightboxIndex]} 
+                        alt="Vista previa" 
+                        className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" 
+                    />
+
+                    <button 
+                        onClick={() => setLightboxIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))}
+                        className="absolute right-6 w-14 h-14 bg-surface/10 hover:bg-surface/30 rounded-full flex items-center justify-center text-white transition-colors"
+                    >
+                        <span className="material-symbols-outlined text-4xl">chevron_right</span>
+                    </button>
+
+                    <div className="absolute bottom-8 text-white font-label-md bg-black/50 px-4 py-1.5 rounded-full">
+                        {lightboxIndex + 1} de {gallery.length}
+                    </div>
+                </div>
+            )}
         </main>
     );
 }
