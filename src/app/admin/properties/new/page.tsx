@@ -480,6 +480,24 @@ export default function NewProperty() {
                                                             </div>
                         </div>
 
+                                                {/* Descripciones */}
+                        <div>
+                            <h3 className="font-headline-md text-primary mb-4 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary">description</span>
+                                Descripciones
+                            </h3>
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="font-label-md text-secondary block mb-1">Descripción Corta (Resumen para catálogo)</label>
+                                    <textarea name="shortDesc"  rows={2} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary"></textarea>
+                                </div>
+                                <div>
+                                    <label className="font-label-md text-secondary block mb-1">Descripción Completa / Detallada</label>
+                                    <textarea name="fullDesc"  rows={6} className="w-full border-outline-variant rounded-lg p-3 bg-surface focus:ring-primary focus:border-primary"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Multimedia */}
                         <div>
                             <h3 className="font-headline-md text-primary mb-2 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
@@ -616,7 +634,8 @@ export default function NewProperty() {
                             </div>
                         </div>
 
-                        {/* Visibilidad y Secciones del Inicio / Hero */}
+
+{/* Visibilidad y Secciones del Inicio / Hero */}
                         <div className="bg-surface-container/30 p-6 rounded-2xl border border-outline-variant/40 space-y-4">
                             <div>
                                 <h3 className="font-headline-md text-primary mb-1 flex items-center gap-2">
