@@ -677,6 +677,51 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                     <label className="font-label-md text-secondary mb-2">Área (m²)</label>
                                     <input name="builtArea" type="number" step="0.01" className="w-20 md:w-28 text-center border-b-2 border-outline-variant bg-transparent focus:outline-none focus:border-primary font-bold text-xl pb-1" defaultValue={property?.builtArea || 0} />
                                 </div>
+
+                                {/* Render de Campos Personalizados para Características Técnicas */}
+                                {customFields.map((field: any, idx: number) => field.category === 'Características Técnicas' ? (
+                                    <div key={idx} className="md:col-span-4 bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/30 hover:border-primary/30 transition-colors relative group">
+                                        <button type="button" onClick={() => setCustomFields(customFields.filter((_, i) => i !== idx))} className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-error hover:bg-error/10 p-1 rounded-md transition-all"><span className="material-symbols-outlined text-[18px]">close</span></button>
+                                        <label className="font-label-md text-secondary mb-2 flex items-center gap-1">
+                                            <span className="material-symbols-outlined text-[18px] text-primary/70">{field.icon}</span> {field.label} {field.required && <span className="text-error">*</span>}
+                                        </label>
+                                        
+                                        {(!field.type || field.type === 'text') && (
+                                            <input type="text" value={field.value} required onChange={(e) => { const newFields = [...customFields]; newFields[idx].value = e.target.value; setCustomFields(newFields); }} className="w-full border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg placeholder-on-surface-variant/50" placeholder="Ej. Sí, Madera" />
+                                        )}
+                                        
+                                        {field.type === 'number' && (
+                                            <div className="flex items-center gap-3">
+                                                <button type="button" onClick={() => { const newFields = [...customFields]; newFields[idx].value = String(Math.max(0, (parseInt(newFields[idx].value) || 0) - 1)); setCustomFields(newFields); }} className="w-8 h-8 flex items-center justify-center rounded-full bg-surface hover:bg-primary/10 text-primary transition-colors text-xl leading-none border border-outline-variant/30 font-medium">-</button>
+                                                <input type="number" value={field.value} required onChange={(e) => { const newFields = [...customFields]; newFields[idx].value = e.target.value; setCustomFields(newFields); }} className="flex-1 text-center border-none bg-transparent p-0 focus:ring-0 text-on-surface font-body-lg" />
+                                                <button type="button" onClick={() => { const newFields = [...customFields]; newFields[idx].value = String((parseInt(newFields[idx].value) || 0) + 1); setCustomFields(newFields); }} className="w-8 h-8 flex items-center justify-center rounded-full bg-surface hover:bg-primary/10 text-primary transition-colors text-xl leading-none border border-outline-variant/30 font-medium">+</button>
+                                            </div>
+                                        )}
+                                        
+                                        {field.type === 'price' && (
+                                            <div className="relative">
+                                                <span className="absolute left-0 top-0 text-on-surface-variant">$</span>
+                                                <input type="number" value={field.value} required onChange={(e) => { const newFields = [...customFields]; newFields[idx].value = e.target.value; setCustomFields(newFields); }} className="w-full border-none bg-transparent pl-4 p-0 focus:ring-0 text-on-surface font-body-lg" placeholder="Ej. 10000" />
+                                            </div>
+                                        )}
+                                        
+                                        {field.type === 'boolean' && (
+                                            <div className="flex items-center gap-4">
+                                                <label className="flex items-center gap-2 cursor-pointer"><input type="radio" checked={field.value === 'Sí'} onChange={() => { const newFields = [...customFields]; newFields[idx].value = 'Sí'; setCustomFields(newFields); }} className="text-primary" /> <span className="text-sm font-medium">Sí</span></label>
+                                                <label className="flex items-center gap-2 cursor-pointer"><input type="radio" checked={field.value === 'No'} onChange={() => { const newFields = [...customFields]; newFields[idx].value = 'No'; setCustomFields(newFields); }} className="text-primary" /> <span className="text-sm font-medium">No</span></label>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : null)}
+
+                                {/* Botón para Agregar a Características Técnicas */}
+                                <div className="md:col-span-4 bg-primary/5 hover:bg-primary/10 border-2 border-dashed border-primary/30 hover:border-primary/50 rounded-xl p-4 flex flex-col items-center justify-center cursor-pointer transition-colors min-h-[100px]" onClick={() => {
+                                    setTemplateModalCategory('Características Técnicas'); setIsTemplateModalOpen(true);
+                                }}>
+                                    <span className="material-symbols-outlined text-primary mb-1 text-2xl">add_circle</span>
+                                    <span className="font-label-sm text-primary text-center">Añadir Campo</span>
+                                </div>
+
                             </div>
                         </div>
 
