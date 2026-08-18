@@ -40,6 +40,8 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
 
     // Gallery state
     const [gallery, setGallery] = useState<string[]>([]);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [lightboxIndex, setLightboxIndex] = useState(0);
     const [mainImage, setMainImage] = useState<string>('');
     const [newImageUrl, setNewImageUrl] = useState<string>('');
     const [documents, setDocuments] = useState<string[]>([]);
@@ -820,6 +822,99 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                         </div>
 
                         
+
+                        {/* Multimedia */}
+                        <div>
+                            <h3 className="font-headline-md text-primary mb-2 border-b border-outline-variant/30 pb-2 flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary">photo_library</span>
+                                Galería de Fotos y Videos ({gallery.length})
+                            </h3>
+                            <p className="text-xs text-on-surface-variant mb-4">
+                                Aquí puedes subir tanto **fotos** como **videos**. Haz clic en **"Hacer Principal"** para definir la portada del inmueble. Las imágenes y videos se cargarán de forma inmediata.
+                            </p>
+
+                            {/* Grid de imágenes y botón + */}
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-6">
+                                {gallery.map((url, idx) => {
+                                    const isMain = url === mainImage;
+                                    return (
+                                        <div key={idx} className={`relative group rounded-xl overflow-hidden border-2 transition-all shadow-sm cursor-pointer ${isMain ? 'border-primary ring-2 ring-primary/30' : 'border-outline-variant/50 hover:border-primary/50'}`} onClick={() => { if(!url.match(/\.(mp4|webm|ogg|mov)$/i)) { setLightboxIndex(idx); setLightboxOpen(true); } }}>
+                                            {url.match(/\.(mp4|webm|ogg|mov)$/i) ? (
+                                                <video src={url} className="w-full h-32 object-cover bg-black" muted loop autoPlay playsInline controls />
+                                            ) : (
+                                                <img src={url} alt={`Media ${idx + 1}`} className="w-full h-32 object-cover" />
+                                            )}
+                                            
+                                            {isMain && (
+                                                <span className="absolute top-2 left-2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow z-10">
+                                                    Principal
+                                                </span>
+                                            )}
+
+                                            <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center p-2 gap-2 z-20" onClick={(e) => e.stopPropagation()}>
+                                                <div className="flex gap-2">
+                                                    {!url.match(/\.(mp4|webm|ogg|mov)$/i) && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={(e) => { e.stopPropagation(); setLightboxIndex(idx); setLightboxOpen(true); }}
+                                                            className="bg-primary text-on-primary p-1.5 rounded-full hover:bg-primary/80 transition-colors"
+                                                            title="Ver en grande"
+                                                        >
+                                                            <span className="material-symbols-outlined text-[18px]">visibility</span>
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => { e.stopPropagation(); handleRemoveImage(url); }}
+                                                        className="bg-error/90 text-white p-1.5 rounded-full hover:bg-error transition-colors"
+                                                        title="Eliminar foto"
+                                                    >
+                                                        <span className="material-symbols-outlined text-[18px]">delete</span>
+                                                    </button>
+                                                </div>
+                                                {!isMain && (
+                                                    <button
+                                                        type="button"
+                                                        onClick={(e) => { e.stopPropagation(); handleSetMain(url); }}
+                                                        className="bg-surface text-primary text-xs font-semibold px-2 py-1 rounded shadow hover:bg-primary hover:text-on-primary transition-colors"
+                                                    >
+                                                        Hacer Principal
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+
+                                {/* Cuadro con icono + */}
+                                <div className="relative group rounded-xl border-2 border-dashed border-primary/40 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all flex flex-col items-center justify-center p-4 cursor-pointer h-32 text-center">
+                                    <input
+                                        type="file"
+                                        multiple
+                                        accept="image/*,video/*"
+                                        disabled={uploadingFiles}
+                                        onChange={handleDirectFileUpload}
+                                        className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10 disabled:cursor-not-allowed"
+                                        title="Agregar foto"
+                                    />
+                                    {uploadingFiles ? (
+                                        <div className="flex flex-col items-center gap-1 text-primary">
+                                            <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                            <span className="text-[11px] font-semibold">Subiendo...</span>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-1 group-hover:scale-110 transition-transform">
+                                                <span className="material-symbols-outlined text-[24px]">add</span>
+                                            </div>
+                                            <span className="text-xs font-bold text-primary">Subir Archivos</span>
+                                            <span className="text-[10px] text-on-surface-variant">Clic o arrastra</span>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+
+                        </div>
 
                         {/* Submit */}
                         <div className="flex items-center justify-end gap-4 pt-6 border-t border-outline-variant/30">
