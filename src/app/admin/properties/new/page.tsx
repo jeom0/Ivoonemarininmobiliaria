@@ -557,7 +557,7 @@ export default function NewProperty() {
                                     {uploadingFiles ? (
                                         <div className="flex flex-col items-center gap-1 text-primary">
                                             <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                                            <span className="text-[11px] font-semibold">Subiendo...</span>
+                                            <span className="text-[11px] font-semibold">{uploadProgress !== null ? `${Math.round(uploadProgress)}%` : 'Subiendo...'}</span>
                                         </div>
                                     ) : (
                                         <>
@@ -671,8 +671,8 @@ export default function NewProperty() {
 
                         {/* Submit */}
                         <div className="flex justify-end pt-6">
-                            <button type="submit" disabled={loading} className="bg-primary hover:bg-primary-container hover:text-primary transition-all text-on-primary font-bold py-4 px-10 rounded-lg flex items-center gap-2 shadow-lg disabled:opacity-50">
-                                {loading ? "Guardando..." : "Guardar Inmueble"}
+                            <button type="submit" disabled={loading || uploadingFiles} className="bg-primary hover:bg-primary-container hover:text-primary transition-all text-on-primary font-bold py-4 px-10 rounded-lg flex items-center gap-2 shadow-lg disabled:opacity-50">
+                                {uploadingFiles ? (uploadProgress !== null ? `Subiendo... ${Math.round(uploadProgress)}%` : 'Subiendo...') : loading ? "Guardando..." : "Guardar Inmueble"}
                                 <span className="material-symbols-outlined">save</span>
                             </button>
                         </div>

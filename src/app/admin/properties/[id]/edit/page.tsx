@@ -945,7 +945,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                     {uploadingFiles ? (
                                         <div className="flex flex-col items-center gap-1 text-primary">
                                             <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
-                                            <span className="text-[11px] font-semibold">Subiendo...</span>
+                                            <span className="text-[11px] font-semibold">{uploadProgress !== null ? `${Math.round(uploadProgress)}%` : 'Subiendo...'}</span>
                                         </div>
                                     ) : (
                                         <>
@@ -967,7 +967,7 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                 Cancelar
                             </Link>
                             <button type="submit" disabled={uploadingFiles} className="px-6 py-3 bg-primary text-on-primary rounded-lg shadow-md hover:bg-primary/90 transition-colors font-semibold disabled:opacity-50 flex items-center gap-2">
-                                {uploadingFiles ? 'Subiendo...' : 'Guardar Cambios'}
+                                {uploadingFiles ? (uploadProgress !== null ? `Subiendo... ${Math.round(uploadProgress)}%` : 'Subiendo...') : 'Guardar Cambios'}
                             </button>
                         </div>
                     </form>
