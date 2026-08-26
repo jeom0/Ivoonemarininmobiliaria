@@ -700,43 +700,66 @@ export default function NewProperty() {
             </div>
                     {/* Lightbox for Admin Images */}
             {lightboxOpen && gallery.length > 0 && (
-                <div className="fixed inset-0 z-[200] bg-black/95 flex items-center justify-center p-4 backdrop-blur-md">
-                    <button onClick={() => setLightboxOpen(false)} className="absolute top-6 right-6 w-12 h-12 bg-surface/10 hover:bg-surface/20 rounded-full flex items-center justify-center text-white transition-colors">
-                        <span className="material-symbols-outlined text-3xl">close</span>
-                    </button>
-                    
-                    <a 
-                        href={gallery[lightboxIndex]} 
-                        download={`imagen-${lightboxIndex + 1}.jpg`} 
-                        target="_blank"
-                        className="absolute top-6 right-24 bg-primary text-on-primary px-4 py-2.5 rounded-full flex items-center gap-2 hover:bg-primary/90 transition-colors font-label-md"
-                    >
-                        <span className="material-symbols-outlined text-xl">download</span>
-                        Descargar
-                    </a>
+                <div className="fixed inset-0 z-[99999] bg-black/95 flex flex-col justify-between items-center p-4 backdrop-blur-md w-screen h-[100dvh] overflow-hidden select-none">
+                    <div className="w-full flex items-center justify-between z-50 pt-safe px-2 py-2">
+                        <div className="text-white font-label-md bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs md:text-sm">
+                            {lightboxIndex + 1} de {gallery.length}
+                        </div>
 
-                    <button 
-                        onClick={() => setLightboxIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))}
-                        className="absolute left-6 w-14 h-14 bg-surface/10 hover:bg-surface/30 rounded-full flex items-center justify-center text-white transition-colors"
-                    >
-                        <span className="material-symbols-outlined text-4xl">chevron_left</span>
-                    </button>
+                        <div className="flex items-center gap-3">
+                            <a 
+                                href={gallery[lightboxIndex]} 
+                                download={`imagen-${lightboxIndex + 1}.jpg`} 
+                                target="_blank"
+                                className="bg-primary text-on-primary px-3.5 py-1.5 md:px-4 md:py-2 rounded-full flex items-center gap-1.5 hover:bg-primary/90 transition-colors font-label-md text-xs md:text-sm shadow-md"
+                            >
+                                <span className="material-symbols-outlined text-base md:text-xl">download</span>
+                                <span className="hidden sm:inline">Descargar</span>
+                            </a>
+                            <button onClick={() => setLightboxOpen(false)} className="w-10 h-10 md:w-12 md:h-12 bg-white/10 hover:bg-white/20 active:scale-95 rounded-full flex items-center justify-center text-white transition-all cursor-pointer">
+                                <span className="material-symbols-outlined text-2xl md:text-3xl">close</span>
+                            </button>
+                        </div>
+                    </div>
 
-                    <img 
-                        src={gallery[lightboxIndex]} 
-                        alt="Vista previa" 
-                        className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl" 
-                    />
+                    <div className="relative flex-1 w-full flex items-center justify-center my-auto overflow-hidden">
+                        <button 
+                            onClick={() => setLightboxIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))}
+                            className="hidden md:flex absolute left-4 lg:left-8 w-12 h-12 lg:w-14 lg:h-14 bg-white/10 hover:bg-white/25 active:scale-95 rounded-full items-center justify-center text-white transition-all backdrop-blur-sm z-50 shadow-xl"
+                        >
+                            <span className="material-symbols-outlined text-3xl lg:text-4xl">chevron_left</span>
+                        </button>
 
-                    <button 
-                        onClick={() => setLightboxIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))}
-                        className="absolute right-6 w-14 h-14 bg-surface/10 hover:bg-surface/30 rounded-full flex items-center justify-center text-white transition-colors"
-                    >
-                        <span className="material-symbols-outlined text-4xl">chevron_right</span>
-                    </button>
+                        <img 
+                            src={gallery[lightboxIndex]} 
+                            alt="Vista previa" 
+                            className="max-h-[70dvh] sm:max-h-[75dvh] md:max-h-[82dvh] max-w-[95vw] md:max-w-[90vw] object-contain rounded-xl shadow-2xl transition-all duration-300" 
+                        />
 
-                    <div className="absolute bottom-8 text-white font-label-md bg-black/50 px-4 py-1.5 rounded-full">
-                        {lightboxIndex + 1} de {gallery.length}
+                        <button 
+                            onClick={() => setLightboxIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))}
+                            className="hidden md:flex absolute right-4 lg:right-8 w-12 h-12 lg:w-14 lg:h-14 bg-white/10 hover:bg-white/25 active:scale-95 rounded-full items-center justify-center text-white transition-all backdrop-blur-sm z-50 shadow-xl"
+                        >
+                            <span className="material-symbols-outlined text-3xl lg:text-4xl">chevron_right</span>
+                        </button>
+                    </div>
+
+                    {/* Mobile Navigation controls */}
+                    <div className="flex md:hidden items-center justify-between w-full max-w-xs px-4 pb-safe pt-2">
+                        <button 
+                            className="flex items-center gap-1 bg-white/15 active:bg-white/30 text-white px-4 py-2 rounded-full font-label-md text-xs backdrop-blur-md transition-all shadow-md"
+                            onClick={() => setLightboxIndex((prev) => (prev > 0 ? prev - 1 : gallery.length - 1))}
+                        >
+                            <span className="material-symbols-outlined text-base">arrow_back</span>
+                            Anterior
+                        </button>
+                        <button 
+                            className="flex items-center gap-1 bg-white/15 active:bg-white/30 text-white px-4 py-2 rounded-full font-label-md text-xs backdrop-blur-md transition-all shadow-md"
+                            onClick={() => setLightboxIndex((prev) => (prev < gallery.length - 1 ? prev + 1 : 0))}
+                        >
+                            Siguiente
+                            <span className="material-symbols-outlined text-base">arrow_forward</span>
+                        </button>
                     </div>
                 </div>
             )}
