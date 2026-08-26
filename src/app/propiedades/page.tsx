@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
 import SortSelect from "@/components/SortSelect";
 import PropertyCard from "@/components/PropertyCard";
+import { Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -38,7 +39,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
         select: { city: true },
         distinct: ['city']
     });
-    dbCities = distinctCities.map(c => c.city);
+    dbCities = distinctCities.map(c => c.city).filter(Boolean);
   } catch (error: any) {
     dbError = error.message || String(error);
     console.error("Database Error on /propiedades:", error);
@@ -50,64 +51,93 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   return (
     <div className="flex flex-col min-h-screen w-full overflow-x-hidden bg-background">
       <PublicNavbar />
-      
-      <main className="pt-28 md:pt-32 pb-section-gap px-4 sm:px-6 md:px-8 xl:px-12 w-full max-w-[1750px] mx-auto flex-grow">
+
+      {/* Contenedor Expandido de Borde a Borde */}
+      <main className="pt-28 md:pt-36 pb-20 px-4 sm:px-6 md:px-8 lg:px-12 w-full max-w-[1750px] mx-auto flex-grow">
         
-        {/* Encabezado Principal */}
-        <header className="mb-8 md:mb-10">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant/30 pb-6">
-            <div>
-              <span className="text-xs font-bold text-secondary uppercase tracking-widest block mb-1">Catálogo de Inmuebles</span>
-              <h1 className="font-display-lg text-headline-lg md:text-display-lg text-primary">Inmuebles disponibles</h1>
-              <p className="font-body-md text-on-surface-variant mt-1">Explora propiedades en venta y arriendo en el Eje Cafetero.</p>
-            </div>
-            <div className="flex items-center gap-3 self-start md:self-auto">
-              <span className="px-3.5 py-1.5 rounded-full bg-primary/10 text-primary font-bold text-xs md:text-sm">
-                {properties.length} {properties.length === 1 ? 'propiedad' : 'propiedades'}
-              </span>
-            </div>
+        {/* Banner de Encabezado */}
+        <header className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant/30 pb-6">
+          <div>
+            <h1 className="font-display-lg text-headline-lg md:text-display-lg text-primary mb-2 tracking-tight">
+              Inmuebles disponibles
+            </h1>
+            <p className="font-body-lg text-on-surface-variant text-sm md:text-base max-w-2xl">
+              Explora propiedades exclusivas en venta y arriendo en el Eje Cafetero.
+            </p>
+          </div>
+          <div className="flex items-center gap-3 self-start md:self-auto">
+            <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary/10 text-primary font-label-md text-xs md:text-sm font-semibold">
+              <span className="material-symbols-outlined text-sm">home_work</span>
+              {properties.length} inmueble{properties.length !== 1 ? 's' : ''} encontrado{properties.length !== 1 ? 's' : ''}
+            </span>
           </div>
         </header>
 
-        {dbError && (
-          <div className="bg-red-100 text-red-800 p-6 rounded-xl border border-red-200 mb-8 font-mono text-sm overflow-x-auto">
-            <h3 className="font-bold text-lg mb-2">Error de Base de Datos:</h3>
-            <pre>{dbError}</pre>
-          </div>
-        )}
+        {/* Layout Principal: Filtro hacia el borde + Grilla de 3 Inmuebles */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8 items-start">
+          {/* Database Error Alert */}
+          {dbError && (
+            <div className="lg:col-span-12 bg-red-100 text-red-800 p-6 rounded-2xl border border-red-200 mb-6 font-mono text-sm overflow-x-auto shadow-sm">
+              <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
+                <span className="material-symbols-outlined">warning</span>
+                Error de Base de Datos:
+              </h3>
+              <pre>{dbError}</pre>
+            </div>
+          )}
 
-          {/* Aside Filtros - Empujado más hacia el borde izquierdo */}
-          <aside className="lg:col-span-4 xl:col-span-3 space-y-6">
-            <form method="GET" action="/propiedades" className="bg-surface-container-lowest p-5 md:p-6 rounded-2xl sticky top-28 border border-outline-variant/40 shadow-sm hover:shadow-md transition-shadow">
-              
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-outline-variant/30">
-                <div className="flex items-center gap-2">
+          {/* Panel de Filtros Lateral (Ubicado hacia los bordes) */}
+          <aside className="lg:col-span-3 xl:col-span-3 2xl:col-span-2.5">
+            <form 
+              method="GET" 
+              action="/propiedades" 
+              className="bg-surface-container-lowest border border-outline-variant/40 p-6 rounded-2xl sticky top-28 shadow-sm space-y-6"
+            >
+              {/* Header Filtros */}
+              <div className="flex items-center justify-between border-b border-outline-variant/30 pb-4">
+                <h3 className="font-headline-md text-lg font-bold text-primary flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary text-xl">tune</span>
-                  <h3 className="font-headline-md text-lg md:text-xl text-primary font-bold">Filtros</h3>
-                </div>
-                <Link href="/propiedades" className="text-xs font-bold text-secondary hover:text-primary transition-colors flex items-center gap-1">
-                  <span className="material-symbols-outlined text-sm">restart_alt</span> Limpiar
+                  Filtros
+                </h3>
+                <Link 
+                  href="/propiedades" 
+                  className="text-xs font-label-md font-medium text-on-surface-variant hover:text-primary transition-colors bg-surface-container hover:bg-surface-container-high px-3 py-1.5 rounded-full"
+                >
+                  Limpiar todos
                 </Link>
               </div>
 
-              <div className="space-y-6 custom-scrollbar max-h-[calc(100vh-380px)] overflow-y-auto pr-1">
+              <div className="space-y-6 custom-scrollbar max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
 
-                {/* Modalidad Operación */}
+                {/* Operación (Venta / Arriendo) */}
                 <div>
-                  <label className="text-[11px] font-bold block mb-2.5 uppercase tracking-wider text-secondary">Operación</label>
+                  <label className="font-label-md text-xs block mb-2.5 uppercase tracking-wider text-secondary font-bold">
+                    Operación
+                  </label>
                   <div className="grid grid-cols-2 gap-2">
                     <label className="cursor-pointer">
-                      <input type="radio" name="modality" value="VENTA" defaultChecked={modality === 'VENTA'} className="peer hidden" />
-                      <div className="py-2.5 px-3 rounded-xl border border-outline-variant/50 bg-surface peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary font-label-md text-xs md:text-sm transition-all text-center font-bold hover:border-primary shadow-xs">
-                        Venta
+                      <input 
+                        type="radio" 
+                        name="modality" 
+                        value="VENTA" 
+                        defaultChecked={modality === 'VENTA'} 
+                        className="peer hidden" 
+                      />
+                      <div className="py-2.5 px-3 rounded-xl border border-outline-variant/60 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary text-xs font-semibold transition-all text-center hover:border-primary/50 flex items-center justify-center gap-1">
+                        <span className="material-symbols-outlined text-sm">sell</span> Venta
                       </div>
                     </label>
                     <label className="cursor-pointer">
-                      <input type="radio" name="modality" value="ARRIENDO" defaultChecked={modality === 'ARRIENDO'} className="peer hidden" />
-                      <div className="py-2.5 px-3 rounded-xl border border-outline-variant/50 bg-surface peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary font-label-md text-xs md:text-sm transition-all text-center font-bold hover:border-primary shadow-xs">
-                        Arriendo
+                      <input 
+                        type="radio" 
+                        name="modality" 
+                        value="ARRIENDO" 
+                        defaultChecked={modality === 'ARRIENDO'} 
+                        className="peer hidden" 
+                      />
+                      <div className="py-2.5 px-3 rounded-xl border border-outline-variant/60 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-on-primary text-xs font-semibold transition-all text-center hover:border-primary/50 flex items-center justify-center gap-1">
+                        <span className="material-symbols-outlined text-sm">key</span> Arriendo
                       </div>
                     </label>
                   </div>
@@ -115,20 +145,33 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
 
                 {/* Tipo de Propiedad */}
                 <div>
-                  <label className="text-[11px] font-bold block mb-2.5 uppercase tracking-wider text-secondary">Tipo de Propiedad</label>
-                  <select name="type" defaultValue={type || "Todos"} className="w-full rounded-xl border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm py-2.5 px-3.5 outline-none transition-all">
+                  <label className="font-label-md text-xs block mb-2 uppercase tracking-wider text-secondary font-bold">
+                    Tipo de Propiedad
+                  </label>
+                  <select 
+                    name="type" 
+                    defaultValue={type || "Todos"} 
+                    className="w-full rounded-xl border-outline-variant/60 bg-surface focus:ring-primary focus:border-primary text-sm py-2.5 px-3.5"
+                  >
                     <option value="Todos">Todos los tipos</option>
                     <option value="Apartamento">Apartamento</option>
                     <option value="Casa">Casa</option>
                     <option value="Finca">Finca</option>
+                    <option value="Lote">Lote</option>
                     <option value="Local Comercial">Local Comercial</option>
                   </select>
                 </div>
 
                 {/* Ciudad */}
                 <div>
-                  <label className="text-[11px] font-bold block mb-2.5 uppercase tracking-wider text-secondary">Ciudad</label>
-                  <select name="city" defaultValue={city || "Todas"} className="w-full rounded-xl border-outline-variant/50 bg-surface focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm py-2.5 px-3.5 outline-none transition-all">
+                  <label className="font-label-md text-xs block mb-2 uppercase tracking-wider text-secondary font-bold">
+                    Ciudad
+                  </label>
+                  <select 
+                    name="city" 
+                    defaultValue={city || "Todas"} 
+                    className="w-full rounded-xl border-outline-variant/60 bg-surface focus:ring-primary focus:border-primary text-sm py-2.5 px-3.5"
+                  >
                     <option value="Todas">Todas las ciudades</option>
                     {allCities.map(c => (
                       <option key={c} value={c}>{c}</option>
@@ -136,16 +179,24 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
                   </select>
                 </div>
 
-                {/* Habitaciones y Baños */}
-                <div className="space-y-5 pt-2 border-t border-outline-variant/20">
+                {/* Habitaciones & Baños */}
+                <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[11px] font-bold block mb-2.5 uppercase tracking-wider text-secondary">Habitaciones mínimas</label>
-                    <div className="flex gap-2">
-                      {[1, 2, 3].map(num => (
-                        <label key={num} className="cursor-pointer flex-1">
-                          <input type="radio" name="rooms" value={num} defaultChecked={rooms === num} className="peer hidden" />
-                          <div className="py-2 flex items-center justify-center rounded-xl border border-outline-variant/50 bg-surface peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-xs md:text-sm transition-all shadow-xs">
-                            {num}+
+                    <label className="font-label-md text-xs block mb-2 uppercase tracking-wider text-secondary font-bold">
+                      Habitaciones
+                    </label>
+                    <div className="flex gap-1">
+                      {[1, 2, 3].map((r) => (
+                        <label key={r} className="cursor-pointer flex-1">
+                          <input 
+                            type="radio" 
+                            name="rooms" 
+                            value={r} 
+                            defaultChecked={rooms === r} 
+                            className="peer hidden" 
+                          />
+                          <div className="h-9 flex items-center justify-center rounded-lg border border-outline-variant/60 peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:font-bold hover:border-primary text-xs transition-all">
+                            {r}+
                           </div>
                         </label>
                       ))}
@@ -153,13 +204,21 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-bold block mb-2.5 uppercase tracking-wider text-secondary">Baños mínimos</label>
-                    <div className="flex gap-2">
-                      {[1, 2].map(num => (
-                        <label key={num} className="cursor-pointer flex-1">
-                          <input type="radio" name="bathrooms" value={num} defaultChecked={bathrooms === num} className="peer hidden" />
-                          <div className="py-2 flex items-center justify-center rounded-xl border border-outline-variant/50 bg-surface peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-xs md:text-sm transition-all shadow-xs">
-                            {num}+
+                    <label className="font-label-md text-xs block mb-2 uppercase tracking-wider text-secondary font-bold">
+                      Baños
+                    </label>
+                    <div className="flex gap-1">
+                      {[1, 2].map((b) => (
+                        <label key={b} className="cursor-pointer flex-1">
+                          <input 
+                            type="radio" 
+                            name="bathrooms" 
+                            value={b} 
+                            defaultChecked={bathrooms === b} 
+                            className="peer hidden" 
+                          />
+                          <div className="h-9 flex items-center justify-center rounded-lg border border-outline-variant/60 peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:font-bold hover:border-primary text-xs transition-all">
+                            {b}+
                           </div>
                         </label>
                       ))}
@@ -168,14 +227,22 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
                 </div>
 
                 {/* Estrato */}
-                <div className="pt-2 border-t border-outline-variant/20">
-                  <label className="text-[11px] font-bold block mb-2.5 uppercase tracking-wider text-secondary">Estrato</label>
-                  <div className="flex flex-wrap gap-2">
-                    {[4, 5, 6].map(num => (
-                      <label key={num} className="cursor-pointer flex-1">
-                        <input type="radio" name="stratum" value={num} defaultChecked={stratum === num} className="peer hidden" />
-                        <div className="py-2 flex items-center justify-center rounded-xl border border-outline-variant/50 bg-surface peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container peer-checked:font-bold hover:border-primary text-xs md:text-sm transition-all shadow-xs">
-                          {num}
+                <div>
+                  <label className="font-label-md text-xs block mb-2 uppercase tracking-wider text-secondary font-bold">
+                    Estrato
+                  </label>
+                  <div className="flex gap-2">
+                    {[4, 5, 6].map((s) => (
+                      <label key={s} className="cursor-pointer flex-1">
+                        <input 
+                          type="radio" 
+                          name="stratum" 
+                          value={s} 
+                          defaultChecked={stratum === s} 
+                          className="peer hidden" 
+                        />
+                        <div className="py-1.5 flex items-center justify-center rounded-xl border border-outline-variant/60 peer-checked:bg-primary peer-checked:text-on-primary peer-checked:border-primary peer-checked:font-bold hover:border-primary text-xs transition-all">
+                          {s}
                         </div>
                       </label>
                     ))}
@@ -184,52 +251,65 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
 
               </div>
 
-              {/* Botón Aplicar */}
-              <button type="submit" className="w-full mt-6 bg-primary text-on-primary py-3.5 rounded-xl font-label-md hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer font-bold text-sm">
-                <span className="material-symbols-outlined text-[18px]">search</span>
-                Aplicar Filtros
+              {/* Botón Buscar / Aplicar */}
+              <button 
+                type="submit" 
+                className="w-full bg-primary text-on-primary py-3.5 rounded-xl font-label-md text-sm font-semibold hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer active:scale-95"
+              >
+                <span className="material-symbols-outlined text-lg">search</span>
+                Buscar Inmuebles
               </button>
-
             </form>
           </aside>
 
-          {/* Área Principal de Propiedades (3 por fila en pantallas de escritorio) */}
-          <div className="lg:col-span-8 xl:col-span-9">
+          {/* Sección Principal de Inmuebles (3 por fila en Pantallas Grandes) */}
+          <section className="lg:col-span-9 xl:col-span-9 2xl:col-span-9.5">
             
-            {/* Control Superior de Conteo y Ordenamiento */}
-            <div className="flex flex-wrap justify-between items-center mb-6 gap-4 bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 shadow-xs">
-              <span className="font-body-md text-on-surface-variant text-sm md:text-base">
-                Mostrando <strong className="text-primary font-bold">{properties.length}</strong> inmuebles
+            {/* Barra de Conteo y Ordenamiento */}
+            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6 bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 shadow-sm">
+              <span className="font-body-md text-on-surface-variant text-sm">
+                Mostrando <strong className="text-primary font-bold">{properties.length}</strong> propiedades disponibles
               </span>
-              <SortSelect />
+              <div className="flex items-center gap-2 self-end sm:self-auto">
+                <SortSelect />
+              </div>
             </div>
 
-            {/* Grilla de 3 propiedades por fila */}
+            {/* Grilla de Inmuebles: 1 col en móvil, 2 en tablet, 3 EN DESKTOP */}
             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-
               {properties.length === 0 ? (
-                <div className="col-span-1 sm:col-span-2 xl:col-span-3 text-center py-16 px-4 text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline-variant/20 shadow-sm space-y-3">
-                  <span className="material-symbols-outlined text-5xl text-outline-variant">search_off</span>
-                  <h3 className="font-headline-md text-primary font-bold text-lg">No encontramos resultados</h3>
-                  <p className="text-sm text-on-surface-variant max-w-md mx-auto">No hay inmuebles que coincidan con los filtros seleccionados. Intenta cambiar de ciudad o limpiar los filtros.</p>
-                  <Link href="/propiedades" className="inline-block mt-4 px-6 py-2.5 bg-primary/10 text-primary hover:bg-primary/20 rounded-xl font-label-md text-xs font-bold transition-colors">
-                    Ver todos los inmuebles
-                  </Link>
+                <div className="col-span-full text-center py-16 px-4 text-on-surface-variant bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm space-y-3">
+                  <span className="material-symbols-outlined text-5xl text-primary/40">search_off</span>
+                  <h3 className="font-headline-md text-lg text-primary font-bold">No encontramos inmuebles coincidentes</h3>
+                  <p className="text-xs max-w-md mx-auto">Intenta ajustar los filtros de búsqueda o haz clic en "Limpiar todos" para ver toda la oferta disponible.</p>
                 </div>
               ) : (
                 properties.map(p => (
                   <PropertyCard key={p.id} p={p} />
                 ))
               )}
-
             </div>
 
-          </div>
+            {/* Paginación */}
+            {properties.length > 0 && (
+              <div className="mt-14 flex justify-center items-center gap-2">
+                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+                  <span className="material-symbols-outlined text-lg">chevron_left</span>
+                </button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-on-primary font-bold shadow-md">1</button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface hover:bg-surface-container transition-all cursor-pointer">2</button>
+                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface hover:bg-surface-container transition-all cursor-pointer">3</button>
+                <span className="px-2 text-outline-variant">...</span>
+                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+                  <span className="material-symbols-outlined text-lg">chevron_right</span>
+                </button>
+              </div>
+            )}
+          </section>
 
         </div>
-
       </main>
-
+      
       <PublicFooter />
     </div>
   );
