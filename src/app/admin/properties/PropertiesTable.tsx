@@ -119,7 +119,20 @@ export default function PropertiesTable({ initialProperties, totalVisits }: Prop
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Indicación de Ayuda para el Administrador */}
+      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-4 text-xs text-on-surface-variant flex items-start gap-3 shadow-sm">
+        <span className="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5">help_outline</span>
+        <div className="space-y-1">
+          <p className="font-bold text-primary text-sm">💡 Guía de Funcionamiento de la Página Principal (Home):</p>
+          <ul className="list-disc pl-4 space-y-1 text-on-surface-variant/90">
+            <li><strong>Destacados en Inicio / Hero:</strong> Los primeros <strong>6 inmuebles</strong> marcados como destacados aparecerán dinámicamente en el carrusel de la portada y en la sección del inicio. Los demás aparecerán filtrados al dar clic en "Ver todas".</li>
+            <li><strong>Oportunidades de Inversión:</strong> Se muestran los primeros <strong>6 inmuebles</strong> de inversión en el inicio.</li>
+            <li><strong>Novedades (Últimas 2 Semanas):</strong> Los inmuebles aparecen automáticamente en Novedades durante sus primeras <strong>2 semanas (14 días)</strong> desde que fueron creados. Transcurrido ese tiempo, dejan de aparecer en Novedades.</li>
+          </ul>
+        </div>
+      </div>
+
       {/* Stats / Quick Insights (Bento Style) */}
       <section className="grid grid-cols-1 md:grid-cols-4 gap-gutter">
         <div className="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-sm flex flex-col gap-2">

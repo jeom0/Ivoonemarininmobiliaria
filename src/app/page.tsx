@@ -10,11 +10,30 @@ export const dynamic = 'force-dynamic';
 const prisma = new PrismaClient();
 
 export default async function Page() {
-  const [properties, featuredProperties, investmentProperties, blogPosts, settingsDb] = await Promise.all([
-    prisma.property.findMany({ orderBy: { createdAt: 'desc' }, take: 6 }),
-    prisma.property.findMany({ where: { isFeatured: true }, orderBy: { createdAt: 'desc' }, take: 12 }),
-    prisma.property.findMany({ where: { isInvestment: true }, orderBy: { createdAt: 'desc' }, take: 12 }),
-    prisma.blogPost.findMany({ where: { status: 'PUBLISHED' }, orderBy: { publishedAt: 'desc' }, take: 3 }),
+  // Regla de 2 semanas (14 días) para Novedades
+  const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+
+  const [novedadesProperties, featuredProperties, investmentProperties, blogPosts, settingsDb] = await Promise.all([
+    prisma.property.findMany({ 
+      where: { createdAt: { gte: twoWeeksAgo } }, 
+      orderBy: { createdAt: 'desc' }, 
+      take: 6 
+    }),
+    prisma.property.findMany({ 
+      where: { isFeatured: true }, 
+      orderBy: { createdAt: 'desc' }, 
+      take: 6 
+    }),
+    prisma.property.findMany({ 
+      where: { isInvestment: true }, 
+      orderBy: { createdAt: 'desc' }, 
+      take: 6 
+    }),
+    prisma.blogPost.findMany({ 
+      where: { status: 'PUBLISHED' }, 
+      orderBy: { publishedAt: 'desc' }, 
+      take: 3 
+    }),
     prisma.setting.findMany()
   ]);
 
@@ -62,13 +81,18 @@ export default async function Page() {
 
   const sectionsMap: Record<string, React.ReactNode> = {
     hero: (
-      <HeroCarousel media={heroMedia} title={settings.home_hero_title} subtitle={settings.home_hero_subtitle} />
+      <HeroCarousel 
+        media={heroMedia} 
+        title={settings.home_hero_title} 
+        subtitle={settings.home_hero_subtitle} 
+        featuredProperties={featuredProperties}
+      />
     ),
     featured: (
       <section className="py-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
         <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-end gap-4 mb-12">
           <div>
-            <span className="text-secondary font-label-md text-label-md tracking-widest block mb-2">OPORTUNIDADES EXCLUSIVAS</span>
+            <span className="text-secondary font-label-md text-label-md tracking-widest block mb-2 font-bold uppercase">OPORTUNIDADES EXCLUSIVAS</span>
             <h2 className="font-headline-lg text-headline-lg text-primary">Propiedades Destacadas</h2>
           </div>
           <Link className="text-primary font-bold font-label-md text-label-md flex items-center gap-1 hover:underline shrink-0" href="/propiedades?featured=true">
@@ -139,7 +163,7 @@ export default async function Page() {
         <div className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
           <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-end gap-4 mb-12">
             <div>
-              <span className="text-secondary font-label-md text-label-md tracking-widest block mb-2">NOVEDADES</span>
+              <span className="text-secondary font-label-md text-label-md tracking-widest block mb-2 font-bold uppercase">NOVEDADES (Últimas 2 Semanas)</span>
               <h2 className="font-headline-lg text-headline-lg text-primary">Nuevos Inmuebles</h2>
             </div>
             <Link className="text-primary font-bold font-label-md text-label-md flex items-center gap-1 hover:underline shrink-0" href="/propiedades?status=NUEVO">
@@ -148,12 +172,12 @@ export default async function Page() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-            {properties.length === 0 ? (
+            {novedadesProperties.length === 0 ? (
               <div className="col-span-3 text-center py-12 text-on-surface-variant">
-                No hay nuevos inmuebles disponibles en este momento.
+                No hay nuevos inmuebles agregados en las últimas 2 semanas.
               </div>
             ) : (
-              properties.map(p => (
+              novedadesProperties.map(p => (
                 <PropertyCard key={p.id} p={p} />
               ))
             )}
@@ -162,10 +186,11 @@ export default async function Page() {
       </section>
     ),
     investment: (
-      <section className="py-section-gap max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-        <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-end gap-4 mb-12">
+      /* Reducimos el espacio superior (pt-4 pb-12) para quitar la brecha excesiva */
+      <section className="pt-4 pb-12 md:pt-6 md:pb-16 max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div className="flex flex-col md:flex-row w-full justify-between items-start md:items-end gap-4 mb-10">
           <div>
-            <span className="text-secondary font-label-md text-label-md tracking-widest block mb-2">ALTA RENTABILIDAD</span>
+            <span className="text-secondary font-label-md text-label-md tracking-widest block mb-2 font-bold uppercase">ALTA RENTABILIDAD</span>
             <h2 className="font-headline-lg text-headline-lg text-primary">Oportunidades de Inversión</h2>
           </div>
           <Link className="text-primary font-bold font-label-md text-label-md flex items-center gap-1 hover:underline shrink-0" href="/propiedades?investment=true">
@@ -227,7 +252,7 @@ export default async function Page() {
                       {post.title}
                     </h3>
                     <p className="text-sm text-on-surface-variant line-clamp-2 mb-4 font-normal flex-grow">
-                      {post.summary || post.seoDesc || 'Leer mas sobre este articulo.'}
+                      {post.summary || post.seoDesc || 'Leer más sobre este artículo.'}
                     </p>
                     <span className="text-xs font-bold text-primary flex items-center gap-1 group-hover:translate-x-1 transition-transform mt-auto">
                       Leer artículo <span className="material-symbols-outlined text-sm">arrow_forward</span>

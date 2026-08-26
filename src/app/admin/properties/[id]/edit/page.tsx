@@ -799,8 +799,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             Destacar en Inicio (Hero / Carrusel Principal)
                                         </div>
                                         <p className="text-xs text-on-surface-variant mt-1 leading-snug">
-                                            💡 <strong>¿Para qué sirve?</strong> Al marcar esta casilla, el inmueble aparecerá en el <strong>Hero principal (portada de la web)</strong> y en el catálogo destacado del inicio.
+                                            💡 <strong>¿Para qué sirve?</strong> Muestra este inmueble en el <strong>Hero / Carrusel principal</strong> y en Destacados del inicio.
                                         </p>
+                                        <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-md border border-primary/20">
+                                            <span className="material-symbols-outlined text-xs">info</span>
+                                            Se muestran los primeros 6 destacados más recientes en la portada (los demás en "Ver todas").
+                                        </div>
                                     </div>
                                 </label>
 
@@ -819,8 +823,12 @@ export default function EditProperty({ params }: { params: Promise<{ id: string 
                                             Oportunidad de Inversión
                                         </div>
                                         <p className="text-xs text-on-surface-variant mt-1 leading-snug">
-                                            💡 <strong>¿Para qué sirve?</strong> Clasifica la propiedad en la sección especial de <strong>Inmuebles de Alta Rentabilidad e Inversiones</strong>.
+                                            💡 <strong>¿Para qué sirve?</strong> Clasifica la propiedad en la sección de <strong>Inmuebles de Alta Rentabilidad e Inversiones</strong>.
                                         </p>
+                                        <div className="mt-2 inline-flex items-center gap-1.5 text-[11px] font-semibold text-secondary bg-secondary/10 px-2.5 py-1 rounded-md border border-secondary/20">
+                                            <span className="material-symbols-outlined text-xs">info</span>
+                                            Se muestran las primeras 6 inversiones más recientes en la portada (las demás en "Ver todas").
+                                        </div>
                                     </div>
                                 </label>
                             </div>

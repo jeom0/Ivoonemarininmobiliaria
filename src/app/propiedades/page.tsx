@@ -18,9 +18,13 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   const stratum = typeof params.stratum === 'string' ? parseInt(params.stratum) : undefined;
   const sortParam = typeof params.sort === 'string' ? params.sort : 'desc';
 
+  // Regla de 2 Semanas (14 Días) para Novedades
+  const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+
   // Filtros Especiales desde URL ("Ver todas" de Secciones del Home)
   const isFeatured = params.featured === 'true';
   const isInvestment = params.investment === 'true';
+  const isNovedades = params.novedades === 'true' || params.status === 'NUEVO';
   const statusParam = typeof params.status === 'string' && params.status !== 'Todos' ? params.status : undefined;
   
   const where: Prisma.PropertyWhereInput = {};
@@ -32,7 +36,13 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   if (stratum) where.stratum = { gte: stratum };
   if (isFeatured) where.isFeatured = true;
   if (isInvestment) where.isInvestment = true;
-  if (statusParam) where.status = statusParam;
+  
+  if (isNovedades) {
+    // Solo inmuebles creados en los últimos 14 días
+    where.createdAt = { gte: twoWeeksAgo };
+  } else if (statusParam) {
+    where.status = statusParam;
+  }
 
   let properties: any[] = [];
   let dbError = null;
@@ -69,10 +79,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
     pageTitle = "Oportunidades de Inversión";
     pageSubtitle = "Mostrando propiedades catalogadas de alta rentabilidad e inversión estratégica.";
     filterBadge = "Alta Rentabilidad";
-  } else if (statusParam === 'NUEVO') {
-    pageTitle = "Nuevos Inmuebles";
-    pageSubtitle = "Mostrando las últimas novedades e inmuebles recién incorporados a nuestro catálogo.";
-    filterBadge = "Novedades";
+  } else if (isNovedades) {
+    pageTitle = "Nuevos Inmuebles (Últimas 2 Semanas)";
+    pageSubtitle = "Mostrando inmuebles incorporados a nuestro catálogo en los últimos 14 días.";
+    filterBadge = "Novedades (< 14 días)";
   }
 
   return (
@@ -179,15 +189,15 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
 
                     <label className="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl hover:bg-surface-container/50 transition-colors">
                       <input 
-                        type="radio" 
-                        name="status" 
-                        value="NUEVO" 
-                        defaultChecked={statusParam === 'NUEVO'} 
-                        className="w-4 h-4 text-primary focus:ring-primary"
+                        type="checkbox" 
+                        name="novedades" 
+                        value="true" 
+                        defaultChecked={isNovedades} 
+                        className="w-4 h-4 text-primary rounded border-outline-variant focus:ring-primary"
                       />
                       <span className="text-xs font-semibold text-on-surface flex items-center gap-1.5">
                         <span className="material-symbols-outlined text-sm text-primary">new_releases</span>
-                        Novedades / Recientes
+                        Novedades (&lt; 2 semanas)
                       </span>
                     </label>
                   </div>
