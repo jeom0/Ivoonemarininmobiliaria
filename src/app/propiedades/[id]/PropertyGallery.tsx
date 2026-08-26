@@ -39,11 +39,14 @@ export default function PropertyGallery({
     }
   } catch (e) {}
 
+  // Helper for valid URLs
+  const isRealUrl = (url: any) => typeof url === "string" && url.trim().length > 0 && url !== "null" && url !== "undefined";
+
   // Deduplicar URLs preservando el orden
   const uniqueUrls = new Set<string>();
-  if (mainImage) uniqueUrls.add(mainImage);
-  videoItems.forEach(vid => uniqueUrls.add(vid));
-  additionalImages.forEach(img => uniqueUrls.add(img));
+  if (isRealUrl(mainImage)) uniqueUrls.add(mainImage!);
+  videoItems.forEach(vid => isRealUrl(vid) && uniqueUrls.add(vid));
+  additionalImages.forEach(img => isRealUrl(img) && uniqueUrls.add(img));
 
   const allImages = Array.from(uniqueUrls);
 
@@ -149,64 +152,159 @@ export default function PropertyGallery({
 
   return (
     <>
-      {/* Grid de Vista Previa */}
-      <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-3 md:gap-4 h-[350px] sm:h-[450px] md:h-[600px] rounded-2xl overflow-hidden shadow-sm">
+      {/* ===== VISTA EN MOSAICO BENTO DE GALERÍA ===== */}
+      
+      {/* Caso 0: Sin Fotos */}
+      {allImages.length === 0 && (
+        <div className="w-full h-[250px] md:h-[400px] rounded-2xl bg-surface-container flex flex-col items-center justify-center text-on-surface-variant/60 shadow-sm border border-outline-variant/30">
+          <span className="material-symbols-outlined text-5xl mb-2">no_photography</span>
+          <span className="font-label-md text-sm">No hay imágenes disponibles</span>
+        </div>
+      )}
+
+      {/* Caso 1: Solo 1 Foto */}
+      {allImages.length === 1 && (
         <div 
-          className={`md:col-span-1 md:row-span-2 relative group overflow-hidden h-[220px] md:h-full ${allImages.length > 0 ? 'cursor-pointer' : 'bg-surface-container flex flex-col items-center justify-center text-on-surface-variant/60'}`}
-          onClick={() => allImages.length > 0 && openLightbox(0)}
+          className="relative w-full h-[260px] sm:h-[360px] md:h-[500px] rounded-2xl overflow-hidden shadow-sm group cursor-pointer"
+          onClick={() => openLightbox(0)}
         >
-          {allImages.length > 0 ? (
-            <>
-              {renderMedia(allImages[0], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700", "Principal")}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-90 md:opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 md:p-6">
-                <span className="text-white font-label-md bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-full text-xs md:text-sm flex items-center gap-1">
-                  <span className="material-symbols-outlined text-base">photo_library</span>
+          {renderMedia(allImages[0], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700", "Principal")}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4 md:p-6">
+            <span className="text-white font-label-md bg-black/40 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs md:text-sm flex items-center gap-1.5 shadow-md">
+              <span className="material-symbols-outlined text-base">photo_library</span>
+              Ver foto completa
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Caso 2: 2 Fotos */}
+      {allImages.length === 2 && (
+        <div className="grid grid-cols-12 gap-2 md:gap-3 h-[260px] sm:h-[360px] md:h-[480px] rounded-2xl overflow-hidden shadow-sm">
+          <div 
+            className="col-span-7 relative group overflow-hidden cursor-pointer h-full"
+            onClick={() => openLightbox(0)}
+          >
+            {renderMedia(allImages[0], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700", "Foto 1")}
+          </div>
+          <div 
+            className="col-span-5 relative group overflow-hidden cursor-pointer h-full"
+            onClick={() => openLightbox(1)}
+          >
+            {renderMedia(allImages[1], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700", "Foto 2")}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3">
+              <span className="text-white font-label-md bg-black/50 backdrop-blur-md px-3 py-1 rounded-full text-xs flex items-center gap-1">
+                <span className="material-symbols-outlined text-sm">photo_library</span>
+                Ver (2)
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Caso 3 o más: MOSAICO BENTO COMPLETO (Móvil y Escritorio) */}
+      {allImages.length >= 3 && (
+        <>
+          {/* Mosaico Bento en Celulares / Tablets Pequeñas (< md) */}
+          <div className="grid md:hidden grid-cols-3 gap-2 h-[260px] sm:h-[340px] rounded-2xl overflow-hidden shadow-sm">
+            {/* Foto Principal (2 Columnas) */}
+            <div 
+              className="col-span-2 relative group overflow-hidden cursor-pointer h-full"
+              onClick={() => openLightbox(0)}
+            >
+              {renderMedia(allImages[0], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700", "Foto Principal")}
+              <div className="absolute bottom-3 left-3">
+                <span className="text-white font-label-md bg-black/60 backdrop-blur-md px-3 py-1 rounded-full text-xs flex items-center gap-1 shadow-md">
+                  <span className="material-symbols-outlined text-sm">photo_library</span>
                   Ver galería ({allImages.length})
                 </span>
               </div>
-            </>
-          ) : (
-            <>
-              <span className="material-symbols-outlined text-6xl mb-2">no_photography</span>
-              <span className="font-label-md text-sm">No tiene foto disponible</span>
-            </>
-          )}
-        </div>
-        
-        {allImages.length > 1 ? (
-          <div 
-            className="relative overflow-hidden cursor-pointer group hidden md:block"
-            onClick={() => openLightbox(1)}
-          >
-            {renderMedia(allImages[1], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", "Adicional 1")}
-          </div>
-        ) : (
-          <div className="relative bg-surface-container-high hidden md:flex items-center justify-center">
-             <span className="text-on-surface-variant font-label-md text-sm">Sin más archivos</span>
-          </div>
-        )}
+            </div>
 
-        {allImages.length > 2 ? (
-          <div 
-            className="relative overflow-hidden cursor-pointer group hidden md:block"
-            onClick={() => openLightbox(2)}
-          >
-            {renderMedia(allImages[2], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", "Adicional 2")}
-            {allImages.length > 3 && (
-              <div className="absolute inset-0 bg-primary/80 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <span className="text-on-primary font-headline-md">+{allImages.length - 3}</span>
-                <span className="text-on-primary text-sm">Ver Todos</span>
+            {/* Columna Derecha (2 Fotos apiladas) */}
+            <div className="col-span-1 flex flex-col gap-2 h-full">
+              <div 
+                className="relative h-1/2 group overflow-hidden cursor-pointer rounded-r-none"
+                onClick={() => openLightbox(1)}
+              >
+                {renderMedia(allImages[1], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", "Foto 2")}
+              </div>
+              
+              <div 
+                className="relative h-1/2 group overflow-hidden cursor-pointer"
+                onClick={() => openLightbox(2)}
+              >
+                {renderMedia(allImages[2], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", "Foto 3")}
+                {allImages.length > 3 ? (
+                  <div className="absolute inset-0 bg-black/65 backdrop-blur-[2px] flex flex-col items-center justify-center text-white p-1">
+                    <span className="font-bold text-base sm:text-lg">+{allImages.length - 3}</span>
+                    <span className="text-[10px] font-label-md uppercase tracking-tight">Fotos</span>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Mosaico Bento en Escritorio (>= md) */}
+          <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-3 h-[520px] rounded-2xl overflow-hidden shadow-sm">
+            {/* Foto Principal (Gran formato izquierda) */}
+            <div 
+              className="col-span-2 row-span-2 relative group overflow-hidden cursor-pointer"
+              onClick={() => openLightbox(0)}
+            >
+              {renderMedia(allImages[0], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-700", "Principal")}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6">
+                <span className="text-white font-label-md bg-black/40 backdrop-blur-md px-4 py-2 rounded-full text-sm flex items-center gap-1.5 shadow-md">
+                  <span className="material-symbols-outlined text-base">photo_library</span>
+                  Ver galería completa ({allImages.length})
+                </span>
+              </div>
+            </div>
+
+            {/* Foto Secundaria 1 */}
+            <div 
+              className="col-span-1 row-span-1 relative group overflow-hidden cursor-pointer"
+              onClick={() => openLightbox(1)}
+            >
+              {renderMedia(allImages[1], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", "Adicional 1")}
+            </div>
+
+            {/* Foto Secundaria 2 */}
+            <div 
+              className="col-span-1 row-span-1 relative group overflow-hidden cursor-pointer"
+              onClick={() => openLightbox(2)}
+            >
+              {renderMedia(allImages[2], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", "Adicional 2")}
+            </div>
+
+            {/* Foto Secundaria 3 (o Banner de +N fotos) */}
+            {allImages.length >= 4 ? (
+              <div 
+                className="col-span-2 row-span-1 relative group overflow-hidden cursor-pointer"
+                onClick={() => openLightbox(3)}
+              >
+                {renderMedia(allImages[3], "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500", "Adicional 3")}
+                {allImages.length > 4 ? (
+                  <div className="absolute inset-0 bg-primary/80 backdrop-blur-[2px] flex flex-col items-center justify-center text-on-primary transition-opacity group-hover:bg-primary/90">
+                    <span className="font-headline-lg text-2xl font-bold">+{allImages.length - 4}</span>
+                    <span className="text-sm font-label-md">Ver todas las fotos</span>
+                  </div>
+                ) : (
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                )}
+              </div>
+            ) : (
+              <div className="col-span-2 row-span-1 bg-surface-container-high flex items-center justify-center">
+                <span className="text-on-surface-variant font-label-md text-sm">Sin más archivos</span>
               </div>
             )}
           </div>
-        ) : (
-          <div className="relative bg-surface-container-high hidden md:flex items-center justify-center">
-             <span className="text-on-surface-variant font-label-md text-sm">Sin más archivos</span>
-          </div>
-        )}
-      </div>
+        </>
+      )}
 
-      {/* Lightbox Modal con Portal */}
+      {/* ===== LIGHTBOX MODAL CON PORTAL ===== */}
       {isOpen && mounted && createPortal(
         <div 
           className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md flex flex-col justify-between items-center w-screen h-[100dvh] overflow-hidden select-none p-3 md:p-6"
