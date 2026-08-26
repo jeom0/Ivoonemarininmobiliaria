@@ -3,22 +3,16 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import GSAPInitializer from "@/components/GSAPInitializer";
+import FloatingButtons from "@/components/FloatingButtons";
+import { headers } from "next/headers";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
 });
 
-import { headers } from "next/headers";
-import { prisma } from "@/lib/prisma";
-
 export async function generateMetadata(): Promise<Metadata> {
-  // Opt out of static generation for metadata
   await headers();
-  
-  // Use our explicit API route for dynamic favicon handling
-  // This bypasses browser caches and Next.js static optimizations
   const faviconUrl = `/api/favicon?v=${Date.now()}`;
-
   return {
     title: "Ivonne Marin - Asesora Inmobiliaria",
     description: "Asesora inmobiliaria premium en el Eje Cafetero",
@@ -35,8 +29,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Opt out of static generation for the entire app to prevent build crashes
-  // while ensuring CSS chunks are properly injected in the dynamic response
   await headers();
   
   return (
@@ -48,6 +40,8 @@ export default async function RootLayout({
         <AuthProvider>
           <GSAPInitializer />
           {children}
+          {/* Botones Flotantes Globales: WhatsApp + Scroll-to-Top */}
+          <FloatingButtons />
         </AuthProvider>
       </body>
     </html>
