@@ -17,6 +17,11 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   const bathrooms = typeof params.bathrooms === 'string' ? parseInt(params.bathrooms) : undefined;
   const stratum = typeof params.stratum === 'string' ? parseInt(params.stratum) : undefined;
   const sortParam = typeof params.sort === 'string' ? params.sort : 'desc';
+
+  // Filtros Especiales desde URL ("Ver todas" de Secciones del Home)
+  const isFeatured = params.featured === 'true';
+  const isInvestment = params.investment === 'true';
+  const statusParam = typeof params.status === 'string' && params.status !== 'Todos' ? params.status : undefined;
   
   const where: Prisma.PropertyWhereInput = {};
   if (modality) where.modality = modality;
@@ -25,6 +30,9 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   if (rooms) where.bedrooms = { gte: rooms };
   if (bathrooms) where.bathrooms = { gte: bathrooms };
   if (stratum) where.stratum = { gte: stratum };
+  if (isFeatured) where.isFeatured = true;
+  if (isInvestment) where.isInvestment = true;
+  if (statusParam) where.status = statusParam;
 
   let properties: any[] = [];
   let dbError = null;
@@ -48,6 +56,25 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   const defaultCities = ["Santa Rosa de Cabal", "Pereira", "Dosquebradas", "Armenia", "Manizales"];
   const allCities = Array.from(new Set([...defaultCities, ...dbCities])).sort();
 
+  // Título y subtítulo adaptables según el filtro aplicado al hacer clic en "Ver todas"
+  let pageTitle = "Inmuebles disponibles";
+  let pageSubtitle = "Explora propiedades exclusivas en venta y arriendo en el Eje Cafetero.";
+  let filterBadge = null;
+
+  if (isFeatured) {
+    pageTitle = "Inmuebles Destacados";
+    pageSubtitle = "Mostrando todas las propiedades seleccionadas como destacadas por su ubicación y valor exclusivo.";
+    filterBadge = "Destacadas";
+  } else if (isInvestment) {
+    pageTitle = "Oportunidades de Inversión";
+    pageSubtitle = "Mostrando propiedades catalogadas de alta rentabilidad e inversión estratégica.";
+    filterBadge = "Alta Rentabilidad";
+  } else if (statusParam === 'NUEVO') {
+    pageTitle = "Nuevos Inmuebles";
+    pageSubtitle = "Mostrando las últimas novedades e inmuebles recién incorporados a nuestro catálogo.";
+    filterBadge = "Novedades";
+  }
+
   return (
     <div className="flex flex-col min-h-screen w-full overflow-x-hidden bg-background">
       <PublicNavbar />
@@ -55,14 +82,20 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
       {/* Contenedor Expandido de Borde a Borde */}
       <main className="pt-28 md:pt-36 pb-20 px-4 sm:px-6 md:px-8 lg:px-12 w-full max-w-[1750px] mx-auto flex-grow">
         
-        {/* Banner de Encabezado */}
+        {/* Banner de Encabezado Adaptable */}
         <header className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant/30 pb-6">
           <div>
+            {filterBadge && (
+              <span className="inline-flex items-center gap-1 text-secondary font-label-md text-xs tracking-widest block uppercase mb-1 font-bold">
+                <span className="material-symbols-outlined text-sm">filter_alt</span>
+                Filtro Activo: {filterBadge}
+              </span>
+            )}
             <h1 className="font-display-lg text-headline-lg md:text-display-lg text-primary mb-2 tracking-tight">
-              Inmuebles disponibles
+              {pageTitle}
             </h1>
             <p className="font-body-lg text-on-surface-variant text-sm md:text-base max-w-2xl">
-              Explora propiedades exclusivas en venta y arriendo en el Eje Cafetero.
+              {pageSubtitle}
             </p>
           </div>
           <div className="flex items-center gap-3 self-start md:self-auto">
@@ -109,6 +142,56 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
               </div>
 
               <div className="space-y-6 custom-scrollbar max-h-[calc(100vh-280px)] overflow-y-auto pr-1">
+
+                {/* Colecciones Especiales */}
+                <div>
+                  <label className="font-label-md text-xs block mb-2.5 uppercase tracking-wider text-secondary font-bold">
+                    Categoría Especial
+                  </label>
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl hover:bg-surface-container/50 transition-colors">
+                      <input 
+                        type="checkbox" 
+                        name="featured" 
+                        value="true" 
+                        defaultChecked={isFeatured} 
+                        className="w-4 h-4 text-primary rounded border-outline-variant focus:ring-primary"
+                      />
+                      <span className="text-xs font-semibold text-on-surface flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-sm text-[#D4AF37]">star</span>
+                        Solo Destacadas
+                      </span>
+                    </label>
+
+                    <label className="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl hover:bg-surface-container/50 transition-colors">
+                      <input 
+                        type="checkbox" 
+                        name="investment" 
+                        value="true" 
+                        defaultChecked={isInvestment} 
+                        className="w-4 h-4 text-primary rounded border-outline-variant focus:ring-primary"
+                      />
+                      <span className="text-xs font-semibold text-on-surface flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-sm text-secondary">trending_up</span>
+                        Oportunidad Inversión
+                      </span>
+                    </label>
+
+                    <label className="flex items-center gap-2.5 cursor-pointer p-2 rounded-xl hover:bg-surface-container/50 transition-colors">
+                      <input 
+                        type="radio" 
+                        name="status" 
+                        value="NUEVO" 
+                        defaultChecked={statusParam === 'NUEVO'} 
+                        className="w-4 h-4 text-primary focus:ring-primary"
+                      />
+                      <span className="text-xs font-semibold text-on-surface flex items-center gap-1.5">
+                        <span className="material-symbols-outlined text-sm text-primary">new_releases</span>
+                        Novedades / Recientes
+                      </span>
+                    </label>
+                  </div>
+                </div>
 
                 {/* Operación (Venta / Arriendo) */}
                 <div>
@@ -267,8 +350,13 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
             
             {/* Barra de Conteo y Ordenamiento */}
             <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6 bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 shadow-sm">
-              <span className="font-body-md text-on-surface-variant text-sm">
+              <span className="font-body-md text-on-surface-variant text-sm flex items-center gap-2">
                 Mostrando <strong className="text-primary font-bold">{properties.length}</strong> propiedades disponibles
+                {filterBadge && (
+                  <span className="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-xs font-bold">
+                    {filterBadge}
+                  </span>
+                )}
               </span>
               <div className="flex items-center gap-2 self-end sm:self-auto">
                 <SortSelect />
