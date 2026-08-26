@@ -57,15 +57,21 @@ export default function PublicNavbar({ settings }: { settings?: any }) {
   }
 
   return (
-    <nav className="w-full top-0 md:sticky z-50 glass-nav shadow-sm h-20 transition-all bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-md">
+    <nav className="w-full sticky top-0 z-50 glass-nav shadow-sm h-20 transition-all bg-surface/80 dark:bg-surface-container-highest/80 backdrop-blur-md">
       <div className="flex justify-between items-center w-full px-base md:px-margin-desktop max-w-container-max mx-auto h-full">
         {/* Brand */}
         <div className="flex items-center">
           <Link href="/" className="flex items-center">
             {s.logoUrl ? (
-              <img src={s.logoUrl} alt={s.agencyName || "Logo"} className="w-auto object-contain" style={{ height: s.logoSize ? `${s.logoSize}px` : '48px', maxHeight: '80px' }} />
+              <img 
+                src={s.logoUrl} 
+                alt={s.agencyName || "Logo"} 
+                className="w-auto object-contain block"
+                style={{ height: s.logoSize ? `${s.logoSize}px` : '48px', maxHeight: '72px', minWidth: '60px' }}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
             ) : (
-              <span className="text-headline-md font-headline-lg text-primary tracking-tight cursor-pointer">
+              <span className="text-headline-md font-headline-lg text-primary tracking-tight cursor-pointer whitespace-nowrap">
                 {s.agencyName || "Ivonne Marin"}
               </span>
             )}
@@ -122,6 +128,17 @@ export default function PublicNavbar({ settings }: { settings?: any }) {
       {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
         <div className="md:hidden fixed top-20 left-0 w-full h-[calc(100vh-80px)] overflow-y-auto bg-surface dark:bg-surface-container-highest shadow-lg border-t border-outline-variant/30 flex flex-col p-6 space-y-4 z-40 pb-24">
+          {/* Logo en el menú móvil */}
+          {s.logoUrl && (
+            <div className="flex items-center justify-center pb-2 border-b border-outline-variant/20 mb-2">
+              <img 
+                src={s.logoUrl} 
+                alt={s.agencyName || "Logo"} 
+                className="w-auto object-contain"
+                style={{ height: s.logoSize ? `${Math.min(Number(s.logoSize), 56)}px` : '44px', maxHeight: '56px' }}
+              />
+            </div>
+          )}
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (pathname.startsWith(link.href) && link.href !== '/');
             return (
