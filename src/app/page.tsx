@@ -380,9 +380,9 @@ export default async function Page() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
+    <div className="flex flex-col min-h-screen w-full">
       <PublicNavbar />
-      <main className="w-full flex-grow">
+      <main className="w-full flex-grow overflow-x-hidden">
         {sectionsOrder.map((sectionId) => (
           <div key={sectionId}>
             {sectionsMap[sectionId] || null}

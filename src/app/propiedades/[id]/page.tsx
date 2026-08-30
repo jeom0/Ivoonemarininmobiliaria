@@ -5,6 +5,7 @@ import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
 import PropertyLeadForm from "./PropertyLeadForm";
 import PropertyGallery from "./PropertyGallery";
+import SharePropertyButtons from "./SharePropertyButtons";
 
 const prisma = new PrismaClient();
 
@@ -62,9 +63,9 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
   }
 
   return (
-    <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
+    <div className="flex flex-col min-h-screen w-full">
       <PublicNavbar />
-      <main className="max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-desktop py-8 flex-grow">
+      <main className="max-w-container-max w-full mx-auto px-margin-mobile md:px-margin-desktop py-8 flex-grow overflow-x-hidden">
         <nav className="flex mb-8 items-center gap-2 font-label-md text-label-md text-on-surface-variant overflow-x-auto whitespace-nowrap">
           <Link className="hover:text-primary" href="/">Inicio</Link>
           <span className="material-symbols-outlined text-[16px]">chevron_right</span>
@@ -98,6 +99,9 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                 <p className="text-[12px] text-on-surface-variant font-body-md">Cód: IM-{property.id.substring(0, 4).toUpperCase()}</p>
               </div>
             </div>
+
+            {/* Botones de Compartir */}
+            <SharePropertyButtons propertyId={property.id} title={property.title} price={property.price} />
 
             {/* Features Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
