@@ -90,7 +90,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
       <PublicNavbar />
 
       {/* Contenedor Expandido de Borde a Borde */}
-      <main className="pt-28 md:pt-36 pb-20 px-4 sm:px-6 md:px-8 lg:px-12 w-full max-w-[1750px] mx-auto flex-grow">
+      <main className="pt-8 md:pt-10 pb-20 px-4 sm:px-6 md:px-8 lg:px-10 w-full max-w-[1750px] mx-auto flex-grow">
         
         {/* Banner de Encabezado Adaptable */}
         <header className="mb-8 md:mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant/30 pb-6">
