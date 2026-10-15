@@ -10,6 +10,7 @@ export default function SortSelect() {
     const value = e.target.value;
     const params = new URLSearchParams(searchParams.toString());
     params.set('sort', value);
+    params.delete('page');
     router.push(`?${params.toString()}`);
   };
 

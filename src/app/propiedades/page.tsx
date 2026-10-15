@@ -44,24 +44,73 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
     where.status = statusParam;
   }
 
+  // Parámetros de paginación
+  const currentPage = typeof params.page === 'string' ? Math.max(1, parseInt(params.page, 10) || 1) : 1;
+  const pageSize = 9; // 9 inmuebles por página (3x3 en cuadrícula de escritorio)
+
   let properties: any[] = [];
+  let totalCount = 0;
   let dbError = null;
   let dbCities: string[] = [];
 
   try {
-    properties = await prisma.property.findMany({ 
+    const [fetchedProps, count, distinctCities] = await Promise.all([
+      prisma.property.findMany({ 
         where,
-        orderBy: { createdAt: sortParam === 'asc' ? 'asc' : 'desc' } 
-    });
-    const distinctCities = await prisma.property.findMany({
+        orderBy: { createdAt: sortParam === 'asc' ? 'asc' : 'desc' },
+        skip: (currentPage - 1) * pageSize,
+        take: pageSize,
+      }),
+      prisma.property.count({ where }),
+      prisma.property.findMany({
         select: { city: true },
         distinct: ['city']
-    });
+      })
+    ]);
+    properties = fetchedProps;
+    totalCount = count;
     dbCities = distinctCities.map(c => c.city).filter(Boolean);
   } catch (error: any) {
     dbError = error.message || String(error);
     console.error("Database Error on /propiedades:", error);
   }
+
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+
+  // Generador de URLs de paginación que preserva intactos todos los filtros activos
+  const createPageUrl = (targetPage: number) => {
+    const q = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      if (key === 'page' || value === undefined || value === null || value === '') continue;
+      if (Array.isArray(value)) {
+        value.forEach(v => q.append(key, v));
+      } else {
+        q.set(key, value);
+      }
+    }
+    if (targetPage > 1) {
+      q.set('page', targetPage.toString());
+    }
+    const qs = q.toString();
+    return qs ? `/propiedades?${qs}` : '/propiedades';
+  };
+
+  // Generador de números de página reales (sin inventar páginas inexistentes)
+  const getPaginationItems = (current: number, total: number): (number | string)[] => {
+    if (total <= 1) return [1];
+    if (total <= 5) {
+      return Array.from({ length: total }, (_, i) => i + 1);
+    }
+    if (current <= 3) {
+      return [1, 2, 3, 4, '...', total];
+    }
+    if (current >= total - 2) {
+      return [1, '...', total - 3, total - 2, total - 1, total];
+    }
+    return [1, '...', current - 1, current, current + 1, '...', total];
+  };
+
+  const paginationItems = getPaginationItems(currentPage, totalPages);
 
   const defaultCities = ["Santa Rosa de Cabal", "Pereira", "Dosquebradas", "Armenia", "Manizales"];
   const allCities = Array.from(new Set([...defaultCities, ...dbCities])).sort();
@@ -111,7 +160,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
           <div className="flex items-center gap-3 self-start md:self-auto">
             <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-primary/10 text-primary font-label-md text-xs md:text-sm font-semibold">
               <span className="material-symbols-outlined text-sm">home_work</span>
-              {properties.length} inmueble{properties.length !== 1 ? 's' : ''} encontrado{properties.length !== 1 ? 's' : ''}
+              {totalCount} inmueble{totalCount !== 1 ? 's' : ''} encontrado{totalCount !== 1 ? 's' : ''}
             </span>
           </div>
         </header>
@@ -361,7 +410,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
             {/* Barra de Conteo y Ordenamiento */}
             <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-6 bg-surface-container-lowest p-4 rounded-2xl border border-outline-variant/30 shadow-sm">
               <span className="font-body-md text-on-surface-variant text-sm flex items-center gap-2">
-                Mostrando <strong className="text-primary font-bold">{properties.length}</strong> propiedades disponibles
+                Mostrando <strong className="text-primary font-bold">{totalCount === 0 ? 0 : `${(currentPage - 1) * pageSize + 1} - ${Math.min(currentPage * pageSize, totalCount)}`}</strong> de <strong className="text-primary font-bold">{totalCount}</strong> propiedades disponibles
                 {filterBadge && (
                   <span className="px-2.5 py-0.5 rounded-full bg-secondary/10 text-secondary text-xs font-bold">
                     {filterBadge}
@@ -388,19 +437,78 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
               )}
             </div>
 
-            {/* Paginación */}
-            {properties.length > 0 && (
+            {/* Paginación Dinámica Real */}
+            {totalCount > 0 && totalPages > 1 && (
               <div className="mt-14 flex justify-center items-center gap-2">
-                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
-                  <span className="material-symbols-outlined text-lg">chevron_left</span>
-                </button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-on-primary font-bold shadow-md">1</button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface hover:bg-surface-container transition-all cursor-pointer">2</button>
-                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface hover:bg-surface-container transition-all cursor-pointer">3</button>
-                <span className="px-2 text-outline-variant">...</span>
-                <button className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
-                  <span className="material-symbols-outlined text-lg">chevron_right</span>
-                </button>
+                {/* Botón Anterior */}
+                {currentPage > 1 ? (
+                  <Link
+                    href={createPageUrl(currentPage - 1)}
+                    className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer shadow-sm"
+                    title="Página anterior"
+                    aria-label="Página anterior"
+                  >
+                    <span className="material-symbols-outlined text-lg">chevron_left</span>
+                  </Link>
+                ) : (
+                  <span
+                    className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/20 text-on-surface-variant/30 opacity-40 cursor-not-allowed select-none"
+                    aria-label="Página anterior deshabilitada"
+                  >
+                    <span className="material-symbols-outlined text-lg">chevron_left</span>
+                  </span>
+                )}
+
+                {/* Números de página dinámicos */}
+                {paginationItems.map((item, idx) => {
+                  if (item === '...') {
+                    return (
+                      <span key={`dots-${idx}`} className="px-2 text-outline-variant font-bold select-none">
+                        ...
+                      </span>
+                    );
+                  }
+
+                  const pageNum = Number(item);
+                  const isActive = pageNum === currentPage;
+
+                  return isActive ? (
+                    <span
+                      key={pageNum}
+                      className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary text-on-primary font-bold shadow-md select-none"
+                      aria-current="page"
+                    >
+                      {pageNum}
+                    </span>
+                  ) : (
+                    <Link
+                      key={pageNum}
+                      href={createPageUrl(pageNum)}
+                      className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer font-medium"
+                    >
+                      {pageNum}
+                    </Link>
+                  );
+                })}
+
+                {/* Botón Siguiente */}
+                {currentPage < totalPages ? (
+                  <Link
+                    href={createPageUrl(currentPage + 1)}
+                    className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/40 text-on-surface-variant hover:bg-surface-container hover:border-primary/50 transition-all cursor-pointer shadow-sm"
+                    title="Página siguiente"
+                    aria-label="Página siguiente"
+                  >
+                    <span className="material-symbols-outlined text-lg">chevron_right</span>
+                  </Link>
+                ) : (
+                  <span
+                    className="w-10 h-10 flex items-center justify-center rounded-xl border border-outline-variant/20 text-on-surface-variant/30 opacity-40 cursor-not-allowed select-none"
+                    aria-label="Página siguiente deshabilitada"
+                  >
+                    <span className="material-symbols-outlined text-lg">chevron_right</span>
+                  </span>
+                )}
               </div>
             )}
           </section>
